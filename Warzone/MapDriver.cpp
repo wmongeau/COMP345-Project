@@ -4,29 +4,65 @@
 #include <vector>
 
 using namespace std;
-#include "Map.h"
+#include "MapDriver.h";
 
-vector<string> splitString(string stringToSplit);
+//MAIN FUNCTIONS
+int main() {
+	Map* map;
+	try {
+		map = MapLoader::loadMap();
+	}
+	catch (exception e)
+	{
+		cout << "This an invalid file";
+	}
+	cout << map->toString() << endl;
+	return 1;
+};
 
-int main(){
+//FUNCTIONS
+//function to split string into an array with a space delimiter
+vector<string> splitString(string stringToSplit) {
+	vector<string> l;
+
+	char* stringToSplitC = new char[stringToSplit.length() + 1];
+	strcpy(stringToSplitC, stringToSplit.c_str());
+
+	char* token;
+	token = strtok(stringToSplitC, " ");
+
+	while (token != NULL) {
+		l.push_back(token);
+		token = strtok(NULL, " ");
+	}
+	delete[] stringToSplitC;
+	delete[] token;
+	return l;
+};
+
+
+Map* MapLoader::loadMap() {
 	cout << "Enter the file path to the map you wish to play!" << endl;
 	string filePath;
-	cin >> filePath;
+	getline(cin, filePath);
 	ifstream file(filePath);
+	if (!file.is_open())
+	{
+		cout << "Error: Can't find file path: " << filePath << endl;
+		return NULL;
+	}
 	string line;
 	string currentMode;
-
-	Map *map;
+	Map* map;
 	map = new Map();
-
 	int continentId = 1;
 
-	while(getline(file, line)){
+	while (getline(file, line)) {
 
-		if(line[0] == ';' || line == "") {
+		if (line[0] == ';' || line == "") {
 			continue;
 		}
-		else if(line == "[continents]") {
+		else if (line == "[continents]") {
 			currentMode = "continents";
 			continue;
 		}
@@ -41,64 +77,60 @@ int main(){
 		}
 
 		if (currentMode == "continents") {
-			vector<string> continentAsArray = splitString(line);
-			Continent *continent;
-			continent = new Continent(continentId, continentAsArray[0], stoi(continentAsArray[1]), continentAsArray[2]);
-			map->addContinent(continent);
-			continentId = continentId + 1;
+			MapLoader :: loadContinent(line, &continentId, map);
 		}
 		else if (currentMode == "countries") {
-			vector<string> countryAsArray = splitString(line);
-			Territory *territory;
-			territory = new Territory(stoi(countryAsArray[0]), countryAsArray[1], stoi(countryAsArray[2]), stoi(countryAsArray[3]), stoi(countryAsArray[4]));
-			map->addTerritory(territory);
-
-			for each (Continent* cont in map->Continents) {
-				if (territory->ContinentId == cont->Id) {
-					cont->addTerritory(territory);
-				}
-			}
+			loadCountry(line, map);
 		}
 		else if (currentMode == "borders") {
-			vector<string> bordersAsArray = splitString(line);
-			vector<Territory*> allTerritories = map->Territories;
-			Territory *currentTerritory;
-			
-
-			for each (Territory* var in allTerritories)
-			{
-				if (var->Id == stoi(bordersAsArray[0])) {
-					currentTerritory = var;
-				}
-			}
-
-			for (int i = 1; i < bordersAsArray.size(); i++) {
-				for each (Territory* var in allTerritories)
-					if (var->Id == stoi(bordersAsArray[i])) {
-						currentTerritory->addBorder(var);
-					}
-			}
+			loadBorder(line,map);
 		}
 	}
-	cout << map->toString();
 	file.close();
-	return 1;
+	return map;
+};
+
+void MapLoader::loadContinent(string continentStr, int *continentId, Map* map) {
+	vector<string> continentAsArray = splitString(continentStr);
+	Continent* continent;
+	continent = new Continent(*continentId, continentAsArray[0], stoi(continentAsArray[1]), continentAsArray[2]);
+	map->addContinent(continent);
+	*continentId = *continentId + 1;
 }
 
-vector<string> splitString(string stringToSplit) {
-	vector<string> l;
-
-	char* stringToSplitC = new char[stringToSplit.length() + 1];
-	strcpy(stringToSplitC, stringToSplit.c_str());
-
-	char* token;
-	token = strtok(stringToSplitC, " ");
-
-	while (token != NULL) {
-		l.push_back(token);
-		token = strtok(NULL, " ");
+void MapLoader::loadCountry(string country, Map* map) {
+	vector<string> countryAsArray = splitString(country);
+	Territory* territory;
+	territory = new Territory(stoi(countryAsArray[0]), countryAsArray[1], stoi(countryAsArray[2]), stoi(countryAsArray[3]), stoi(countryAsArray[4]));
+	map->addTerritory(territory);
+	for each (Continent * cont in map->Continents) {
+		if (territory->ContinentId == cont->Id) {
+			cont->addTerritory(territory);
+		}
 	}
+}
 
-	return l;
-};
+void MapLoader::loadBorder(string border, Map* map) {
+	vector<string> bordersAsArray = splitString(border);
+	vector<Territory*> allTerritories = map->Territories;
+	Territory* currentTerritory;
+
+	for each (Territory * var in allTerritories)
+	{
+		if (var->Id == stoi(bordersAsArray[0])) {
+			currentTerritory = var;
+		}
+	}
+	int current = stoi(bordersAsArray[0]);
+	int edge = 0;
+	for (int i = 1; i < bordersAsArray.size(); i++) {
+		edge = stoi(bordersAsArray[i]);
+		for each (Territory * var in allTerritories)
+			if (var->Id == stoi(bordersAsArray[i])) {
+				currentTerritory->addBorder(var);
+			}
+	}
+}
+
+
 

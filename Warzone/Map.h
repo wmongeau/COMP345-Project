@@ -2,6 +2,7 @@
 
 #include <string>
 #include <list>
+#include <vector>
 
 class Territory {
 public:
@@ -14,6 +15,7 @@ public:
 	Territory(int id, string name, int continentId, int x, int y);
 	void addBorder(Territory* territory);
 	string toString();
+	~Territory();
 };
 
 class Continent {
@@ -25,6 +27,7 @@ public:
 	vector<Territory*> Territories;
 	Continent(int id, string name, int armyVal, string colour);
 	void addTerritory(Territory* territory);
+	~Continent();
 };
 
 class Map {
@@ -35,5 +38,6 @@ public:
 	void addContinent(Continent* continent);
 	void addTerritory(Territory* territory);
 	string toString();
+	bool validate();
+	~Map();
 };
-

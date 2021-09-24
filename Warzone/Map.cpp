@@ -9,6 +9,7 @@
 using namespace std;
 #include "Map.h"
 
+//CLASS: Map
 Map::Map() {
     Continents = vector<Continent*>();
 };
@@ -44,6 +45,23 @@ string Map::toString() {
     return result;
 }
 
+bool Map::validate() {
+    
+    return true;
+}
+
+Map::~Map() {
+    for (auto p : Territories) {
+        delete p;
+        p = NULL;
+    }
+    for (auto p : Continents) {
+        delete p;
+        p = NULL;
+    }
+}
+
+//CLASS: Continent
 Continent::Continent(int id, string name, int armyVal, string colour) {
     Id = id;
     Name = name;
@@ -55,6 +73,14 @@ void Continent::addTerritory(Territory* territory) {
     Territories.push_back(territory);
 }
 
+Continent::~Continent() {
+    for (auto p : Territories) {
+        delete p;
+        p = NULL;
+    }
+}
+
+//CLASS: Territory
 Territory::Territory(int id, string name, int continentId, int x, int y) {
     Id = id;
     Name = name;
@@ -71,42 +97,18 @@ string Territory::toString()
 {
     string result;
 
-    result.append(to_string(Id));
+    result.append(to_string(Id)+" -->");
     for each (Territory * var in Borders) {
         result.append(" ");
-        result.append(to_string(Id));
-        result.append("\n");
+        result.append(to_string(var->Id));
     }
+    result.append("\n");
     return result;
 }
 
-
-/*class Territory {
-public:
-    list<int*> Borders;
-    int CountryNum;
-    string CountryName;
-
-    Territory(int countryNum, string countryName) {
-        Borders = new list<int*>[countryNum];
-        CountryNum = countryNum;
+Territory::~Territory() {
+    for (auto p : Borders) {
+        delete p;
+        p = NULL;
     }
-
-    void addedge(int u, int v, bool bi) {
-        Borders[u].push_back(v);
-        if (bi) {
-            Borders[v].push_back(u);
-        }
-    }
-
-    void print() {
-        for (int i = 0; i < n; i++) {
-            cout << i << "-->";
-            for (auto it : Borders[i]) {
-                cout << it << " ";
-            }
-            cout << endl;
-        }
-        cout << endl;
-    }
-};*/
+}
