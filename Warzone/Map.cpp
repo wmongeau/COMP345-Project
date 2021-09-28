@@ -26,7 +26,7 @@ void Map::addTerritory(Territory* territory)
 string Map::toString() {
     string result;
     
-    for each (Continent* var in Continents)
+    for(Continent* var : Continents)
     {
         result.append(to_string(var->Id));
         result.append(" ");
@@ -38,7 +38,7 @@ string Map::toString() {
         result.append("\n");
     }
 
-    for each (Territory* var in Territories) {
+    for(Territory* var : Territories) {
         result.append(var->toString());
     }
 
@@ -97,8 +97,8 @@ string Territory::toString()
 {
     string result;
 
-    result.append(to_string(Id)+" -->");
-    for each (Territory * var in Borders) {
+    result.append(to_string(Id));
+    for(Territory * var : Borders) {
         result.append(" ");
         result.append(to_string(var->Id));
     }
