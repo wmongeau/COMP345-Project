@@ -13,7 +13,9 @@ public:
 	vector<Territory*> CanAttack;
 	vector<Card*> PlayerHand;
 	string PlayerName;
+	vector<Territory*> CanDefend;
 	vector<Territory*> toDefend();
 	vector<Territory*> toAttack();
-	Order* issueOrder();
+	void issueOrder();
+	void addCard(Card* card);
 };
