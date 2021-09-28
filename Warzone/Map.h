@@ -37,7 +37,8 @@ public:
 	Map();
 	void addContinent(Continent* continent);
 	void addTerritory(Territory* territory);
-	string toString();
 	bool validate();
+	void dfs(int Id, Territory* country, vector<bool> &visited);
+	string toString();
 	~Map();
 };

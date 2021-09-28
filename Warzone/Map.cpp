@@ -46,8 +46,26 @@ string Map::toString() {
 }
 
 bool Map::validate() {
-    
-    return true;
+    vector<bool> visited(Territories.size()+1);
+    dfs(Territories[0]->Id, Territories[0], visited);
+    int count = 0;
+    for (int i = 0; i < 181; i++) {
+        if (visited[i])
+            count++;
+    }
+    if (count == visited.size()-1)
+        return true;
+    return false;
+}
+
+void Map::dfs(int Id,Territory* country,vector<bool> &visited) {
+    visited[Id] = true;
+    int adjCountry;
+    for (int i = 0; i < country->Borders.size(); i++) {
+        adjCountry = country->Borders[i]->Id;
+        if (!visited[adjCountry])
+            dfs(adjCountry, country->Borders[i], visited);
+    }
 }
 
 Map::~Map() {

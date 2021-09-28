@@ -11,12 +11,16 @@ int main() {
 	Map* map;
 	try {
 		map = MapLoader::loadMap();
+		cout << map->toString() << endl;
+		if (map->validate())
+			cout << "Map is connected" << endl;
+		else
+			cout << "Map is not connected" << endl;
 	}
 	catch (exception e)
 	{
 		cout << "This an invalid file";
 	}
-	cout << map->toString() << endl;
 	return 1;
 };
 
