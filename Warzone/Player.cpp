@@ -16,6 +16,7 @@ Player::Player() {
 }
 
 Player::toAttack() {
+
 	return CanAttack;
 }
 
