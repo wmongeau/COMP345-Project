@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include <string>
-#include <conio.h>
 
 using namespace std;
 #include "GameEngine.h"

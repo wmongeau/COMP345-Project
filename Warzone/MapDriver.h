@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "Map.h";
+#include "Map.h"
 
 
 vector<string> splitString(string stringToSplit);
