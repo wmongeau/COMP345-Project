@@ -97,16 +97,16 @@ Map* MapLoader::loadMap() {
 		if (line[0] == ';' || line == "") {
 			continue;
 		}
-		else if (line == "[continents]") {
+		else if (line.find("[continents]") != std::string::npos) {
 			currentMode = "continents";
 			continue;
 		}
-		else if (line == "[countries]")
+		else if (line.find("[countries]") != std::string::npos)
 		{
 			currentMode = "countries";
 			continue;
 		}
-		else if (line == "[borders]") {
+		else if (line.find("[borders]") != std::string::npos) {
 			currentMode = "borders";
 			continue;
 		}
@@ -126,6 +126,9 @@ Map* MapLoader::loadMap() {
 };
 
 void MapLoader::loadContinent(string continentStr, int *continentId, Map* map) {
+	if(continentStr == "\r"){
+		return;
+	}
 	vector<string> continentAsArray = splitString(continentStr);
 	Continent* continent;
 	continent = new Continent(*continentId, continentAsArray[0], stoi(continentAsArray[1]), continentAsArray[2]);
@@ -134,6 +137,9 @@ void MapLoader::loadContinent(string continentStr, int *continentId, Map* map) {
 }
 
 void MapLoader::loadCountry(string country, Map* map) {
+	if(country == "\r"){
+		return;
+	}
 	vector<string> countryAsArray = splitString(country);
 	Territory* territory;
 	territory = new Territory(stoi(countryAsArray[0]), countryAsArray[1], stoi(countryAsArray[2]), stoi(countryAsArray[3]), stoi(countryAsArray[4]));
@@ -146,6 +152,9 @@ void MapLoader::loadCountry(string country, Map* map) {
 }
 
 void MapLoader::loadBorder(string border, Map* map) {
+	if(border == "\r"){
+		return;
+	}
 	vector<string> bordersAsArray = splitString(border);
 	vector<Territory*> allTerritories = map->Territories;
 	Territory* currentTerritory;

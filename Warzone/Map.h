@@ -7,37 +7,37 @@
 class Territory {
 public:
 	int Id;
-	string Name;
+	std::string Name;
 	int ContinentId;
 	int X;
 	int Y;
-	vector<Territory*> Borders;
-	Territory(int id, string name, int continentId, int x, int y);
+	std::vector<Territory*> Borders;
+	Territory(int id, std::string name, int continentId, int x, int y);
 	void addBorder(Territory* territory);
-	string toString();
+	std::string toString();
 	~Territory();
 };
 
 class Continent {
 public:
 	int Id;
-	string Name;
+	std::string Name;
 	int ArmyValue;
-	string Colour;
-	vector<Territory*> Territories;
-	Continent(int id, string name, int armyVal, string colour);
+	std::string Colour;
+	std::vector<Territory*> Territories;
+	Continent(int id, std::string name, int armyVal, std::string colour);
 	void addTerritory(Territory* territory);
 	~Continent();
 };
 
 class Map {
 public:
-	vector<Continent*> Continents;
-	vector<Territory*> Territories;
+	std::vector<Continent*> Continents;
+	std::vector<Territory*> Territories;
 	Map();
 	void addContinent(Continent* continent);
 	void addTerritory(Territory* territory);
-	string toString();
+	std::string toString();
 	bool validate();
 	~Map();
 };
