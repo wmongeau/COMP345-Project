@@ -24,9 +24,11 @@ public:
 	string Name;
 	int ArmyValue;
 	string Colour;
-	vector<Territory*> Territories;
+	vector<Continent*> Borders;
 	Continent(int id, string name, int armyVal, string colour);
 	void addTerritory(Territory* territory);
+	void addBorderContinent(Continent* continent);
+	string toString();
 	~Continent();
 };
 
@@ -38,7 +40,11 @@ public:
 	void addContinent(Continent* continent);
 	void addTerritory(Territory* territory);
 	bool validate();
-	void dfs(int Id, Territory* country, vector<bool> &visited);
+	void dfsTerritory(int Id, Territory* country, vector<bool> &visited);
+	void dfsContinent(int Id, Continent* continent, vector<bool>& visited);
+	bool checkContinentCount();
+	Continent* getContinentById(int ContinentId);
+	Territory* getTerritoryById(int territoryId);
 	string toString();
 	~Map();
 };

@@ -11,11 +11,13 @@ int main() {
 	Map* map;
 	try {
 		map = MapLoader::loadMap();
+		if (map == NULL)
+			return 1;
 		cout << map->toString() << endl;
 		if (map->validate())
-			cout << "Map is connected" << endl;
+			cout << "Map is valid and playable!!" << endl;
 		else
-			cout << "Map is not connected" << endl;
+			cout << "Map is invalid!!" << endl;
 	}
 	catch (exception e)
 	{
@@ -107,11 +109,6 @@ void MapLoader::loadCountry(string country, Map* map) {
 	Territory* territory;
 	territory = new Territory(stoi(countryAsArray[0]), countryAsArray[1], stoi(countryAsArray[2]), stoi(countryAsArray[3]), stoi(countryAsArray[4]));
 	map->addTerritory(territory);
-	for each (Continent * cont in map->Continents) {
-		if (territory->ContinentId == cont->Id) {
-			cont->addTerritory(territory);
-		}
-	}
 }
 
 void MapLoader::loadBorder(string border, Map* map) {
@@ -119,20 +116,14 @@ void MapLoader::loadBorder(string border, Map* map) {
 	vector<Territory*> allTerritories = map->Territories;
 	Territory* currentTerritory;
 
-	for each (Territory * var in allTerritories)
-	{
-		if (var->Id == stoi(bordersAsArray[0])) {
-			currentTerritory = var;
-		}
-	}
+	currentTerritory = map->getTerritoryById(stoi(bordersAsArray[0]));
 	int current = stoi(bordersAsArray[0]);
 	int edge = 0;
 	for (int i = 1; i < bordersAsArray.size(); i++) {
 		edge = stoi(bordersAsArray[i]);
-		for each (Territory * var in allTerritories)
-			if (var->Id == stoi(bordersAsArray[i])) {
-				currentTerritory->addBorder(var);
-			}
+		currentTerritory->addBorder(map->getTerritoryById(edge));
+		if (currentTerritory->ContinentId != map->getTerritoryById(edge)->ContinentId)
+			map->getContinentById(currentTerritory->ContinentId)->addBorderContinent(map->getContinentById(map->getTerritoryById(edge)->ContinentId));
 	}
 }
 
