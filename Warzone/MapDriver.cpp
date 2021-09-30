@@ -12,19 +12,19 @@ using namespace std;
 vector<Player*> playerDriver(Map* map);
 
 //MAIN FUNCTIONS
-int main() {
-	Map* map;
-	try {
-		map = MapLoader::loadMap();
-		vector<Player*> players = playerDriver(map);
-	}
-	catch (exception e)
-	{
-		cout << "This an invalid file";
-	}
-	cout << map->toString() << endl;
-	return 1;
-};
+/* int main() { */
+/* 	Map* map; */
+/* 	try { */
+/* 		map = MapLoader::loadMap(); */
+/* 		vector<Player*> players = playerDriver(map); */
+/* 	} */
+/* 	catch (exception e) */
+/* 	{ */
+/* 		cout << "This an invalid file"; */
+/* 	} */
+/* 	cout << map->toString() << endl; */
+/* 	return 1; */
+/* }; */
 
 vector<Player*> playerDriver(Map* map) {
 	Player* player1 = new Player("Will");
