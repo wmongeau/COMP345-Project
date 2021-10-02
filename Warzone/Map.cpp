@@ -75,7 +75,7 @@ bool Map::validate() {
     if (checkContinentCount())
     {
         singleContinent = true;
-        cout << "All territories has belong to a single continent!" << endl;
+        cout << "All territories belong to a single continent!" << endl;
     }
     else
         cout << "1 or more territory has more than 1 contient!" << endl;
@@ -188,10 +188,10 @@ string Territory::toString()
 {
     string result;
 
-    result.append(to_string(Id)+" -->");
+    result.append(Name+" -->");
     for each (Territory * var in Borders) {
         result.append(" ");
-        result.append(to_string(var->Id));
+        result.append(var->Name);
     }
     result.append("\n");
     return result;

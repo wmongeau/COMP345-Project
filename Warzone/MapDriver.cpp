@@ -2,6 +2,7 @@
 #include <string>
 #include <fstream> 
 #include <vector>
+#include <conio.h>
 
 using namespace std;
 #include "MapDriver.h";
@@ -9,20 +10,31 @@ using namespace std;
 //MAIN FUNCTIONS
 int main() {
 	Map* map;
+	bool valid = false;
 	try {
-		map = MapLoader::loadMap();
-		if (map == NULL)
-			return 1;
-		cout << map->toString() << endl;
-		if (map->validate())
-			cout << "Map is valid and playable!!" << endl;
-		else
-			cout << "Map is invalid!!" << endl;
+		while (!valid) {
+			map = MapLoader::loadMap();
+			if (map == NULL)
+				return 1;
+			valid = map->validate();
+			if (valid)
+				cout << "Map is valid and playable!!" << endl;
+			else
+				cout << "Map is invalid!!" << endl;
+		}
 	}
 	catch (exception e)
 	{
-		cout << "This an invalid file";
+		cout << "Unexpected error found!"<<endl
+			<<"Press any key to exit application...";
+		_getch();
+		return 1;
 	}
+	cout << "Do you want to see the map's information?(y/n) ";
+	char seeMap = _getch();
+	seeMap = toupper(seeMap);
+	if(seeMap=='Y')
+		cout << map->toString() << endl;
 	return 1;
 };
 
