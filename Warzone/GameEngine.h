@@ -4,10 +4,10 @@
 #include <vector>
 
 namespace Enums{
-	enum states { start, mapLoaded, mapValidated, playersAdded, assignReinforcement, issueOrders, executeOrders, winState };
+	enum states { start, mapLoaded, mapValidated, playersAdded, assignReinforcement, issueOrders, executeOrders, winState, quit };
 	enum transitions { loadMap, validateMap, addPlayer, assignCountries, issueOrder, endIssueOrders, endExecuteOrders, execOrder, winTransition, play, end };
 	std::string statesEnumToString(states value);
-	std::string transitionsEnumToString();
+	std::string transitionsEnumToString(transitions value);
 }
 
 class State {
@@ -35,60 +35,69 @@ protected:
 class LoadMapTransition: public Transition{
 public:
 	LoadMapTransition();
-	LoadMapTransition(Enums::transitions name);
 	void execute();
 };
 
 class ValidateMapTransition: public Transition{
 public:
+	ValidateMapTransition();
 	void execute();
 };
 
 class AddPlayerTransition: public Transition{
 public:
+	AddPlayerTransition();
 	void execute();
 };
 
 class AssignCountriesTransition: public Transition{
 public:
+	AssignCountriesTransition();
 	void execute();
 };
 
 class IssueOrderTransition: public Transition{
 public:
+	IssueOrderTransition();
 	void execute();
 };
 
 class EndIssueOrdersTransition: public Transition{
 public:
+	EndIssueOrdersTransition();
 	void execute();
 };
 
 class ExecOrderTransition: public Transition{
 public:
+	ExecOrderTransition();
 	void execute();
 };
 
 class EndExecOrdersTransition: public Transition{
+	EndExecOrdersTransition();
 	void execute();
 };
 
 
 class WinTransition: public Transition{
+	WinTransition();
 	void execute();
 };
 
 class PlayTransition: public Transition{
+	PlayTransition();
 	void execute();
 };
 
 class EndTransition: public Transition{
+	EndTransition();
 	void execute();
 };
 
 class GameEngine {
 public: GameEngine();
-	State getCurrentState();
+	State* getCurrentState();
 	std::vector<Transition*> getAvailableTransitions();
 	void execute(Transition* transition);
 private:
