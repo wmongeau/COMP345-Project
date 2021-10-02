@@ -4,24 +4,50 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 
 using namespace std;
+
 #include "Player.h"
+
+Player* Player::tempPlayerDriver(Map* map) {
+	Player* player = new Player("Will");
+
+	vector<Territory*> owned = vector<Territory*>();
+	vector<Territory*> unowned = vector<Territory*>();
+
+	for (Territory* territory : map->Territories) {
+		if ((rand() % 100 + 1) > 70) {
+			owned.push_back(territory);
+		}
+	}
+
+	for (Territory* territory : map->Territories) {
+		if ((rand() % 100 + 1) > 70) {
+			unowned.push_back(territory);
+		}
+	}
+
+	player->setCanDefend(owned);
+	player->setCanAttack(unowned);
+
+	return player;
+}
 
 Player::Player() {
 	PlayerName = "";
-	PlayerHand = new vector<Card*>;
-	OwnedTerritories = new vector<Territory*>;
-	CanAttack = new vector<Territory*>;
-	CanDefend = new vector<Territory*>;
+	PlayerHand = vector<Card*>;
+	OwnedTerritories = vector<Territory*>;
+	CanAttack = vector<Territory*>;
+	CanDefend = vector<Territory*>;
 }
 
 Player::Player(string playerName) {
 	PlayerName = playerName;
-	PlayerHand = new vector<Card*>;
-	OwnedTerritories = new vector<Territory*>;
-	CanAttack = new vector<Territory*>;
-	CanDefend = new vector<Territory*>;
+	PlayerHand = vector<Card*>;
+	OwnedTerritories = vector<Territory*>;
+	CanAttack = vector<Territory*>;
+	CanDefend = vector<Territory*>;
 }
 
 vector<Territory*> Player::toAttack() {
