@@ -3,9 +3,14 @@
 #include <fstream> 
 #include <vector>
 #include <conio.h>
+#include <cstring>
 
 using namespace std;
-#include "MapDriver.h";
+
+#include "MapDriver.h"
+#include "Player.h"
+
+vector<Player*> playerDriver(Map* map);
 
 //MAIN FUNCTIONS
 int main() {
@@ -21,6 +26,7 @@ int main() {
 				cout << "Map is valid and playable!!" << endl;
 			else
 				cout << "Map is invalid!!" << endl;
+			vector<Player*> players = playerDriver(map);
 		}
 	}
 	catch (exception e)
@@ -37,6 +43,35 @@ int main() {
 		cout << map->toString() << endl;
 	return 1;
 };
+
+vector<Player*> playerDriver(Map* map) {
+	Player* player1 = new Player("Will");
+	Player* player2 = new Player("Basile");
+
+	vector<Territory*> player1T = vector<Territory*>();
+	vector<Territory*> player2T = vector<Territory*>();
+
+	for (Territory* territory : map->Territories) {
+		if ((rand() % 100 + 1) > 70) {
+			player1T.push_back(territory);
+		}
+	}
+
+	for (Territory* territory : map->Territories) {
+		if ((rand() % 100 + 1) > 70) {
+			player2T.push_back(territory);
+		}
+	}
+
+	player1->CanDefend = player1T;
+	player2->CanDefend = player2T;
+	player1->CanAttack = player2T;
+	player2->CanAttack = player1T;
+	vector<Player*> players = vector<Player*>();
+	players.push_back(player1);
+	players.push_back(player2);
+	return players;
+}
 
 //FUNCTIONS
 //function to split string into an array with a space delimiter
@@ -80,16 +115,16 @@ Map* MapLoader::loadMap() {
 		if (line[0] == ';' || line == "") {
 			continue;
 		}
-		else if (line == "[continents]") {
+		else if (line.find("[continents]") != std::string::npos) {
 			currentMode = "continents";
 			continue;
 		}
-		else if (line == "[countries]")
+		else if (line.find("[countries]") != std::string::npos)
 		{
 			currentMode = "countries";
 			continue;
 		}
-		else if (line == "[borders]") {
+		else if (line.find("[borders]") != std::string::npos) {
 			currentMode = "borders";
 			continue;
 		}
@@ -109,6 +144,9 @@ Map* MapLoader::loadMap() {
 };
 
 void MapLoader::loadContinent(string continentStr, int *continentId, Map* map) {
+	if(continentStr == "\r"){
+		return;
+	}
 	vector<string> continentAsArray = splitString(continentStr);
 	Continent* continent;
 	continent = new Continent(*continentId, continentAsArray[0], stoi(continentAsArray[1]), continentAsArray[2]);
@@ -117,6 +155,9 @@ void MapLoader::loadContinent(string continentStr, int *continentId, Map* map) {
 }
 
 void MapLoader::loadCountry(string country, Map* map) {
+	if(country == "\r"){
+		return;
+	}
 	vector<string> countryAsArray = splitString(country);
 	Territory* territory;
 	territory = new Territory(stoi(countryAsArray[0]), countryAsArray[1], stoi(countryAsArray[2]), stoi(countryAsArray[3]), stoi(countryAsArray[4]));
@@ -124,6 +165,9 @@ void MapLoader::loadCountry(string country, Map* map) {
 }
 
 void MapLoader::loadBorder(string border, Map* map) {
+	if(border == "\r"){
+		return;
+	}
 	vector<string> bordersAsArray = splitString(border);
 	vector<Territory*> allTerritories = map->Territories;
 	Territory* currentTerritory;

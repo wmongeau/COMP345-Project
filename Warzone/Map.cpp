@@ -7,6 +7,7 @@
 #include <vector>
 
 using namespace std;
+
 #include "Map.h"
 
 //CLASS: Map
@@ -26,7 +27,7 @@ void Map::addTerritory(Territory* territory)
 string Map::toString() {
     string result;
     
-    for each (Continent* var in Continents)
+    for(Continent* var : Continents)
     {
         result.append(to_string(var->Id));
         result.append(" ");
@@ -39,7 +40,7 @@ string Map::toString() {
         result.append(var->toString());
     }
 
-    for each (Territory* var in Territories) {
+    for(Territory* var : Territories) {
         result.append(var->toString());
     }
 
@@ -189,7 +190,7 @@ string Territory::toString()
     string result;
 
     result.append(Name+" -->");
-    for each (Territory * var in Borders) {
+    for (Territory* var : Borders) {
         result.append(" ");
         result.append(var->Name);
     }
