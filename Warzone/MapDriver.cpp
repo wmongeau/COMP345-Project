@@ -14,9 +14,10 @@ Player* playerDriver(Map* map);
 //MAIN FUNCTIONS
 int main() {
 	Map* map;
+	Player* players;
 	try {
 		map = MapLoader::loadMap();
-		Player* players = playerDriver(map);
+		players = playerDriver(map);
 	}
 	catch (exception e)
 	{
@@ -35,7 +36,7 @@ Player* playerDriver(Map* map) {
 	for (Territory* territory : map->Territories) {
 		if ((rand() % 100 + 1) > 70) {
 			owned.push_back(territory);
-			player1->addOwnedTerritory(territory);
+			//player1->addOwnedTerritory(territory);
 		}
 	}
 
@@ -47,7 +48,6 @@ Player* playerDriver(Map* map) {
 
 	player1->setCanDefend(owned);
 	player1->setCanAttack(unowned);
-
 	return player1;
 }
 

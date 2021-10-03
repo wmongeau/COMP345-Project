@@ -1,4 +1,5 @@
 #pragma once
+
 #include <vector>
 #include <string>
 #include "Map.h"
@@ -8,7 +9,7 @@
 class Player {
 public:
 	Player();
-	Player(std::string playerName) { PlayerName = playerName; };
+	Player(std::string playerName);
 	std::vector<Territory*> getOwnedTerritories() {
 		return OwnedTerritories;
 	}
