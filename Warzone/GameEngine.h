@@ -15,6 +15,7 @@ public:
 	State();
 	State(Enums::states name);
 	Enums::states getStateName();
+	~State();
 private:
 	Enums::states stateName;
 };
@@ -26,6 +27,7 @@ public:
 	Enums::transitions getTransitionName();
 	State* getNextState();
 	virtual void execute() = 0;
+	~Transition();
 private:
 	Enums::transitions transitionName;
 protected:
@@ -104,6 +106,7 @@ public: GameEngine();
 	State* getCurrentState();
 	std::vector<Transition*> getAvailableTransitions();
 	void execute(Transition* transition);
+	~GameEngine();
 private:
 	State* currentState;
 	std::vector<Transition*> availableTransitions;

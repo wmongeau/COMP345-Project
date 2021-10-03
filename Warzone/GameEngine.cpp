@@ -31,6 +31,8 @@ Enums::states State::getStateName() {
 	return stateName;
 }
 
+State::~State() {  }
+
 Transition::Transition() {
 	transitionName = Enums::end;
 }
@@ -47,10 +49,10 @@ State* Transition::getNextState() {
 	return nextState;
 }
 
-/* void Transition::execute() { */
-/* 	cout << "Executing base transiton" << endl; */
-/* } */
-
+Transition::~Transition() {
+	delete nextState;
+	nextState = NULL;
+}
 LoadMapTransition::LoadMapTransition() : Transition(Enums::loadMap) {
 	nextState = new State(Enums::mapLoaded);
 }
@@ -205,4 +207,10 @@ void GameEngine::execute(Transition* transition) {
 	transition -> execute();
 	currentState = transition -> getNextState();
 	updateAvailableTransitions();
+}
+
+GameEngine::~GameEngine() {
+	delete currentState;
+	currentState = NULL;
+	availableTransitions.clear();
 }
