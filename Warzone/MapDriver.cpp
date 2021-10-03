@@ -27,7 +27,6 @@ int main() {
 			player = playerDriver(map);
 		}
 	}
-	}
 	catch (exception e)
 	{
 		cout << "Unexpected error found!"<<endl
