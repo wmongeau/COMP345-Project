@@ -36,5 +36,3 @@ private:
 	std::vector<Card*> PlayerHand;
 	std::vector<Territory*> OwnedTerritories;
 };
-
-Player* playerDriver(Map* map);

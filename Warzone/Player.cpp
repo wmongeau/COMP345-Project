@@ -48,6 +48,7 @@ void Player::addOwnedTerritory(Territory* territory) {
 	//update CanAttack and OwnedTerritories
 }
 
+ /*
 Player* playerDriver(Map* map) {
 	Player* player1 = new Player("Will");
 
@@ -71,4 +72,4 @@ Player* playerDriver(Map* map) {
 	player1->setCanAttack(unowned);
 
 	return player1;
- }
+ }*/
