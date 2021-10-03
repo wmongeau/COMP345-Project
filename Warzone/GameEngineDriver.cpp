@@ -16,18 +16,27 @@ int main() {
 	string currentState;
 	do {
 		currentState = Enums::statesEnumToString(engine -> getCurrentState() -> getStateName());
-		cout << "You are currently in the " << currentState << " state" << endl;
+		cout << "-------------------------------------------------------------" << endl;
+		cout << "You are currently in the " << currentState << " state." << endl;
+		cout << "-------------------------------------------------------------" << endl;
+		cout << "Available commands:" << endl;
 		vector<Transition*> availableTransitions = engine -> getAvailableTransitions();	
 		int index = 0;
 
 		for(Transition* transition : availableTransitions) {
-			cout << index << " " << Enums::transitionsEnumToString(transition -> getTransitionName()) << endl;
+			cout << "[" << index << "]"<< " " << Enums::transitionsEnumToString(transition -> getTransitionName()) << endl;
 			index++;
 		}
 		
+		cout << "-------------------------------------------------------------" << endl;
 		cout << "Select a command by entering its number: " << endl;
 		int selected;
 		cin >> selected;
+		
+		while(selected < 0 || selected >= availableTransitions.size()){
+			cout << "Please select one of the available actions:" << endl;
+			cin >> selected;
+		}
 
 		engine -> execute(availableTransitions[selected]);
 	} while(currentState != "Quit");
