@@ -14,6 +14,9 @@ public:
 	std::vector<Territory*> Borders;
 	Territory(int id, std::string name, int continentId, int x, int y);
 	void addBorder(Territory* territory);
+	int getId();
+	std::string getName();
+	int getContinentId();
 	std::string toString();
 	~Territory();
 };
@@ -26,8 +29,10 @@ public:
 	std::string Colour;
 	std::vector<Continent*> Borders;
 	Continent(int id, string name, int armyVal, string colour);
-	void addTerritory(Territory* territory);
 	void addBorderContinent(Continent* continent);
+	int getId();
+	std::string getName();
+	int getArmyValue();
 	string toString();
 	~Continent();
 };

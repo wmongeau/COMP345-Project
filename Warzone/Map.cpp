@@ -154,6 +154,21 @@ void Continent::addBorderContinent(Continent* continent) {
     Borders.push_back(continent);
 }
 
+int Continent::getId()
+{
+    return Id;
+}
+
+std::string Continent::getName()
+{
+    return Name;
+}
+
+int Continent::getArmyValue()
+{
+    return ArmyValue;
+}
+
 Continent::~Continent() {
     for (auto p : Borders) {
         delete p;
@@ -183,6 +198,21 @@ Territory::Territory(int id, string name, int continentId, int x, int y) {
 
 void Territory::addBorder(Territory* territory) {
     Borders.push_back(territory);
+}
+
+int Territory::getId()
+{
+    return Id;
+}
+
+std::string Territory::getName()
+{
+    return Name;
+}
+
+int Territory::getContinentId()
+{
+    return ContinentId;
 }
 
 string Territory::toString()
