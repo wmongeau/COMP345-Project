@@ -5,10 +5,9 @@
 #include <conio.h>
 #include <cstring>
 
-using namespace std;
-
 #include "MapDriver.h"
 #include "Player.h"
+using namespace std;
 
 vector<Player*> playerDriver(Map* map);
 
@@ -39,8 +38,8 @@ int main() {
 	cout << "Do you want to see the map's information?(y/n) ";
 	char seeMap = _getch();
 	seeMap = toupper(seeMap);
-	if(seeMap=='Y')
-		cout << map->toString() << endl;
+	if (seeMap == 'Y')
+		map->print();
 	return 1;
 };
 
@@ -178,8 +177,8 @@ void MapLoader::loadBorder(string border, Map* map) {
 	for (int i = 1; i < bordersAsArray.size(); i++) {
 		edge = stoi(bordersAsArray[i]);
 		currentTerritory->addBorder(map->getTerritoryById(edge));
-		if (currentTerritory->ContinentId != map->getTerritoryById(edge)->ContinentId)
-			map->getContinentById(currentTerritory->ContinentId)->addBorderContinent(map->getContinentById(map->getTerritoryById(edge)->ContinentId));
+		if (currentTerritory->getContinentId() != map->getTerritoryById(edge)->getContinentId())
+			map->getContinentById(currentTerritory->getContinentId())->addBorderContinent(map->getContinentById(map->getTerritoryById(edge)->getContinentId()));
 	}
 }
 

@@ -24,34 +24,32 @@ void Map::addTerritory(Territory* territory)
 }
 ;
 
-string Map::toString() {
-    string result;
-    
+void Map::print() {
+    cout << endl << "-----LIST OF CONTINENTS AND THEIR BORDERS----- " << endl;
     for(Continent* var : Continents)
-    {
-        result.append(to_string(var->Id));
+    {/*
+        result.append(to_string(var->getId()));
         result.append(" ");
-        result.append(var->Name);
+        result.append(var->getName());
         result.append(" ");
-        result.append(to_string(var->ArmyValue));
+        result.append(to_string(var->getArmyValue()));
         result.append(" ");
-        result.append(var->Colour);
-        result.append("\n");
-        result.append(var->toString());
+        result.append(var->getColour());
+        result.append("\n");*/
+        cout << var->toString() << endl;
     }
-
+    cout << "-----LIST OF TERRITORIES AND THEIR BORDERS----- " << endl;
     for(Territory* var : Territories) {
-        result.append(var->toString());
+        cout << var->toString() << endl;
     }
 
-    return result;
 }
 
 bool Map::validate() {
     bool territoryIsGraph = false, continentIsGraph = false, singleContinent = false;;
     vector<bool> visitedTerritories(Territories.size()+1), visitedContinents(Continents.size()+1);
-    dfsTerritory(Territories[0]->Id, Territories[0], visitedTerritories);
-    dfsContinent(Continents[0]->Id, Continents[0], visitedContinents);
+    dfsTerritory(Territories[0]->getId(), Territories[0], visitedTerritories);
+    dfsContinent(Continents[0]->getId(), Continents[0], visitedContinents);
     int countT = 0,countC=0;
     for (int i = 0; i < Territories.size()+1; i++) {
         if (visitedTerritories[i])
@@ -87,7 +85,7 @@ void Map::dfsTerritory(int Id,Territory* country,vector<bool> &visited) {
     visited[Id] = true;
     int adjCountry;
     for (int i = 0; i < country->Borders.size(); i++) {
-        adjCountry = country->Borders[i]->Id;
+        adjCountry = country->Borders[i]->getId();
         if (!visited[adjCountry])
             dfsTerritory(adjCountry, country->Borders[i], visited);
     }
@@ -96,7 +94,7 @@ void Map::dfsContinent(int Id, Continent* continent, vector<bool>& visited) {
     visited[Id] = true;
     int adjContinent;
     for (int i = 0; i < continent->Borders.size(); i++) {
-        adjContinent = continent->Borders[i]->Id;
+        adjContinent = continent->Borders[i]->getId();
         if (!visited[adjContinent])
             dfsContinent(adjContinent, continent->Borders[i], visited);
     }
@@ -107,7 +105,7 @@ bool Map::checkContinentCount() {
     for (int i = 1; i < count.size(); i++)
         count[i] = 0;
     for (int i = 0; i < Territories.size(); i++)
-        count[Territories[i]->Id]++;
+        count[Territories[i]->getId()]++;
     for (int i = 1; i < count.size(); i++)
         if (count[i] > 1)
             return false;
@@ -116,14 +114,14 @@ bool Map::checkContinentCount() {
 
 Continent* Map::getContinentById(int continentId) {
     for (int i = 0; i < Continents.size(); i++)
-        if (Continents[i]->Id == continentId)
+        if (Continents[i]->getId() == continentId)
             return Continents[i];
     return NULL;
 }
 
 Territory* Map::getTerritoryById(int territoryId) {
     for (int i = 0; i < Territories.size(); i++)
-        if (Territories[i]->Id == territoryId)
+        if (Territories[i]->getId() == territoryId)
             return Territories[i];
     return NULL;
 }
@@ -169,6 +167,11 @@ int Continent::getArmyValue()
     return ArmyValue;
 }
 
+std::string Continent::getColour()
+{
+    return Colour;
+}
+
 Continent::~Continent() {
     for (auto p : Borders) {
         delete p;
@@ -179,10 +182,10 @@ string Continent::toString()
 {
     string result;
 
-    result.append(to_string(Id) + " -->");
+    result.append(Name + " -->");
     for each (Continent * var in Borders) {
         result.append(" ");
-        result.append(to_string(var->Id));
+        result.append(var->getName());
     }
     result.append("\n");
     return result;
@@ -222,7 +225,7 @@ string Territory::toString()
     result.append(Name+" -->");
     for (Territory* var : Borders) {
         result.append(" ");
-        result.append(var->Name);
+        result.append(var->getName());
     }
     result.append("\n");
     return result;

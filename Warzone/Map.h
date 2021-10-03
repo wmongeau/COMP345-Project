@@ -5,12 +5,13 @@
 #include <vector>
 
 class Territory {
-public:
+private:
 	int Id;
 	std::string Name;
 	int ContinentId;
 	int X;
 	int Y;
+public:
 	std::vector<Territory*> Borders;
 	Territory(int id, std::string name, int continentId, int x, int y);
 	void addBorder(Territory* territory);
@@ -22,18 +23,20 @@ public:
 };
 
 class Continent {
-public:
+private:
 	int Id;
 	std::string Name;
 	int ArmyValue;
 	std::string Colour;
+public:
 	std::vector<Continent*> Borders;
-	Continent(int id, string name, int armyVal, string colour);
+	Continent(int id, std::string name, int armyVal, std::string colour);
 	void addBorderContinent(Continent* continent);
 	int getId();
 	std::string getName();
 	int getArmyValue();
-	string toString();
+	std::string getColour();
+	std::string toString();
 	~Continent();
 };
 
@@ -45,11 +48,11 @@ public:
 	void addContinent(Continent* continent);
 	void addTerritory(Territory* territory);
 	bool validate();
-	void dfsTerritory(int Id, Territory* country, vector<bool> &visited);
-	void dfsContinent(int Id, Continent* continent, vector<bool>& visited);
+	void dfsTerritory(int Id, Territory* country, std::vector<bool> &visited);
+	void dfsContinent(int Id, Continent* continent, std::vector<bool>& visited);
 	bool checkContinentCount();
 	Continent* getContinentById(int ContinentId);
 	Territory* getTerritoryById(int territoryId);
-	string toString();
+	void print();
 	~Map();
 };
