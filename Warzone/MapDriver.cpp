@@ -9,15 +9,13 @@ using namespace std;
 #include "MapDriver.h"
 #include "Player.h"
 
-Player* playerDriver(Map* map);
-
 //MAIN FUNCTIONS
 int main() {
 	Map* map;
-	Player* players;
+	Player* player;
 	try {
 		map = MapLoader::loadMap();
-		players = playerDriver(map);
+		player = playerDriver(map);
 	}
 	catch (exception e)
 	{
@@ -26,30 +24,6 @@ int main() {
 	cout << map->toString() << endl;
 	return 1;
 };
-
-Player* playerDriver(Map* map) {
-	Player* player1 = new Player("Will");
-
-	vector<Territory*> owned = vector<Territory*>();
-	vector<Territory*> unowned = vector<Territory*>();
-
-	for (Territory* territory : map->Territories) {
-		if ((rand() % 100 + 1) > 70) {
-			owned.push_back(territory);
-			//player1->addOwnedTerritory(territory);
-		}
-	}
-
-	for (Territory* territory : map->Territories) {
-		if ((rand() % 100 + 1) > 70) {
-			unowned.push_back(territory);
-		}
-	}
-
-	player1->setCanDefend(owned);
-	player1->setCanAttack(unowned);
-	return player1;
-}
 
 //FUNCTIONS
 //function to split string into an array with a space delimiter

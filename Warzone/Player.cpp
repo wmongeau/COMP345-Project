@@ -8,22 +8,20 @@
 
 using namespace std;
 
-#include "Player.h"
-
 Player::Player() {
 	PlayerName = "";
-	PlayerHand = new vector<Card*>;
-	OwnedTerritories = new vector<Territory*>;
-	CanAttack = new vector<Territory*>;
-	CanDefend = new vector<Territory*>;
+	PlayerHand = vector<Card*>();
+	OwnedTerritories = vector<Territory*>();
+	CanAttack = vector<Territory*>();
+	CanDefend = vector<Territory*>();
 }
 
 Player::Player(string playerName) {
 	PlayerName = playerName;
-	PlayerHand = new vector<Card*>;
-	OwnedTerritories = new vector<Territory*>;
-	CanAttack = new vector<Territory*>;
-	CanDefend = new vector<Territory*>;
+	PlayerHand = vector<Card*>();
+	OwnedTerritories = vector<Territory*>();
+	CanAttack = vector<Territory*>();
+	CanDefend = vector<Territory*>();
 }
 
 vector<Territory*> Player::toAttack() {
@@ -48,7 +46,7 @@ void Player::addOwnedTerritory(Territory* territory) {
 	//update CanAttack and OwnedTerritories
 }
 
- /*
+ 
 Player* playerDriver(Map* map) {
 	Player* player1 = new Player("Will");
 
@@ -72,4 +70,4 @@ Player* playerDriver(Map* map) {
 	player1->setCanAttack(unowned);
 
 	return player1;
- }*/
+ }
