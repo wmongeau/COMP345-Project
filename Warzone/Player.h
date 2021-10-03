@@ -1,4 +1,5 @@
 #pragma once
+
 #include <vector>
 #include <string>
 #include "Map.h"
@@ -8,14 +9,37 @@
 class Player {
 public:
 	Player();
-	Player(std::string playerName) { PlayerName = playerName; };
-	std::vector<Territory*> OwnedTerritories;
-	std::vector<Territory*> CanAttack;
-	std::vector<Card*> PlayerHand;
-	std::string PlayerName;
-	std::vector<Territory*> CanDefend;
+	Player(std::string playerName);
+	std::vector<Territory*> getOwnedTerritories() {
+		return OwnedTerritories;
+	}
+	Hand* getPlayerHand() {
+		return PlayerHand;
+	}
+	OrderList* getOrders() {
+		return Orders;
+	}
+	std::string getPlayerName() {
+		return PlayerName;
+	}
+	void setCanDefend(std::vector<Territory*> territories) {
+		CanDefend = territories;
+	}
+	void setCanAttack(std::vector<Territory*> territories) {
+		CanAttack = territories;
+	}
 	std::vector<Territory*> toDefend();
 	std::vector<Territory*> toAttack();
 	void issueOrder();
-	void addCard(Card* card);
+	void addOwnedTerritory(Territory* territory);
+
+private:
+	std::vector<Territory*> CanDefend;
+	std::vector<Territory*> CanAttack;
+	std::string PlayerName;
+	Hand* PlayerHand;
+	OrderList* Orders;
+	std::vector<Territory*> OwnedTerritories;
 };
+
+Player* playerDriver(Map* map);

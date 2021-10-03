@@ -3,3 +3,7 @@
 class Card {
 
 };
+
+class Hand {
+
+};
