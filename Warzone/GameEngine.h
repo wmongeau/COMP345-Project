@@ -25,7 +25,7 @@ public:
 	Transition( Enums::transitions name);
 	Enums::transitions getTransitionName();
 	State* getNextState();
-	virtual void execute();
+	virtual void execute() = 0;
 private:
 	Enums::transitions transitionName;
 protected:
@@ -75,22 +75,26 @@ public:
 };
 
 class EndExecOrdersTransition: public Transition{
+public:
 	EndExecOrdersTransition();
 	void execute();
 };
 
 
 class WinTransition: public Transition{
+public:
 	WinTransition();
 	void execute();
 };
 
 class PlayTransition: public Transition{
+public:
 	PlayTransition();
 	void execute();
 };
 
 class EndTransition: public Transition{
+public:
 	EndTransition();
 	void execute();
 };

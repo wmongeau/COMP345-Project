@@ -47,9 +47,9 @@ State* Transition::getNextState() {
 	return nextState;
 }
 
-void Transition::execute() {
-	cout << "Executing base transiton" << endl;
-}
+/* void Transition::execute() { */
+/* 	cout << "Executing base transiton" << endl; */
+/* } */
 
 LoadMapTransition::LoadMapTransition() : Transition(Enums::loadMap) {
 	nextState = new State(Enums::mapLoaded);
@@ -143,48 +143,48 @@ void GameEngine::updateAvailableTransitions() {
 	switch(currentState -> getStateName()) {
 		case Enums::start: {
 			availableTransitions.clear();
-			availableTransitions.push_back(new Transition(Enums::loadMap));
+			availableTransitions.push_back(new LoadMapTransition());
 			break;
 		}
 		case Enums::mapLoaded: {
 			availableTransitions.clear();
-			availableTransitions.push_back(new Transition(Enums::loadMap));
-			availableTransitions.push_back( new Transition(Enums::validateMap));
+			availableTransitions.push_back(new LoadMapTransition());
+			availableTransitions.push_back(new ValidateMapTransition());
 			break;
 		}
 		case Enums::mapValidated: {
 			availableTransitions.clear();
-			availableTransitions.push_back(new Transition(Enums::addPlayer));
+			availableTransitions.push_back(new AddPlayerTransition());
 			break;
 		}
 		case Enums::playersAdded: {
 			availableTransitions.clear();
-			availableTransitions.push_back(new Transition(Enums::addPlayer));
-			availableTransitions.push_back(new Transition(Enums::assignCountries));
+			availableTransitions.push_back(new AddPlayerTransition());
+			availableTransitions.push_back(new AssignCountriesTransition());
 			break;
 		}
 		case Enums::assignReinforcement: {
 			availableTransitions.clear();
-			availableTransitions.push_back(new Transition(Enums::issueOrder));
+			availableTransitions.push_back(new IssueOrderTransition());
 			break;
 		}
 		case Enums::issueOrders: {
 			availableTransitions.clear();
-			availableTransitions.push_back(new Transition(Enums::issueOrder));
-			availableTransitions.push_back(new Transition(Enums::endIssueOrders));
+			availableTransitions.push_back(new IssueOrderTransition());
+			availableTransitions.push_back(new EndIssueOrdersTransition());
 			break;
 		}
 		case Enums::executeOrders: {
 			availableTransitions.clear();
-			availableTransitions.push_back(new Transition(Enums::execOrder));
-			availableTransitions.push_back(new Transition(Enums::endExecuteOrders));
-			availableTransitions.push_back(new Transition(Enums::winTransition));
+			availableTransitions.push_back(new ExecOrderTransition());
+			availableTransitions.push_back(new EndExecOrdersTransition());
+			availableTransitions.push_back(new WinTransition());
 			break;
 		}
 		case Enums::winState: {
 			availableTransitions.clear();
-			availableTransitions.push_back(new Transition(Enums::play));
-			availableTransitions.push_back(new Transition(Enums::end));
+			availableTransitions.push_back(new PlayTransition());
+			availableTransitions.push_back(new EndTransition());
 			break;
 		}
 		case Enums::quit: {
