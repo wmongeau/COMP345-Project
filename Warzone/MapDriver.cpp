@@ -12,48 +12,48 @@ using namespace std;
 vector<Player*> playerDriver(Map* map);
 
 //MAIN FUNCTIONS
-int main() {
-	Map* map;
-	try {
-		map = MapLoader::loadMap();
-		vector<Player*> players = playerDriver(map);
-	}
-	catch (exception e)
-	{
-		cout << "This an invalid file";
-	}
-	cout << map->toString() << endl;
-	return 1;
-};
+// int main() {
+// 	Map* map;
+// 	try {
+// 		map = MapLoader::loadMap();
+// 		vector<Player*> players = playerDriver(map);
+// 	}
+// 	catch (exception e)
+// 	{
+// 		cout << "This an invalid file";
+// 	}
+// 	cout << map->toString() << endl;
+// 	return 1;
+// };
 
-vector<Player*> playerDriver(Map* map) {
-	Player* player1 = new Player("Will");
-	Player* player2 = new Player("Basile");
+// vector<Player*> playerDriver(Map* map) {
+// 	Player* player1 = new Player("Will");
+// 	Player* player2 = new Player("Basile");
 
-	vector<Territory*> player1T = vector<Territory*>();
-	vector<Territory*> player2T = vector<Territory*>();
+// 	vector<Territory*> player1T = vector<Territory*>();
+// 	vector<Territory*> player2T = vector<Territory*>();
 
-	for (Territory* territory : map->Territories) {
-		if ((rand() % 100 + 1) > 70) {
-			player1T.push_back(territory);
-		}
-	}
+// 	for (Territory* territory : map->Territories) {
+// 		if ((rand() % 100 + 1) > 70) {
+// 			player1T.push_back(territory);
+// 		}
+// 	}
 
-	for (Territory* territory : map->Territories) {
-		if ((rand() % 100 + 1) > 70) {
-			player2T.push_back(territory);
-		}
-	}
+// 	for (Territory* territory : map->Territories) {
+// 		if ((rand() % 100 + 1) > 70) {
+// 			player2T.push_back(territory);
+// 		}
+// 	}
 
-	player1->CanDefend = player1T;
-	player2->CanDefend = player2T;
-	player1->CanAttack = player2T;
-	player2->CanAttack = player1T;
-	vector<Player*> players = vector<Player*>();
-	players.push_back(player1);
-	players.push_back(player2);
-	return players;
-}
+// 	player1->CanDefend = player1T;
+// 	player2->CanDefend = player2T;
+// 	player1->CanAttack = player2T;
+// 	player2->CanAttack = player1T;
+// 	vector<Player*> players = vector<Player*>();
+// 	players.push_back(player1);
+// 	players.push_back(player2);
+// 	return players;
+// }
 
 //FUNCTIONS
 //function to split string into an array with a space delimiter
