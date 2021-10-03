@@ -13,8 +13,11 @@ public:
 	std::vector<Territory*> getOwnedTerritories() {
 		return OwnedTerritories;
 	}
-	std::vector<Card*> getPlayerHand() {
+	Hand* getPlayerHand() {
 		return PlayerHand;
+	}
+	OrderList* getOrders() {
+		return Orders;
 	}
 	std::string getPlayerName() {
 		return PlayerName;
@@ -28,13 +31,14 @@ public:
 	std::vector<Territory*> toDefend();
 	std::vector<Territory*> toAttack();
 	void issueOrder();
-	void addCard(Card* card);
 	void addOwnedTerritory(Territory* territory);
+
 private:
 	std::vector<Territory*> CanDefend;
 	std::vector<Territory*> CanAttack;
 	std::string PlayerName;
-	std::vector<Card*> PlayerHand;
+	Hand* PlayerHand;
+	OrderList* Orders;
 	std::vector<Territory*> OwnedTerritories;
 };
 
