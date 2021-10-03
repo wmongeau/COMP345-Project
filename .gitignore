@@ -349,7 +349,7 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 
-/Warzone/out
-/Warzone/build
-/Warzone/.vscode
-/Warzone/.idea
+/**/out
+/**/build
+/**/.vscode
+/**/.idea
