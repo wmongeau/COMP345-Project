@@ -12,12 +12,7 @@ using namespace std;
 
 // Default constructor
 Order::Order() {
-	orderID = 0;
-}
 
-// Parametrized constructor
-Order::Order(int orderID) {
-	this->orderID = orderID;
 }
 
 // Default constructor
@@ -43,7 +38,7 @@ ostream& operator<<(ostream& out, const Order& orderOutStream) {
 
 // Default constructor
 DeployOrder::DeployOrder() {
-
+	name = "Deploy Order";
 }
 
 // Destructor
@@ -81,7 +76,7 @@ bool DeployOrder::execute() {
 
 // Default constructor
 AdvanceOrder::AdvanceOrder() {
-
+	name = "Advance Order";
 }
 
 // Destructor
@@ -119,7 +114,7 @@ bool AdvanceOrder::execute() {
 
 // Default constructor
 BombOrder::BombOrder() {
-
+	name = "Bomb Order";
 }
 
 // Destructor
@@ -157,7 +152,7 @@ bool BombOrder::execute() {
 
 // Default constructor
 BlockadeOrder::BlockadeOrder() {
-
+	name = "Blockade Order";
 }
 
 // Destructor
@@ -195,7 +190,7 @@ bool BlockadeOrder::execute() {
 
 // Default constructor
 AirliftOrder::AirliftOrder() {
-
+	name = "Airlift Order";
 }
 
 // Destructor
@@ -233,7 +228,7 @@ bool AirliftOrder::execute() {
 
 // Default constructor
 NegotiateOrder::NegotiateOrder() {
-
+	name = "Negotiate Order";
 }
 
 // Destructor
@@ -283,9 +278,10 @@ void OrdersList::addOrder(Order* order)
 	OrdersVector.push_back(order);
 }
 
+// Displays the orders within the orderlist
 vector<Order*> OrdersList::showOrdersList() {
 	for (int i = 0; i < OrdersVector.size(); i++) {
-		cout << OrdersVector[i] << endl;
+		cout << OrdersVector[i]->name << endl;
 	}
 	return OrdersVector;
 

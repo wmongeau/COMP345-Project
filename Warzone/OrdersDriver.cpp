@@ -11,15 +11,16 @@ using namespace std;
 
 void test();
 
-int main(){
+//int main(){
+//
+//	test();
+//
+//
+//	return 1;
+//	//contains a main function that creates a list of orders and demonstrates that the OrdersList implemented
+//}
 
-	test();
-
-
-	return 1;
-	//contains a main function that creates a list of orders and demonstrates that the OrdersList implemented
-}
-
+//
 void test(){
 	OrdersList* orderListsDriver = new OrdersList();
 
@@ -48,5 +49,15 @@ void test(){
 	orderListsDriver->addOrder(dynamic_cast<Order*>(blockadeOrder));
 	orderListsDriver->addOrder(dynamic_cast<Order*>(negotiateOrder));
 	
+	orderListsDriver->showOrdersList();
+	orderListsDriver->move(1, 3);
+
+	cout << "----------" << endl;
+
+	orderListsDriver->showOrdersList();
+	orderListsDriver->remove(1);
+
+	cout << "----------" << endl;
+
 	orderListsDriver->showOrdersList();
 }

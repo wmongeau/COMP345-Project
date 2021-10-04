@@ -9,19 +9,16 @@ using namespace std;
 
 class Order {
 public:
+	string name;
+
 	// Default Constructor
 	Order();
-
-	// Parameterized Constructor
-	Order(int orderID);
 
 	// Copy Constructor
 	Order(const Order& c);
 
 	// Destructor
 	~Order();
-
-	int orderID = 0;
 
 	// Sends order description to the output stream
 	friend ostream& operator<<(ostream& out, const Order& o);
@@ -136,6 +133,7 @@ public:
 
 	void addOrder(Order* order);
 
+	//Display orders from the orderslist
 	vector<Order*> showOrdersList();
 
 	// Move an order in the list of orders
