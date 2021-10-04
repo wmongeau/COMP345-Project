@@ -20,7 +20,6 @@ public:
     void play();
     //returns the card type
     string getCardType();
-
 private:
     //card type
     string type;
@@ -63,4 +62,3 @@ public:
     Card *removeCardFromHand(int i);
     void selectCard(Card *c);
     void showHand();
-};
