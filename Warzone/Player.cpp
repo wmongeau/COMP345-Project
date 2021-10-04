@@ -12,7 +12,7 @@ using namespace std;
 Player::Player() {
 	PlayerName = "";
 	PlayerHand = new Hand();
-	Orders = new OrderList();
+	Orders = new OrdersList();
 	OwnedTerritories = vector<Territory*>();
 	CanAttack = vector<Territory*>();
 	CanDefend = vector<Territory*>();
@@ -22,7 +22,7 @@ Player::Player() {
 Player::Player(string playerName) {
 	PlayerName = playerName;
 	PlayerHand = new Hand();
-	Orders - new OrderList();
+	Orders - new OrdersList();
 	OwnedTerritories = vector<Territory*>();
 	CanAttack = vector<Territory*>();
 	CanDefend = vector<Territory*>();

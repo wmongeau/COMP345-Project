@@ -3,7 +3,6 @@
 #include <iostream>
 #include <list>
 #include "Map.h"
-#include "Player.h"
 
 using namespace std;
 

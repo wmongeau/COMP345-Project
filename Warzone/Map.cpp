@@ -183,7 +183,7 @@ string Continent::toString()
     string result;
 
     result.append(Name + " -->");
-    for each (Continent * var in Borders) {
+    for(Continent* var : Borders) {
         result.append(" ");
         result.append(var->getName());
     }

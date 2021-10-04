@@ -16,7 +16,7 @@ public:
 	Hand* getPlayerHand() {
 		return PlayerHand;
 	}
-	OrderList* getOrders() {
+	OrdersList* getOrders() {
 		return Orders;
 	}
 	std::string getPlayerName() {
@@ -38,7 +38,7 @@ private:
 	std::vector<Territory*> CanAttack;
 	std::string PlayerName;
 	Hand* PlayerHand;
-	OrderList* Orders;
+	OrdersList* Orders;
 	std::vector<Territory*> OwnedTerritories;
 };
 
