@@ -3,46 +3,64 @@
 #include <vector>
 
 using namespace std;
+class Card
+{
+public:
+    //constructor
+    Card();
+    //destructor
+    ~Card();
+    //copy constructor
+    Card(const Card &c);
+    //assignment operator
+    Card &operator=(const Card &c);
+    //parametrized card constructor
+    Card(string c);
+    //plays the card
+    void play();
+    //returns the card type
+    string getCardType();
 
-class Card {
-    public:
-        //constructor
-        Card();
-        //destructor
-        ~Card();
-        //copy constructor
-        Card(const Card& c);
-        //assignment operator
-        Card& operator =(const Card& c);
-        //stream insertion operator
-        Card(string c);
-        void play();
-        string getCardType();
-    private:
-        string type;
+private:
+    //card type
+    string type;
+};
+class Deck
+{
+public:
+    //constructor
+    Deck();
+    //destructor
+    ~Deck();
+    //copy constructor
+    Deck(const Deck &d);
+    //assignment operator
+    Deck &operator=(const Deck &d);
+    //deck of cards
+    vector<Card *> deckOfCards;
+    // method to draw the card
+    Card *draw();
+    // method to return the card back to the deck
+    void returnCardToDeck(Card *c);
+    // method to show the deck
+    void showDeck();
 };
 
-class Deck {
-    public:
-        Deck();
-        ~Deck();
-        Deck(const Deck& d);
-        Deck& operator = (const Deck& d);
-        vector <Card*> deckOfCards;
-        Card* draw();
-        void returnCardToDeck(Card* c);
-        void showDeck();
-    
-};
-
-class Hand {
-    public:
-        Hand();
-        ~Hand();
-        Hand(const Hand& h);
-        Hand& operator = (const Hand& h);
-        vector <Card*> playersHand;
-        Card* removeCardFromHand(int i);
-        void selectCard(Card* c);
-        void showHand();
+class Hand
+{
+public:
+    //constructor
+    Hand();
+    //destructor
+    ~Hand();
+    //copy constructor
+    Hand(const Hand &h);
+    //assignment operator
+    Hand &operator=(const Hand &h);
+    //players hand
+    vector<Card *> playersHand;
+    //method to remove the card from the hand
+    Card *removeCardFromHand(int i);
+    void selectCard(Card *c);
+    void showHand();
 };

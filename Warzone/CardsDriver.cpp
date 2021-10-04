@@ -38,5 +38,6 @@ int main(){
     deck->returnCardToDeck(check);
     // showing the current hand
     hand->showHand();
+    // showing the deck of the current hand
     deck ->showDeck();
     }
