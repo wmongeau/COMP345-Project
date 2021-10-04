@@ -62,3 +62,4 @@ public:
     Card *removeCardFromHand(int i);
     void selectCard(Card *c);
     void showHand();
+};
