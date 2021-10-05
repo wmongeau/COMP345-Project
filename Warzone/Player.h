@@ -9,25 +9,14 @@
 class Player {
 public:
 	Player();
+	Player(const Player& p);
 	Player(std::string playerName);
-	std::vector<Territory*> getOwnedTerritories() {
-		return OwnedTerritories;
-	}
-	Hand* getPlayerHand() {
-		return PlayerHand;
-	}
-	OrderList* getOrders() {
-		return Orders;
-	}
-	std::string getPlayerName() {
-		return PlayerName;
-	}
-	void setCanDefend(std::vector<Territory*> territories) {
-		CanDefend = territories;
-	}
-	void setCanAttack(std::vector<Territory*> territories) {
-		CanAttack = territories;
-	}
+	std::vector<Territory*> getOwnedTerritories();
+	Hand* getPlayerHand();
+	OrderList* getOrders();
+	std::string getPlayerName();
+	void setCanDefend(std::vector<Territory*> territories);
+	void setCanAttack(std::vector<Territory*> territories);
 	std::vector<Territory*> toDefend();
 	std::vector<Territory*> toAttack();
 	void issueOrder();
