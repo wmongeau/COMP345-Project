@@ -2,7 +2,6 @@
 #include <string>
 #include <fstream> 
 #include <vector>
-#include <conio.h>
 #include <cstring>
 
 #include "MapDriver.h"
@@ -29,13 +28,15 @@ int main() {
 	}
 	catch (exception e)
 	{
+		string answer;
 		cout << "Unexpected error found!"<<endl
 			<<"Press any key to exit application...";
-		_getch();
+		cin >> answer; 
 		return 1;
 	}
 	cout << "Do you want to see the map's information?(y/n) ";
-	char seeMap = _getch();
+	char seeMap;
+	cin >> seeMap;
 	seeMap = toupper(seeMap);
 	delete player;
 	player = NULL;

@@ -29,7 +29,7 @@ private:
 	std::vector<Territory*> CanAttack;
 	std::string PlayerName;
 	Hand* PlayerHand;
-	OrderList* Orders;
+	OrdersList* Orders;
 	std::vector<Territory*> OwnedTerritories;
 };
 
