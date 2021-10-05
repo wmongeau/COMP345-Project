@@ -19,6 +19,9 @@ public:
 	// Destructor
 	~Order();
 
+	//assignment operator
+	Order& operator=(const Order& o);
+
 	// Sends order description to the output stream
 	friend ostream& operator<<(ostream& out, const Order& o);
 
@@ -37,6 +40,12 @@ public:
 	// Destructor
 	~DeployOrder();
 
+	//assignment operator
+	DeployOrder& operator=(const DeployOrder& d);
+
+	// Sends order description to the output stream
+	friend ostream& operator<<(ostream& out, const DeployOrder& d);
+
 	// If Deploy order is valid or not. If the order is valid, it will output its effect.
 	bool validate() override;
 
@@ -51,6 +60,12 @@ public:
 
 	// Destructor
 	~AdvanceOrder();
+
+	//assignment operator
+	AdvanceOrder& operator=(const AdvanceOrder& a);
+
+	// Sends order description to the output stream
+	friend ostream& operator<<(ostream& out, const AdvanceOrder& a);
 
 	// If Advance order is valid or not. If the order is valid, it will output its effect.
 	bool validate() override;
@@ -67,6 +82,12 @@ public:
 	// Destructor
 	~BombOrder();
 
+	//assignment operator
+	BombOrder& operator=(const BombOrder& b);
+
+	// Sends order description to the output stream
+	friend ostream& operator<<(ostream& out, const BombOrder& b);
+
 	// If Bomb order is valid or not. If the order is valid, it will output its effect.
 	bool validate() override;
 
@@ -81,6 +102,12 @@ public:
 
 	// Destructor
 	~BlockadeOrder();
+
+	//assignment operator
+	BlockadeOrder& operator=(const BlockadeOrder& bl);
+
+	// Sends order description to the output stream
+	friend ostream& operator<<(ostream& out, const BlockadeOrder& bl);
 
 	// If Blockade order is valid or not. If the order is valid, it will output its effect.
 	bool validate() override;
@@ -97,6 +124,12 @@ public:
 	// Destructor
 	~AirliftOrder();
 
+	//assignment operator
+	AirliftOrder& operator=(const AirliftOrder& air);
+
+	// Sends order description to the output stream
+	friend ostream& operator<<(ostream& out, const AirliftOrder& air);
+
 	// If Airlift order is valid or not. If the order is valid, it will output its effect.
 	bool validate() override;
 
@@ -111,6 +144,12 @@ public:
 
 	// Destructor
 	~NegotiateOrder();
+
+	//assignment operator
+	NegotiateOrder& operator=(const NegotiateOrder& n);
+
+	// Sends order description to the output stream
+	friend ostream& operator<<(ostream& out, const NegotiateOrder& n);
 
 	// If Negotiate order is valid or not. If the order is valid, it will output its effect.
 	bool validate() override;
@@ -127,6 +166,12 @@ public:
 
 	// Destructor
 	~OrdersList();
+
+	//assignment operator
+	OrdersList& operator=(const OrdersList& ol);
+
+	// Sends order description to the output stream
+	friend ostream& operator<<(ostream& out, const OrdersList& ol);
 
 	vector<Order*> OrdersVector;
 
