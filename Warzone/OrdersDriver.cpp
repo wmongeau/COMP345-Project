@@ -50,14 +50,26 @@ void test(){
 	orderListsDriver->addOrder(dynamic_cast<Order*>(negotiateOrder));
 	
 	orderListsDriver->showOrdersList();
+
+	cout << "----------" << endl;
+
+	//testing the validate method
+	deployOrder->validate();
+
+	cout << "----------" << endl;
+
+	//testing the execute method
+	deployOrder->execute();
+
+	cout << "----------" << endl;
+
+	//testing the move function
 	orderListsDriver->move(1, 3);
-
-	cout << "----------" << endl;
-
 	orderListsDriver->showOrdersList();
-	orderListsDriver->remove(1);
 
 	cout << "----------" << endl;
 
+	//testing the remove function
+	orderListsDriver->remove(1);
 	orderListsDriver->showOrdersList();
 }

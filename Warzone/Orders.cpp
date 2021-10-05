@@ -22,7 +22,13 @@ Order::Order(const Order& c) {
 
 // Destructor
 Order::~Order() {
+	delete this;
+}
 
+// Assignment operator
+Order& Order::operator=(const Order& o)
+{
+	// TODO: insert return statement here
 }
 
 // Overloads the stream insertion operator.
@@ -43,7 +49,13 @@ DeployOrder::DeployOrder() {
 
 // Destructor
 DeployOrder::~DeployOrder() {
+	delete this;
+}
 
+// Assignment operator
+DeployOrder& DeployOrder::operator=(const DeployOrder& d)
+{
+	// TODO: insert return statement here
 }
 
 // Stream insertion operator
@@ -54,6 +66,7 @@ ostream& operator<<(ostream& out, const DeployOrder& deployOrderOutStream) {
 
 // Validate Deploy order
 bool DeployOrder::validate() {
+	cout << "The order is valid!" << endl;
 	return true;
 }
 
@@ -61,9 +74,11 @@ bool DeployOrder::validate() {
 bool DeployOrder::execute() {
 
 	if (validate()) {
+		cout << "The order is executable!" << endl;
 		return true;
 	}
 	else {
+		cout << "The order cannot be executed!" << endl;
 		return false;
 	}
 
@@ -81,7 +96,13 @@ AdvanceOrder::AdvanceOrder() {
 
 // Destructor
 AdvanceOrder::~AdvanceOrder() {
+	delete this;
+}
 
+// Assignment operator
+AdvanceOrder& AdvanceOrder::operator=(const AdvanceOrder& a)
+{
+	// TODO: insert return statement here
 }
 
 // Stream insertion operator
@@ -92,6 +113,7 @@ ostream& operator<<(ostream& out, const AdvanceOrder& advanceOrderOutStream) {
 
 // Validate Advance order
 bool AdvanceOrder::validate() {
+	cout << "The order is valid!" << endl;
 	return true;
 }
 
@@ -99,9 +121,11 @@ bool AdvanceOrder::validate() {
 bool AdvanceOrder::execute() {
 
 	if (validate()) {
+		cout << "The order is executable!" << endl;
 		return true;
 	}
 	else {
+		cout << "The order cannot be executed!" << endl;
 		return false;
 	}
 
@@ -119,7 +143,13 @@ BombOrder::BombOrder() {
 
 // Destructor
 BombOrder::~BombOrder() {
+	delete this;
+}
 
+// Assignment operator
+BombOrder& BombOrder::operator=(const BombOrder& b)
+{
+	// TODO: insert return statement here
 }
 
 // Stream insertion operator
@@ -130,6 +160,7 @@ ostream& operator<<(ostream& out, const BombOrder& bombOrderOutStream) {
 
 // Validate Bomb order
 bool BombOrder::validate() {
+	cout << "The order is valid!" << endl;
 	return true;
 }
 
@@ -137,9 +168,11 @@ bool BombOrder::validate() {
 bool BombOrder::execute() {
 
 	if (validate()) {
+		cout << "The order is executable!" << endl;
 		return true;
 	}
 	else {
+		cout << "The order cannot be executed!" << endl;
 		return false;
 	}
 
@@ -157,7 +190,13 @@ BlockadeOrder::BlockadeOrder() {
 
 // Destructor
 BlockadeOrder::~BlockadeOrder() {
+	delete this;
+}
 
+// Assignment operator
+BlockadeOrder& BlockadeOrder::operator=(const BlockadeOrder& bl)
+{
+	// TODO: insert return statement here
 }
 
 // Stream insertion operator
@@ -168,6 +207,7 @@ ostream& operator<<(ostream& out, const BlockadeOrder& blockadeOrderOutStream) {
 
 // Validate Blockade order
 bool BlockadeOrder::validate() {
+	cout << "The order is valid!" << endl;
 	return true;
 }
 
@@ -175,9 +215,11 @@ bool BlockadeOrder::validate() {
 bool BlockadeOrder::execute() {
 
 	if (validate()) {
+		cout << "The order is executable!" << endl;
 		return true;
 	}
 	else {
+		cout << "The order cannot be executed!" << endl;
 		return false;
 	}
 
@@ -195,7 +237,13 @@ AirliftOrder::AirliftOrder() {
 
 // Destructor
 AirliftOrder::~AirliftOrder() {
+	delete this;
+}
 
+// Assignment operator
+AirliftOrder& AirliftOrder::operator=(const AirliftOrder& air)
+{
+	// TODO: insert return statement here
 }
 
 // Stream insertion operator
@@ -206,6 +254,7 @@ ostream& operator<<(ostream& out, const AirliftOrder& airliftOrderOutStream) {
 
 // Validate Airlift order
 bool AirliftOrder::validate() {
+	cout << "The order is valid!" << endl;
 	return true;
 }
 
@@ -213,9 +262,11 @@ bool AirliftOrder::validate() {
 bool AirliftOrder::execute() {
 
 	if (validate()) {
+		cout << "The order is executable!" << endl;
 		return true;
 	}
 	else {
+		cout << "The order cannot be executed!" << endl;
 		return false;
 	}
 
@@ -233,7 +284,13 @@ NegotiateOrder::NegotiateOrder() {
 
 // Destructor
 NegotiateOrder::~NegotiateOrder() {
+	delete this;
+}
 
+// Assignment operator
+NegotiateOrder& NegotiateOrder::operator=(const NegotiateOrder& n)
+{
+	// TODO: insert return statement here
 }
 
 // Stream insertion operator
@@ -244,6 +301,7 @@ ostream& operator<<(ostream& out, const NegotiateOrder& negotiateOrderOutStream)
 
 // Validate Negotiate order
 bool NegotiateOrder::validate() {
+	cout << "The order is valid!" << endl;
 	return true;
 }
 
@@ -251,9 +309,11 @@ bool NegotiateOrder::validate() {
 bool NegotiateOrder::execute() {
 
 	if (validate()) {
+		cout << "The order is executable!" << endl;
 		return true;
 	}
 	else {
+		cout << "The order cannot be executed!" << endl;
 		return false;
 	}
 
@@ -270,15 +330,28 @@ OrdersList::OrdersList() {
 
 // Destructor
 OrdersList::~OrdersList() {
-
+	delete this;
 }
 
+// Assignment operator
+OrdersList& OrdersList::operator=(const OrdersList& ol)
+{
+	// TODO: insert return statement here
+}
+
+// Stream insertion operator
+ostream& operator<<(ostream& out, const OrdersList& ol)
+{
+	// TODO: insert return statement here
+}
+
+// Adding an order to an orderslist
 void OrdersList::addOrder(Order* order)
 {
 	OrdersVector.push_back(order);
 }
 
-// Displays the orders within the orderlist
+// Displays the orders within the orderslist
 vector<Order*> OrdersList::showOrdersList() {
 	for (int i = 0; i < OrdersVector.size(); i++) {
 		cout << OrdersVector[i]->name << endl;
@@ -287,13 +360,13 @@ vector<Order*> OrdersList::showOrdersList() {
 
 }
 
-// Move order from the start index to the end index.
+// Move order from the start index to the end index
 void OrdersList::move(int startIndex, int endIndex) {
 	iter_swap(OrdersVector.begin() + startIndex, OrdersVector.begin() + endIndex);
 
 }
 
-// Remove order at the specified index.
+// Remove order at the specified index
 void OrdersList::remove(int index) {
 	OrdersVector.erase(OrdersVector.begin() + index);
 
