@@ -61,5 +61,6 @@ public:
     //method to remove the card from the hand
     Card *removeCardFromHand(int i);
     void selectCard(Card *c);
+    void addCardToHand(Card* c);
     void showHand();
 };

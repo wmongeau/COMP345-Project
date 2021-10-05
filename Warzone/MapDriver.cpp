@@ -35,6 +35,8 @@ int main() {
 	char seeMap;
 	cin >> seeMap;
 	seeMap = toupper(seeMap);
+	delete player;
+	player = NULL;
 	if (seeMap == 'Y')
 		map->print();
 	return 1;
