@@ -11,6 +11,8 @@ public:
 	Player();
 	Player(const Player& p);
 	Player(std::string playerName);
+	Player& operator =(const Player& p);
+	~Player();
 	std::vector<Territory*> getOwnedTerritories();
 	Hand* getPlayerHand();
 	OrderList* getOrders();

@@ -37,6 +37,8 @@ int main() {
 	cout << "Do you want to see the map's information?(y/n) ";
 	char seeMap = _getch();
 	seeMap = toupper(seeMap);
+	delete player;
+	player = NULL;
 	if (seeMap == 'Y')
 		map->print();
 	return 1;

@@ -20,22 +20,43 @@ Player::Player() {
 
 //Copy constructor for the class Player
 Player::Player(const Player& p) {
-	this->PlayerName = p.PlayerName;
-	this->PlayerHand = p.PlayerHand;
-	this->Orders = p.Orders;
-	this->OwnedTerritories = p.OwnedTerritories;
-	this->CanAttack = p.CanAttack;
-	this->CanDefend = p.CanDefend;
+	PlayerName = p.PlayerName;
+	PlayerHand = p.PlayerHand;
+	Orders = p.Orders;
+	OwnedTerritories = p.OwnedTerritories;
+	CanAttack = p.CanAttack;
+	CanDefend = p.CanDefend;
 }
 
 //Constructor taking a parameter of type string to be set as the name of the player
 Player::Player(string playerName) {
 	PlayerName = playerName;
 	PlayerHand = new Hand();
-	Orders - new OrderList();
+	Orders = new OrderList();
 	OwnedTerritories = vector<Territory*>();
 	CanAttack = vector<Territory*>();
 	CanDefend = vector<Territory*>();
+}
+
+//Assignment operator for the class Player
+Player& Player::operator =(const Player& p) {
+	PlayerName = p.PlayerName;
+	PlayerHand = p.PlayerHand;
+	Orders = p.Orders;
+	OwnedTerritories = p.OwnedTerritories;
+	CanAttack = p.CanAttack;
+	CanDefend = p.CanDefend;
+
+	return *this;
+}
+
+//Destructor for the class Player
+Player::~Player() {
+	delete PlayerHand;
+	PlayerHand = NULL;
+
+	delete Orders;
+	Orders = NULL;
 }
 
 //Method returning all the territories a player can attack
