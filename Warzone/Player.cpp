@@ -114,6 +114,7 @@ void Player::addOwnedTerritory(Territory* territory) {
 //Temporary method used to demo the functionality of the Player class
 Player* playerDriver(Map* map) {
 	Player* player1 = new Player("Will");
+	Card* card1 = new Card();
 
 	vector<Territory*> owned = vector<Territory*>();
 	vector<Territory*> unowned = vector<Territory*>();
