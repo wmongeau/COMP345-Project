@@ -11,13 +11,18 @@ private:
 	int ContinentId;
 	int X;
 	int Y;
-public:
 	std::vector<Territory*> Borders;
+public:
 	Territory(int id, std::string name, int continentId, int x, int y);
+	Territory(Territory* territory);
+	Territory& operator=(Territory* territory);
 	void addBorder(Territory* territory);
-	int getId();
-	std::string getName();
-	int getContinentId();
+	const int getId() const;
+	const std::string getName() const;
+	const int getContinentId() const;
+	const int getX() const;
+	const int getY() const;
+	const std::vector<Territory*> getBorders() const;
 	std::string toString();
 	~Territory();
 };
@@ -28,14 +33,17 @@ private:
 	std::string Name;
 	int ArmyValue;
 	std::string Colour;
-public:
 	std::vector<Continent*> Borders;
+public:
 	Continent(int id, std::string name, int armyVal, std::string colour);
+	Continent(Continent* continent);
+	Continent& operator=(Continent* continent);
 	void addBorderContinent(Continent* continent);
-	int getId();
-	std::string getName();
-	int getArmyValue();
-	std::string getColour();
+	const int getId() const;
+	const std::string getName() const;
+	const int getArmyValue() const;
+	const std::string getColour() const;
+	const std::vector<Continent*> getBorders() const;
 	std::string toString();
 	~Continent();
 };
@@ -45,6 +53,10 @@ public:
 	std::vector<Continent*> Continents;
 	std::vector<Territory*> Territories;
 	Map();
+	Map(Map* map);
+	Map& operator=(Map* map);
+	void copyTerritoryBorders(std::vector<Territory*> copyTerritory);
+	void copyContinentBorders(std::vector<Continent*> copyContinent);
 	void addContinent(Continent* continent);
 	void addTerritory(Territory* territory);
 	bool validate();

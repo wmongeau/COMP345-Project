@@ -7,6 +7,13 @@
 #include "Orders.h"
 
 class Player {
+private:
+	std::vector<Territory*> CanDefend;
+	std::vector<Territory*> CanAttack;
+	std::string PlayerName;
+	Hand* PlayerHand;
+	OrdersList* Orders;
+	std::vector<Territory*> OwnedTerritories;
 public:
 	Player();
 	Player(std::string playerName);
@@ -32,14 +39,6 @@ public:
 	std::vector<Territory*> toAttack();
 	void issueOrder();
 	void addOwnedTerritory(Territory* territory);
-
-private:
-	std::vector<Territory*> CanDefend;
-	std::vector<Territory*> CanAttack;
-	std::string PlayerName;
-	Hand* PlayerHand;
-	OrdersList* Orders;
-	std::vector<Territory*> OwnedTerritories;
 };
 
 Player* playerDriver(Map* map);
