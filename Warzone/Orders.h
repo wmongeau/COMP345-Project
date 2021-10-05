@@ -6,12 +6,27 @@
 
 using namespace std;
 
+enum OrdersEnum
+{
+	None = 0,
+	Deploy = 1,
+	Advance = 2,
+	Bomb = 3,
+	Blockade = 4,
+	Airlift = 5,
+	Negotiate = 6
+};
+
 class Order {
 public:
-	string name;
+	// Enum
+	OrdersEnum OrdersType;
 
 	// Default Constructor
 	Order();
+
+	//Parameterized constructor
+	Order(OrdersEnum value);
 
 	// Copy Constructor
 	Order(const Order& c);
@@ -25,8 +40,8 @@ public:
 	// Sends order description to the output stream
 	friend ostream& operator<<(ostream& out, const Order& o);
 
-	virtual bool execute() = 0;
-	virtual bool validate() = 0;
+	virtual bool execute();
+	virtual bool validate();
 
 };
 
@@ -175,6 +190,7 @@ public:
 
 	vector<Order*> OrdersVector;
 
+	// Adding an order to an orderslist
 	void addOrder(Order* order);
 
 	//Display orders from the orderslist
