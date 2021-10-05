@@ -15,14 +15,15 @@ public:
 	~Player();
 	std::vector<Territory*> getOwnedTerritories();
 	Hand* getPlayerHand();
-	OrderList* getOrders();
+	OrdersList* getOrders();
 	std::string getPlayerName();
 	void setCanDefend(std::vector<Territory*> territories);
 	void setCanAttack(std::vector<Territory*> territories);
 	std::vector<Territory*> toDefend();
 	std::vector<Territory*> toAttack();
-	void issueOrder();
+	void issueOrder(string orderType);
 	void addOwnedTerritory(Territory* territory);
+	void addCardToHand(Card* card);
 
 private:
 	std::vector<Territory*> CanDefend;

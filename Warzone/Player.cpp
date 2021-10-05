@@ -32,7 +32,7 @@ Player::Player(const Player& p) {
 Player::Player(string playerName) {
 	PlayerName = playerName;
 	PlayerHand = new Hand();
-	Orders = new OrderList();
+	Orders = new OrdersList();
 	OwnedTerritories = vector<Territory*>();
 	CanAttack = vector<Territory*>();
 	CanDefend = vector<Territory*>();
@@ -76,9 +76,25 @@ void Player::addOwnedTerritory(Territory* territory) {
 }
 
 //Method used to create an order and add it to the players order list
- void Player::issueOrder() {
+ void Player::issueOrder(string orderType) {
 	//create order and issue order here
 	//update CanAttack and OwnedTerritories
+	 Order* order;
+
+	 if (orderType == "Deploy Order")
+		 order = new DeployOrder();
+	 if (orderType == "Advance Order")
+		 order = new AdvanceOrder();
+	 if (orderType == "Bomb Order")
+		 order = new BombOrder();
+	 if (orderType == "Blockade Order")
+		 order = new BlockadeOrder();
+	 if (orderType == "Airlift Order")
+		 order = new AirliftOrder();
+	 if (orderType == "Negotiate Order")
+		 order = new NegotiateOrder();
+	
+	 Orders->addOrder(order);
 }
 
  //Getter method for owned territories
@@ -92,7 +108,7 @@ void Player::addOwnedTerritory(Territory* territory) {
  }
 
  //Getter method for the players list of orders
- OrderList* Player::getOrders() {
+ OrdersList* Player::getOrders() {
 	 return Orders;
  }
 
@@ -110,11 +126,20 @@ void Player::addOwnedTerritory(Territory* territory) {
  void Player::setCanAttack(std::vector<Territory*> territories) {
 	 CanAttack = territories;
  }
+
+ void Player::addCardToHand(Card* card) {
+	 PlayerHand->selectCard(card);
+ }
  
 //Temporary method used to demo the functionality of the Player class
 Player* playerDriver(Map* map) {
 	Player* player1 = new Player("Will");
-	Card* card1 = new Card();
+	Card* card1 = new Card("CardType1");
+	Card* card2 = new Card("CardType2");
+	player1->addCardToHand(card1);
+	player1->addCardToHand(card2);
+	player1->issueOrder("Negotiate Order");
+	player1->issueOrder("Bomb Order");
 
 	vector<Territory*> owned = vector<Territory*>();
 	vector<Territory*> unowned = vector<Territory*>();
