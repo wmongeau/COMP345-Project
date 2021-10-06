@@ -12,23 +12,48 @@ using namespace std;
 
 // Default constructor
 Order::Order() {
-
+	OrdersType = None;
 }
 
-// Default constructor
-Order::Order(const Order& c) {
+// Parameterized constructor
+Order::Order(OrdersEnum value)
+{
+	OrdersType = value;
+}
 
+// Copy constructor
+Order::Order(const Order& c) {
+	OrdersType = c.OrdersType;
 }
 
 // Destructor
 Order::~Order() {
-	delete this;
+	
 }
 
 // Assignment operator
-Order& Order::operator=(const Order& o)
+Order& Order::operator=(const Order& o) {
+	return *this;
+}
+
+// Verify if order is valid
+bool Order::validate()
 {
-	// TODO: insert return statement here
+	cout << "The order is valid!" << endl;
+	return true;
+}
+
+// If order is valid, verify if it is executable
+bool Order::execute()
+{
+	if (validate()) {
+		cout << "The order is executable!" << endl;
+		return true;
+	}
+	else {
+		cout << "The order cannot be executed!" << endl;
+		return false;
+	}
 }
 
 // Overloads the stream insertion operator.
@@ -44,18 +69,23 @@ ostream& operator<<(ostream& out, const Order& orderOutStream) {
 
 // Default constructor
 DeployOrder::DeployOrder() {
-	name = "Deploy Order";
+	OrdersType = Deploy;
+}
+
+// Copy constructor
+DeployOrder::DeployOrder(const DeployOrder& d) {
+	OrdersType = d.OrdersType;
 }
 
 // Destructor
 DeployOrder::~DeployOrder() {
-	delete this;
+	
 }
 
 // Assignment operator
 DeployOrder& DeployOrder::operator=(const DeployOrder& d)
 {
-	// TODO: insert return statement here
+	return *this;
 }
 
 // Stream insertion operator
@@ -91,18 +121,23 @@ bool DeployOrder::execute() {
 
 // Default constructor
 AdvanceOrder::AdvanceOrder() {
-	name = "Advance Order";
+	OrdersType = Advance;
+}
+
+// Copy constructor
+AdvanceOrder::AdvanceOrder(const AdvanceOrder& a) {
+	OrdersType = a.OrdersType;
 }
 
 // Destructor
 AdvanceOrder::~AdvanceOrder() {
-	delete this;
+
 }
 
 // Assignment operator
 AdvanceOrder& AdvanceOrder::operator=(const AdvanceOrder& a)
 {
-	// TODO: insert return statement here
+	return *this;
 }
 
 // Stream insertion operator
@@ -138,18 +173,23 @@ bool AdvanceOrder::execute() {
 
 // Default constructor
 BombOrder::BombOrder() {
-	name = "Bomb Order";
+	OrdersType = Bomb;
+}
+
+// Copy constructor
+BombOrder::BombOrder(const BombOrder& b) {
+	OrdersType = b.OrdersType;
 }
 
 // Destructor
 BombOrder::~BombOrder() {
-	delete this;
+
 }
 
 // Assignment operator
 BombOrder& BombOrder::operator=(const BombOrder& b)
 {
-	// TODO: insert return statement here
+	return *this;
 }
 
 // Stream insertion operator
@@ -185,18 +225,23 @@ bool BombOrder::execute() {
 
 // Default constructor
 BlockadeOrder::BlockadeOrder() {
-	name = "Blockade Order";
+	OrdersType = Blockade;
+}
+
+// Copy constructor
+BlockadeOrder::BlockadeOrder(const BlockadeOrder& bl) {
+	OrdersType = bl.OrdersType;
 }
 
 // Destructor
 BlockadeOrder::~BlockadeOrder() {
-	delete this;
+
 }
 
 // Assignment operator
 BlockadeOrder& BlockadeOrder::operator=(const BlockadeOrder& bl)
 {
-	// TODO: insert return statement here
+	return *this;
 }
 
 // Stream insertion operator
@@ -232,18 +277,23 @@ bool BlockadeOrder::execute() {
 
 // Default constructor
 AirliftOrder::AirliftOrder() {
-	name = "Airlift Order";
+	OrdersType = Airlift;
+}
+
+// Copy constructor
+AirliftOrder::AirliftOrder(const AirliftOrder& air) {
+	OrdersType = air.OrdersType;
 }
 
 // Destructor
 AirliftOrder::~AirliftOrder() {
-	delete this;
+
 }
 
 // Assignment operator
 AirliftOrder& AirliftOrder::operator=(const AirliftOrder& air)
 {
-	// TODO: insert return statement here
+	return *this;
 }
 
 // Stream insertion operator
@@ -279,18 +329,23 @@ bool AirliftOrder::execute() {
 
 // Default constructor
 NegotiateOrder::NegotiateOrder() {
-	name = "Negotiate Order";
+	OrdersType = Negotiate;
+}
+
+// Copy constructor
+NegotiateOrder::NegotiateOrder(const NegotiateOrder& n) {
+	OrdersType = n.OrdersType;
 }
 
 // Destructor
 NegotiateOrder::~NegotiateOrder() {
-	delete this;
+
 }
 
 // Assignment operator
 NegotiateOrder& NegotiateOrder::operator=(const NegotiateOrder& n)
 {
-	// TODO: insert return statement here
+	return *this;
 }
 
 // Stream insertion operator
@@ -328,21 +383,50 @@ OrdersList::OrdersList() {
 
 }
 
+// Copy constructor
+OrdersList::OrdersList(const OrdersList& ol) {
+	OrdersVector = vector<Order*>();
+
+	for (int i = 0; i < ol.OrdersVector.size(); i++) {
+		if (ol.OrdersVector[i]->OrdersType == Deploy) {
+			OrdersVector.push_back(new DeployOrder());
+		}
+		else if (ol.OrdersVector[i]->OrdersType == Advance) {
+			OrdersVector.push_back(new AdvanceOrder());
+		}
+		else if (ol.OrdersVector[i]->OrdersType == Bomb) {
+			OrdersVector.push_back(new BombOrder());
+		}
+		else if (ol.OrdersVector[i]->OrdersType == Blockade) {
+			OrdersVector.push_back(new BlockadeOrder());
+		}
+		else if (ol.OrdersVector[i]->OrdersType == Airlift) {
+			OrdersVector.push_back(new AirliftOrder());
+		}
+		else 
+			OrdersVector.push_back(new NegotiateOrder());
+	}
+
+}
+
 // Destructor
 OrdersList::~OrdersList() {
-	delete this;
+
 }
 
 // Assignment operator
 OrdersList& OrdersList::operator=(const OrdersList& ol)
 {
-	// TODO: insert return statement here
+	return *this;
 }
 
 // Stream insertion operator
 ostream& operator<<(ostream& out, const OrdersList& ol)
 {
-	// TODO: insert return statement here
+	for (int i = 0; i < ol.OrdersVector.size(); i++) {
+		out << ol.OrdersVector[i]->OrdersType << endl;
+	}
+	return out;
 }
 
 // Adding an order to an orderslist
@@ -354,7 +438,7 @@ void OrdersList::addOrder(Order* order)
 // Displays the orders within the orderslist
 vector<Order*> OrdersList::showOrdersList() {
 	for (int i = 0; i < OrdersVector.size(); i++) {
-		cout << OrdersVector[i]->name << endl;
+		cout << OrdersVector[i]->OrdersType << endl;
 	}
 	return OrdersVector;
 

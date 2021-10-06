@@ -15,12 +15,11 @@ void test();
 //
 //	test();
 //
-//
 //	return 1;
 //	//contains a main function that creates a list of orders and demonstrates that the OrdersList implemented
 //}
 
-//
+// Testing orders and orderslist
 void test(){
 	OrdersList* orderListsDriver = new OrdersList();
 
@@ -49,7 +48,9 @@ void test(){
 	orderListsDriver->addOrder(dynamic_cast<Order*>(blockadeOrder));
 	orderListsDriver->addOrder(dynamic_cast<Order*>(negotiateOrder));
 	
-	orderListsDriver->showOrdersList();
+	cout << "----------" << endl;
+
+	cout << *orderListsDriver;
 
 	cout << "----------" << endl;
 
@@ -65,11 +66,11 @@ void test(){
 
 	//testing the move function
 	orderListsDriver->move(1, 3);
-	orderListsDriver->showOrdersList();
+	cout << *orderListsDriver;
 
 	cout << "----------" << endl;
 
 	//testing the remove function
 	orderListsDriver->remove(1);
-	orderListsDriver->showOrdersList();
+	cout << *orderListsDriver;
 }
