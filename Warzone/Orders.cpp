@@ -37,8 +37,7 @@ Order& Order::operator=(const Order& o) {
 }
 
 // Verify if order is valid
-bool Order::validate()
-{
+bool Order::validate() {
 	cout << "The order is valid!" << endl;
 	return true;
 }
@@ -68,13 +67,13 @@ ostream& operator<<(ostream& out, const Order& orderOutStream) {
 // ---------- DeployOrder class ---------- //
 
 // Default constructor
-DeployOrder::DeployOrder() {
-	OrdersType = Deploy;
+DeployOrder::DeployOrder() : Order(Deploy) {
+
 }
 
 // Copy constructor
-DeployOrder::DeployOrder(const DeployOrder& d) {
-	OrdersType = d.OrdersType;
+DeployOrder::DeployOrder(const DeployOrder& d) : Order(d){
+
 }
 
 // Destructor
@@ -96,7 +95,7 @@ ostream& operator<<(ostream& out, const DeployOrder& deployOrderOutStream) {
 
 // Validate Deploy order
 bool DeployOrder::validate() {
-	cout << "The order is valid!" << endl;
+	cout << "The Deploy order is valid!" << endl;
 	return true;
 }
 
@@ -104,11 +103,11 @@ bool DeployOrder::validate() {
 bool DeployOrder::execute() {
 
 	if (validate()) {
-		cout << "The order is executable!" << endl;
+		cout << "The Deploy order is executable!" << endl;
 		return true;
 	}
 	else {
-		cout << "The order cannot be executed!" << endl;
+		cout << "The Deploy order cannot be executed!" << endl;
 		return false;
 	}
 
@@ -120,13 +119,13 @@ bool DeployOrder::execute() {
 // ---------- AdvanceOrder class ---------- //
 
 // Default constructor
-AdvanceOrder::AdvanceOrder() {
-	OrdersType = Advance;
+AdvanceOrder::AdvanceOrder() : Order(Advance) {
+
 }
 
 // Copy constructor
-AdvanceOrder::AdvanceOrder(const AdvanceOrder& a) {
-	OrdersType = a.OrdersType;
+AdvanceOrder::AdvanceOrder(const AdvanceOrder& a) : Order (a) {
+
 }
 
 // Destructor
@@ -148,7 +147,7 @@ ostream& operator<<(ostream& out, const AdvanceOrder& advanceOrderOutStream) {
 
 // Validate Advance order
 bool AdvanceOrder::validate() {
-	cout << "The order is valid!" << endl;
+	cout << "The Advance order is valid!" << endl;
 	return true;
 }
 
@@ -156,11 +155,11 @@ bool AdvanceOrder::validate() {
 bool AdvanceOrder::execute() {
 
 	if (validate()) {
-		cout << "The order is executable!" << endl;
+		cout << "The Advance order is executable!" << endl;
 		return true;
 	}
 	else {
-		cout << "The order cannot be executed!" << endl;
+		cout << "The Advance order cannot be executed!" << endl;
 		return false;
 	}
 
@@ -172,13 +171,13 @@ bool AdvanceOrder::execute() {
 // ---------- BombOrder class ---------- //
 
 // Default constructor
-BombOrder::BombOrder() {
-	OrdersType = Bomb;
+BombOrder::BombOrder() : Order(Bomb) {
+
 }
 
 // Copy constructor
-BombOrder::BombOrder(const BombOrder& b) {
-	OrdersType = b.OrdersType;
+BombOrder::BombOrder(const BombOrder& b) : Order(b) {
+
 }
 
 // Destructor
@@ -200,7 +199,7 @@ ostream& operator<<(ostream& out, const BombOrder& bombOrderOutStream) {
 
 // Validate Bomb order
 bool BombOrder::validate() {
-	cout << "The order is valid!" << endl;
+	cout << "The Bomb order is valid!" << endl;
 	return true;
 }
 
@@ -208,11 +207,11 @@ bool BombOrder::validate() {
 bool BombOrder::execute() {
 
 	if (validate()) {
-		cout << "The order is executable!" << endl;
+		cout << "The Bomb order is executable!" << endl;
 		return true;
 	}
 	else {
-		cout << "The order cannot be executed!" << endl;
+		cout << "The Bomb order cannot be executed!" << endl;
 		return false;
 	}
 
@@ -224,13 +223,13 @@ bool BombOrder::execute() {
 // ---------- BlockadeOrder class ---------- //
 
 // Default constructor
-BlockadeOrder::BlockadeOrder() {
-	OrdersType = Blockade;
+BlockadeOrder::BlockadeOrder() : Order(Blockade) {
+
 }
 
 // Copy constructor
-BlockadeOrder::BlockadeOrder(const BlockadeOrder& bl) {
-	OrdersType = bl.OrdersType;
+BlockadeOrder::BlockadeOrder(const BlockadeOrder& bl) : Order(bl) {
+
 }
 
 // Destructor
@@ -252,7 +251,7 @@ ostream& operator<<(ostream& out, const BlockadeOrder& blockadeOrderOutStream) {
 
 // Validate Blockade order
 bool BlockadeOrder::validate() {
-	cout << "The order is valid!" << endl;
+	cout << "The Blockade order is valid!" << endl;
 	return true;
 }
 
@@ -260,11 +259,11 @@ bool BlockadeOrder::validate() {
 bool BlockadeOrder::execute() {
 
 	if (validate()) {
-		cout << "The order is executable!" << endl;
+		cout << "The Blockade order is executable!" << endl;
 		return true;
 	}
 	else {
-		cout << "The order cannot be executed!" << endl;
+		cout << "The Blockade order cannot be executed!" << endl;
 		return false;
 	}
 
@@ -276,13 +275,13 @@ bool BlockadeOrder::execute() {
 // ---------- AirliftOrder class ---------- //
 
 // Default constructor
-AirliftOrder::AirliftOrder() {
-	OrdersType = Airlift;
+AirliftOrder::AirliftOrder() : Order(Airlift) {
+
 }
 
 // Copy constructor
-AirliftOrder::AirliftOrder(const AirliftOrder& air) {
-	OrdersType = air.OrdersType;
+AirliftOrder::AirliftOrder(const AirliftOrder& air) : Order(air) {
+
 }
 
 // Destructor
@@ -304,7 +303,7 @@ ostream& operator<<(ostream& out, const AirliftOrder& airliftOrderOutStream) {
 
 // Validate Airlift order
 bool AirliftOrder::validate() {
-	cout << "The order is valid!" << endl;
+	cout << "The Airlift order is valid!" << endl;
 	return true;
 }
 
@@ -312,11 +311,11 @@ bool AirliftOrder::validate() {
 bool AirliftOrder::execute() {
 
 	if (validate()) {
-		cout << "The order is executable!" << endl;
+		cout << "The Airlift order is executable!" << endl;
 		return true;
 	}
 	else {
-		cout << "The order cannot be executed!" << endl;
+		cout << "The Airlift order cannot be executed!" << endl;
 		return false;
 	}
 
@@ -328,13 +327,13 @@ bool AirliftOrder::execute() {
 // ---------- NegotiateOrder class ---------- //
 
 // Default constructor
-NegotiateOrder::NegotiateOrder() {
-	OrdersType = Negotiate;
+NegotiateOrder::NegotiateOrder() : Order(Negotiate) {
+
 }
 
 // Copy constructor
-NegotiateOrder::NegotiateOrder(const NegotiateOrder& n) {
-	OrdersType = n.OrdersType;
+NegotiateOrder::NegotiateOrder(const NegotiateOrder& n) : Order(n) {
+
 }
 
 // Destructor
@@ -356,7 +355,7 @@ ostream& operator<<(ostream& out, const NegotiateOrder& negotiateOrderOutStream)
 
 // Validate Negotiate order
 bool NegotiateOrder::validate() {
-	cout << "The order is valid!" << endl;
+	cout << "The Negotiate order is valid!" << endl;
 	return true;
 }
 
@@ -364,11 +363,11 @@ bool NegotiateOrder::validate() {
 bool NegotiateOrder::execute() {
 
 	if (validate()) {
-		cout << "The order is executable!" << endl;
+		cout << "The Negotiate order is executable!" << endl;
 		return true;
 	}
 	else {
-		cout << "The order cannot be executed!" << endl;
+		cout << "The Negotiate order cannot be executed!" << endl;
 		return false;
 	}
 
@@ -388,25 +387,24 @@ OrdersList::OrdersList(const OrdersList& ol) {
 	OrdersVector = vector<Order*>();
 
 	for (int i = 0; i < ol.OrdersVector.size(); i++) {
-		if (ol.OrdersVector[i]->OrdersType == Deploy) {
+		if (ol.OrdersVector[i]->getOrdersType() == Deploy) {
 			OrdersVector.push_back(new DeployOrder());
 		}
-		else if (ol.OrdersVector[i]->OrdersType == Advance) {
+		else if (ol.OrdersVector[i]->getOrdersType() == Advance) {
 			OrdersVector.push_back(new AdvanceOrder());
 		}
-		else if (ol.OrdersVector[i]->OrdersType == Bomb) {
+		else if (ol.OrdersVector[i]->getOrdersType() == Bomb) {
 			OrdersVector.push_back(new BombOrder());
 		}
-		else if (ol.OrdersVector[i]->OrdersType == Blockade) {
+		else if (ol.OrdersVector[i]->getOrdersType() == Blockade) {
 			OrdersVector.push_back(new BlockadeOrder());
 		}
-		else if (ol.OrdersVector[i]->OrdersType == Airlift) {
+		else if (ol.OrdersVector[i]->getOrdersType() == Airlift) {
 			OrdersVector.push_back(new AirliftOrder());
 		}
 		else 
 			OrdersVector.push_back(new NegotiateOrder());
 	}
-
 }
 
 // Destructor
@@ -424,7 +422,7 @@ OrdersList& OrdersList::operator=(const OrdersList& ol)
 ostream& operator<<(ostream& out, const OrdersList& ol)
 {
 	for (int i = 0; i < ol.OrdersVector.size(); i++) {
-		out << ol.OrdersVector[i]->OrdersType << endl;
+		out << ol.OrdersVector[i]->getOrdersType() << endl;
 	}
 	return out;
 }
@@ -438,7 +436,7 @@ void OrdersList::addOrder(Order* order)
 // Displays the orders within the orderslist
 vector<Order*> OrdersList::showOrdersList() {
 	for (int i = 0; i < OrdersVector.size(); i++) {
-		cout << OrdersVector[i]->OrdersType << endl;
+		cout << OrdersVector[i]->getOrdersType() << endl;
 	}
 	return OrdersVector;
 

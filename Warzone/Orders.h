@@ -18,10 +18,10 @@ enum OrdersEnum
 };
 
 class Order {
-public:
-	// Enum
+private:
+	// Enum for Order type
 	OrdersEnum OrdersType;
-
+public:
 	// Default Constructor
 	Order();
 
@@ -34,12 +34,13 @@ public:
 	// Destructor
 	~Order();
 
-	//assignment operator
+	// Assignment operator
 	Order& operator=(const Order& o);
 
 	// Sends order description to the output stream
 	friend ostream& operator<<(ostream& out, const Order& o);
 
+	//
 	virtual bool execute();
 	virtual bool validate();
 
@@ -52,6 +53,9 @@ public:
 	// Constructors
 	DeployOrder();
 
+	// Copy Constructor
+	DeployOrder(const DeployOrder& d);
+
 	// Destructor
 	~DeployOrder();
 
@@ -61,7 +65,7 @@ public:
 	// Sends order description to the output stream
 	friend ostream& operator<<(ostream& out, const DeployOrder& d);
 
-	// If Deploy order is valid or not. If the order is valid, it will output its effect.
+	// If Deploy order is valid or not.
 	bool validate() override;
 
 	// If Deploy order is successfully executed or not.
@@ -72,6 +76,9 @@ class AdvanceOrder : public Order {
 public:
 	// Constructors
 	AdvanceOrder();
+
+	// Copy Constructor
+	AdvanceOrder(const AdvanceOrder& a);
 
 	// Destructor
 	~AdvanceOrder();
@@ -94,10 +101,13 @@ public:
 	// Constructors
 	BombOrder();
 
+	// Copy Constructor
+	BombOrder(const BombOrder& b);
+
 	// Destructor
 	~BombOrder();
 
-	//assignment operator
+	// Assignment operator
 	BombOrder& operator=(const BombOrder& b);
 
 	// Sends order description to the output stream
@@ -114,6 +124,9 @@ class BlockadeOrder : public Order {
 public:
 	// Constructors
 	BlockadeOrder();
+
+	// Copy Constructor
+	BlockadeOrder(const BlockadeOrder& bl);
 
 	// Destructor
 	~BlockadeOrder();
@@ -136,6 +149,9 @@ public:
 	// Constructors
 	AirliftOrder();
 
+	// Copy Constructor
+	AirliftOrder(const AirliftOrder& air);
+
 	// Destructor
 	~AirliftOrder();
 
@@ -156,6 +172,9 @@ class NegotiateOrder : public Order {
 public:
 	// Constructors
 	NegotiateOrder();
+
+	// Copy Constructor
+	NegotiateOrder(const NegotiateOrder& n);
 
 	// Destructor
 	~NegotiateOrder();
@@ -178,6 +197,9 @@ class OrdersList {
 public:
 	// Constructors
 	OrdersList();
+
+	// Copy constructor
+	OrdersList(const OrdersList& ol);
 
 	// Destructor
 	~OrdersList();

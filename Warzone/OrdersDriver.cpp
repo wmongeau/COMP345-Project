@@ -19,58 +19,79 @@ void test();
 //	//contains a main function that creates a list of orders and demonstrates that the OrdersList implemented
 //}
 
-// Testing orders and orderslist
+// Testing Orders and OrdersList.
 void test(){
-	OrdersList* orderListsDriver = new OrdersList();
 
+	// Creating an OrdersList object.
+	OrdersList* ordersListDriver = new OrdersList();
+
+	cout << "Creating our Orders using the subclasses:" << endl;
+
+	// Creating an order of every type (each being a subclass of Order).
 	DeployOrder* deployOrder = new DeployOrder();
-	cout << "Deploy order works!" << endl;
+	cout << "- Deploy order works!" << endl;
 
 	AdvanceOrder* advanceOrder = new AdvanceOrder();
-	cout << "Advance order works!" << endl;
+	cout << "- Advance order works!" << endl;
 
 	BombOrder* bombOrder = new BombOrder();
-	cout << "Bomb order works!" << endl;
+	cout << "- Bomb order works!" << endl;
 
 	AirliftOrder* airliftOrder = new AirliftOrder();
-	cout << "Airlift order works!" << endl;
+	cout << "- Airlift order works!" << endl;
 
 	BlockadeOrder* blockadeOrder = new BlockadeOrder();
-	cout << "Blockade order works!" << endl;
+	cout << "- Blockade order works!" << endl;
 
 	NegotiateOrder* negotiateOrder = new NegotiateOrder();
-	cout << "Negotiate order works!" << endl;
+	cout << "- Negotiate order works!" << endl;
 
-	orderListsDriver->addOrder(dynamic_cast<Order*>(deployOrder));
-	orderListsDriver->addOrder(dynamic_cast<Order*>(advanceOrder));
-	orderListsDriver->addOrder(dynamic_cast<Order*>(bombOrder));
-	orderListsDriver->addOrder(dynamic_cast<Order*>(airliftOrder));
-	orderListsDriver->addOrder(dynamic_cast<Order*>(blockadeOrder));
-	orderListsDriver->addOrder(dynamic_cast<Order*>(negotiateOrder));
+	// Using the addOrder function to fill our OrdersList object.
+	ordersListDriver->addOrder(dynamic_cast<Order*>(deployOrder));
+	ordersListDriver->addOrder(dynamic_cast<Order*>(advanceOrder));
+	ordersListDriver->addOrder(dynamic_cast<Order*>(bombOrder));
+	ordersListDriver->addOrder(dynamic_cast<Order*>(airliftOrder));
+	ordersListDriver->addOrder(dynamic_cast<Order*>(blockadeOrder));
+	ordersListDriver->addOrder(dynamic_cast<Order*>(negotiateOrder));
 	
 	cout << "----------" << endl;
 
-	cout << *orderListsDriver;
+	cout << "Outputting the content of the OrdersList object using the stream insertion operator:" << endl;
+	cout << *ordersListDriver;
 
 	cout << "----------" << endl;
 
+	cout << "Testing our validate() method for every Order type:" << endl;
 	//testing the validate method
 	deployOrder->validate();
+	advanceOrder->validate();
+	bombOrder->validate();
+	blockadeOrder->validate();
+	airliftOrder->validate();
+	negotiateOrder->validate();
 
 	cout << "----------" << endl;
 
+	cout << "Testing our execute() method for every Order type:" << endl;
 	//testing the execute method
 	deployOrder->execute();
+	advanceOrder->execute();
+	bombOrder->execute();
+	blockadeOrder->execute();
+	airliftOrder->execute();
+	negotiateOrder->execute();
 
 	cout << "----------" << endl;
 
+	cout << "Testing our move() method:" << endl;
 	//testing the move function
-	orderListsDriver->move(1, 3);
-	cout << *orderListsDriver;
+	ordersListDriver->move(1, 3);
+	cout << *ordersListDriver;
 
 	cout << "----------" << endl;
 
+	cout << "Testing our remove() method:" << endl;
 	//testing the remove function
-	orderListsDriver->remove(1);
-	cout << *orderListsDriver;
+	ordersListDriver->remove(1);
+	cout << *ordersListDriver;
 }
