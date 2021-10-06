@@ -14,7 +14,10 @@ class State {
 public:
 	State();
 	State(Enums::states name);
+	State(State const &state);
 	Enums::states getStateName();
+	friend std::ostream& operator<<(std::ostream& os, const State& state);
+	State& operator= (const State& state);
 	~State();
 private:
 	Enums::states stateName;
@@ -23,10 +26,13 @@ private:
 class Transition {
 public:
 	Transition();
-	Transition( Enums::transitions name);
+	Transition(Enums::transitions name);
+	Transition(Transition const &transition);
 	Enums::transitions getTransitionName();
 	State* getNextState();
 	virtual void execute() = 0;
+	friend std::ostream& operator<<(std::ostream& os, const Transition& transition);
+	Transition& operator= (const Transition& transition);
 	~Transition();
 private:
 	Enums::transitions transitionName;

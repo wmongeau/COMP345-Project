@@ -31,7 +31,9 @@ Enums::states State::getStateName() {
 	return stateName;
 }
 
-State::~State() {  }
+State::~State() {  
+	delete this;
+}
 
 Transition::Transition() {
 	transitionName = Enums::end;
@@ -52,6 +54,7 @@ State* Transition::getNextState() {
 Transition::~Transition() {
 	delete nextState;
 	nextState = NULL;
+	delete this;
 }
 LoadMapTransition::LoadMapTransition() : Transition(Enums::loadMap) {
 	nextState = new State(Enums::mapLoaded);
@@ -213,4 +216,5 @@ GameEngine::~GameEngine() {
 	delete currentState;
 	currentState = NULL;
 	availableTransitions.clear();
+	delete this;
 }
