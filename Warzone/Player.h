@@ -21,7 +21,7 @@ public:
 	void setCanAttack(std::vector<Territory*> territories);
 	std::vector<Territory*> toDefend();
 	std::vector<Territory*> toAttack();
-	void issueOrder(string orderType);
+	void issueOrder(OrdersEnum orderType);
 	void addOwnedTerritory(Territory* territory);
 	void addCardToHand(Card* card);
 
