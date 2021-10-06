@@ -9,7 +9,7 @@ using namespace std;
 #include "GameEngine.h"
 #include "Map.h"
 
-
+// Entry point for the game
 int main() {
 	GameEngine *engine;
 	engine = new GameEngine();
