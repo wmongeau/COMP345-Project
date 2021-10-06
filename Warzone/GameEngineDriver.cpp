@@ -28,8 +28,6 @@ int main() {
 		engine -> execute(availableTransitions[selected]);
 	} while(Enums::statesEnumToString(engine -> getCurrentState() -> getStateName()) != "Quit");
 
-	delete engine;
-	engine = NULL;
 	return 0;
 }
 
