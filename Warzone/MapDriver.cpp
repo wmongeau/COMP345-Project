@@ -5,12 +5,14 @@
 #include <cstring>
 
 #include "MapDriver.h"
+#include "Player.h"
 using namespace std;
 
 //MAIN FUNCTIONS
 int main() {
 	Map* map;
 	bool valid = false;
+	Player* player;
 	try {
 		while (!valid) {
 			map = MapLoader::loadMap();
@@ -22,6 +24,7 @@ int main() {
 			else
 				cout << "Map is invalid!!" << endl;
 		}
+		player = playerDriver(map);
 	}
 	catch (exception e)
 	{

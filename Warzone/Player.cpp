@@ -76,24 +76,27 @@ void Player::addOwnedTerritory(Territory* territory) {
 }
 
 //Method used to create an order and add it to the players order list
- void Player::issueOrder(string orderType) {
+ void Player::issueOrder(OrdersEnum orderType) {
 	//create order and issue order here
 	//update CanAttack and OwnedTerritories
 	 Order* order;
 
-	 if (orderType == "Deploy Order")
+	 if (orderType == Deploy)
 		 order = new DeployOrder();
-	 if (orderType == "Advance Order")
+	 if (orderType == Advance)
 		 order = new AdvanceOrder();
-	 if (orderType == "Bomb Order")
+	 if (orderType == Bomb)
 		 order = new BombOrder();
-	 if (orderType == "Blockade Order")
+	 if (orderType == Blockade)
 		 order = new BlockadeOrder();
-	 if (orderType == "Airlift Order")
+	 if (orderType == Airlift)
 		 order = new AirliftOrder();
-	 if (orderType == "Negotiate Order")
+	 if (orderType == Negotiate)
 		 order = new NegotiateOrder();
 	
+	 if (order == NULL)
+		 return;
+
 	 Orders->addOrder(order);
 }
 
@@ -138,8 +141,8 @@ Player* playerDriver(Map* map) {
 	Card* card2 = new Card("CardType2");
 	player1->addCardToHand(card1);
 	player1->addCardToHand(card2);
-	player1->issueOrder("Negotiate Order");
-	player1->issueOrder("Bomb Order");
+	player1->issueOrder(Negotiate);
+	player1->issueOrder(Bomb);
 
 	vector<Territory*> owned = vector<Territory*>();
 	vector<Territory*> unowned = vector<Territory*>();
