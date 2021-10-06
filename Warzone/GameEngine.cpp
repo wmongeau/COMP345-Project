@@ -412,6 +412,7 @@ vector<Transition*> GameEngine::getAvailableTransitions() {
 //Method that tells the game engine to execute a transitioin that is given as a parameter
 void GameEngine::execute(Transition* transition) {
 	transition -> execute();
+	delete currentState;
 	currentState = transition -> getNextState();
 	updateAvailableTransitions();
 }
