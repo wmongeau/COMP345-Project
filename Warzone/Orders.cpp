@@ -494,5 +494,4 @@ vector<Order*> OrdersList::getOrdersVector()
 {
 	return OrdersVector;
 }
-
 // ---------- End of OrdersList class ---------- //
