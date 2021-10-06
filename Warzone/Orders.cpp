@@ -104,7 +104,7 @@ bool DeployOrder::validate() {
 	return true;
 }
 
-// Execute Deploy order if valide
+// Execute Deploy order if valid
 bool DeployOrder::execute() {
 
 	if (validate()) {
@@ -156,7 +156,7 @@ bool AdvanceOrder::validate() {
 	return true;
 }
 
-// Execute Advance order if valide
+// Execute Advance order if valid
 bool AdvanceOrder::execute() {
 
 	if (validate()) {
@@ -208,7 +208,7 @@ bool BombOrder::validate() {
 	return true;
 }
 
-// Execute Bomb order if valide
+// Execute Bomb order if valid
 bool BombOrder::execute() {
 
 	if (validate()) {
@@ -260,7 +260,7 @@ bool BlockadeOrder::validate() {
 	return true;
 }
 
-// Execute Blockade order if valide
+// Execute Blockade order if valid
 bool BlockadeOrder::execute() {
 
 	if (validate()) {
@@ -312,7 +312,7 @@ bool AirliftOrder::validate() {
 	return true;
 }
 
-// Execute Airlift order if valide
+// Execute Airlift order if valid
 bool AirliftOrder::execute() {
 
 	if (validate()) {
@@ -364,7 +364,7 @@ bool NegotiateOrder::validate() {
 	return true;
 }
 
-// Execute Negotiate order if valide
+// Execute Negotiate order if valid
 bool NegotiateOrder::execute() {
 
 	if (validate()) {
