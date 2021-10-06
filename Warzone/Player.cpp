@@ -76,23 +76,31 @@ void Player::addOwnedTerritory(Territory* territory) {
 }
 
 //Method used to create an order and add it to the players order list
- void Player::issueOrder(OrdersEnum orderType) {
+void Player::issueOrder(OrdersEnum orderType) {
 	//create order and issue order here
 	//update CanAttack and OwnedTerritories
-	 Order* order;
+	Order* order;
 
-	 if (orderType == Deploy)
+	switch (orderType) {
+	 case Deploy:
 		 order = new DeployOrder();
-	 if (orderType == Advance)
+		 break;
+	 case Advance:
 		 order = new AdvanceOrder();
-	 if (orderType == Bomb)
+		 break;
+	 case Bomb:
 		 order = new BombOrder();
-	 if (orderType == Blockade)
+		 break;
+	 case Blockade:
 		 order = new BlockadeOrder();
-	 if (orderType == Airlift)
+		 break;
+	 case Airlift:
 		 order = new AirliftOrder();
-	 if (orderType == Negotiate)
+		 break;
+	 case Negotiate:
 		 order = new NegotiateOrder();
+		 break;
+	}
 	
 	 if (order == NULL)
 		 return;
