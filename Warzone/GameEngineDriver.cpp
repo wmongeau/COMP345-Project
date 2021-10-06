@@ -13,7 +13,6 @@ using namespace std;
 int main() {
 	GameEngine *engine;
 	engine = new GameEngine();
-	string currentState;
 	do {
 		vector<Transition*> availableTransitions = engine -> getAvailableTransitions();
 		cout << *engine << endl;
@@ -27,7 +26,7 @@ int main() {
 		}
 
 		engine -> execute(availableTransitions[selected]);
-	} while(currentState != "Quit");
+	} while(Enums::statesEnumToString(engine -> getCurrentState() -> getStateName()) != "Quit");
 
 	return 0;
 }
