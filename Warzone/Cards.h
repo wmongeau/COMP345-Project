@@ -56,11 +56,13 @@ public:
     Hand(const Hand &h);
     //assignment operator
     Hand &operator=(const Hand &h);
-    //players hand
-    vector<Card *> playersHand;
     //method to remove the card from the hand
     Card *removeCardFromHand(int i);
     void selectCard(Card *c);
-    void addCardToHand(Card* c);
     void showHand();
+    vector<Card*> getPlayerHand();
+
+private:
+    //players hand
+    vector<Card*> playersHand;
 };

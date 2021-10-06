@@ -76,24 +76,27 @@ void Player::addOwnedTerritory(Territory* territory) {
 }
 
 //Method used to create an order and add it to the players order list
- void Player::issueOrder(string orderType) {
+ void Player::issueOrder(OrdersEnum orderType) {
 	//create order and issue order here
 	//update CanAttack and OwnedTerritories
 	 Order* order;
 
-	 if (orderType == "Deploy Order")
+	 if (orderType == Deploy)
 		 order = new DeployOrder();
-	 if (orderType == "Advance Order")
+	 if (orderType == Advance)
 		 order = new AdvanceOrder();
-	 if (orderType == "Bomb Order")
+	 if (orderType == Bomb)
 		 order = new BombOrder();
-	 if (orderType == "Blockade Order")
+	 if (orderType == Blockade)
 		 order = new BlockadeOrder();
-	 if (orderType == "Airlift Order")
+	 if (orderType == Airlift)
 		 order = new AirliftOrder();
-	 if (orderType == "Negotiate Order")
+	 if (orderType == Negotiate)
 		 order = new NegotiateOrder();
 	
+	 if (order == NULL)
+		 return;
+
 	 Orders->addOrder(order);
 }
 
@@ -130,16 +133,16 @@ void Player::addOwnedTerritory(Territory* territory) {
  void Player::addCardToHand(Card* card) {
 	 PlayerHand->selectCard(card);
  }
- 
-//Temporary method used to demo the functionality of the Player class
+
+ //Temporary method used to demo the functionality of the Player class
 Player* playerDriver(Map* map) {
 	Player* player1 = new Player("Will");
 	Card* card1 = new Card("CardType1");
 	Card* card2 = new Card("CardType2");
 	player1->addCardToHand(card1);
 	player1->addCardToHand(card2);
-	player1->issueOrder("Negotiate Order");
-	player1->issueOrder("Bomb Order");
+	player1->issueOrder(Negotiate);
+	player1->issueOrder(Bomb);
 
 	vector<Territory*> owned = vector<Territory*>();
 	vector<Territory*> unowned = vector<Territory*>();
@@ -162,3 +165,34 @@ Player* playerDriver(Map* map) {
 
 	return player1;
  }
+
+ostream& operator <<(ostream& out, Player& player)
+{
+	out << "Name: " << player.getPlayerName() << endl;
+	out << "Owned Territories count: " << player.getOwnedTerritories().size() << endl;
+	out << "Return of toAttack(): " << endl;
+
+	for (Territory* t : player.toAttack()) {
+		out << "    " << t->getId() << " " << t->getName() << endl;
+	}
+
+	out << "Return of toDefend(): " << endl;
+
+	for (Territory* t : player.toDefend()) {
+		out << "    " << t->getId() << " " << t->getName() << endl;
+	}
+
+	out << "Hand contains these cards: " << endl;
+
+	for (Card* c : player.getPlayerHand()->getPlayerHand()) {
+		out << "    " << c->getCardType() << endl;
+	}
+
+	out << "Orders list contains these cards: ";
+
+	for (Order* o : player.getOrders()->getOrdersVector()) {
+		out << "    " << o->getOrdersType() << endl;
+	}
+
+	return out;
+}

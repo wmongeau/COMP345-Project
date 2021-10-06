@@ -21,9 +21,10 @@ public:
 	void setCanAttack(std::vector<Territory*> territories);
 	std::vector<Territory*> toDefend();
 	std::vector<Territory*> toAttack();
-	void issueOrder(string orderType);
+	void issueOrder(OrdersEnum orderType);
 	void addOwnedTerritory(Territory* territory);
 	void addCardToHand(Card* card);
+	friend ostream& operator <<(ostream& out, Player& player);
 
 private:
 	std::vector<Territory*> CanDefend;
@@ -34,4 +35,5 @@ private:
 	std::vector<Territory*> OwnedTerritories;
 };
 
+ostream& operator <<(ostream& out, Player& player);
 Player* playerDriver(Map* map);

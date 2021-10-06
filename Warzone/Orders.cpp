@@ -42,6 +42,11 @@ bool Order::validate() {
 	return true;
 }
 
+OrdersEnum Order::getOrdersType()
+{
+	return OrdersType;
+}
+
 // If order is valid, verify if it is executable
 bool Order::execute()
 {
@@ -452,6 +457,11 @@ void OrdersList::move(int startIndex, int endIndex) {
 void OrdersList::remove(int index) {
 	OrdersVector.erase(OrdersVector.begin() + index);
 
+}
+
+vector<Order*> OrdersList::getOrdersVector()
+{
+	return OrdersVector;
 }
 
 // ---------- End of OrdersList class ---------- //
