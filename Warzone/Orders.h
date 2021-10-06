@@ -40,9 +40,10 @@ public:
 	// Sends order description to the output stream
 	friend ostream& operator<<(ostream& out, const Order& o);
 
+	OrdersEnum getOrdersType();
+
 	virtual bool execute();
 	virtual bool validate();
-
 };
 
 // --------------- Order subclasses --------------- //
@@ -188,8 +189,6 @@ public:
 	// Sends order description to the output stream
 	friend ostream& operator<<(ostream& out, const OrdersList& ol);
 
-	vector<Order*> OrdersVector;
-
 	// Adding an order to an orderslist
 	void addOrder(Order* order);
 
@@ -201,4 +200,9 @@ public:
 
 	// Removes the order at the specified position (index)
 	void remove(int index);
+
+	vector<Order*> getOrdersVector();
+
+private:
+	vector<Order*> OrdersVector;
 };

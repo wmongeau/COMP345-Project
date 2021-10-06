@@ -140,3 +140,8 @@ void Hand::showHand()
     }
     cout << "----------------------------" << endl;
 }
+
+vector<Card*> Hand::getPlayerHand()
+{
+    return playersHand;
+}
