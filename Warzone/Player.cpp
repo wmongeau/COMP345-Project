@@ -133,8 +133,8 @@ void Player::addOwnedTerritory(Territory* territory) {
  void Player::addCardToHand(Card* card) {
 	 PlayerHand->selectCard(card);
  }
- 
-//Temporary method used to demo the functionality of the Player class
+
+ //Temporary method used to demo the functionality of the Player class
 Player* playerDriver(Map* map) {
 	Player* player1 = new Player("Will");
 	Card* card1 = new Card("CardType1");
@@ -165,3 +165,34 @@ Player* playerDriver(Map* map) {
 
 	return player1;
  }
+
+ostream& operator <<(ostream& out, Player& player)
+{
+	out << "Name: " << player.getPlayerName() << endl;
+	out << "Owned Territories count: " << player.getOwnedTerritories().size() << endl;
+	out << "Return of toAttack(): " << endl;
+
+	for (Territory* t : player.toAttack()) {
+		out << "    " << t->getId() << " " << t->getName() << endl;
+	}
+
+	out << "Return of toDefend(): " << endl;
+
+	for (Territory* t : player.toDefend()) {
+		out << "    " << t->getId() << " " << t->getName() << endl;
+	}
+
+	out << "Hand contains these cards: " << endl;
+
+	for (Card* c : player.getPlayerHand()->getPlayerHand()) {
+		out << "    " << c->getCardType() << endl;
+	}
+
+	out << "Orders list contains these cards: ";
+
+	for (Order* o : player.getOrders()->getOrdersVector()) {
+		out << "    " << o->getOrdersType() << endl;
+	}
+
+	return out;
+}
