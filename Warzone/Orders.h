@@ -6,6 +6,7 @@
 
 using namespace std;
 
+// Enum for Order Type
 enum OrdersEnum
 {
 	None = 0,
@@ -42,17 +43,21 @@ public:
 	// Sends order description to the output stream
 	friend ostream& operator<<(ostream& out, const Order& o);
 
+	// Getter for Enum Order Type
 	OrdersEnum getOrdersType();
 
-	virtual bool execute();
+	// Verifies if order is valid
 	virtual bool validate();
+
+	// If order is valid, executes the order
+	virtual bool execute();
 };
 
 // --------------- Order subclasses --------------- //
 
 class DeployOrder : public Order {
 public:	
-	// Constructors
+	// Default Constructor
 	DeployOrder();
 
 	// Copy Constructor
@@ -61,22 +66,22 @@ public:
 	// Destructor
 	~DeployOrder();
 
-	//assignment operator
+	// Assignment operator
 	DeployOrder& operator=(const DeployOrder& d);
 
 	// Sends order description to the output stream
 	friend ostream& operator<<(ostream& out, const DeployOrder& d);
 
-	// If Deploy order is valid or not.
+	// Verifies if Deploy order is valid or not
 	bool validate() override;
 
-	// If Deploy order is successfully executed or not.
+	// If Deploy order is valid, executes order
 	bool execute() override;
 };
 
 class AdvanceOrder : public Order {
 public:
-	// Constructors
+	// Default Constructor
 	AdvanceOrder();
 
 	// Copy Constructor
@@ -85,22 +90,22 @@ public:
 	// Destructor
 	~AdvanceOrder();
 
-	//assignment operator
+	// Assignment operator
 	AdvanceOrder& operator=(const AdvanceOrder& a);
 
 	// Sends order description to the output stream
 	friend ostream& operator<<(ostream& out, const AdvanceOrder& a);
 
-	// If Advance order is valid or not. If the order is valid, it will output its effect.
+	// Verifies if Advance order is valid or not
 	bool validate() override;
 
-	// If Advance order is successfully executed or not.
+	// If Advance order is valid, executes order
 	bool execute() override;
 };
 
 class BombOrder : public Order {
 public:
-	// Constructors
+	// Default Constructor
 	BombOrder();
 
 	// Copy Constructor
@@ -115,16 +120,16 @@ public:
 	// Sends order description to the output stream
 	friend ostream& operator<<(ostream& out, const BombOrder& b);
 
-	// If Bomb order is valid or not. If the order is valid, it will output its effect.
+	// Verifies if Bomb order is valid or not
 	bool validate() override;
 
-	// If Bomb order is successfully executed or not.
+	// If Bomb order is valid, execute order
 	bool execute() override;
 };
 
 class BlockadeOrder : public Order {
 public:
-	// Constructors
+	// Default Constructor
 	BlockadeOrder();
 
 	// Copy Constructor
@@ -133,22 +138,22 @@ public:
 	// Destructor
 	~BlockadeOrder();
 
-	//assignment operator
+	// Assignment operator
 	BlockadeOrder& operator=(const BlockadeOrder& bl);
 
 	// Sends order description to the output stream
 	friend ostream& operator<<(ostream& out, const BlockadeOrder& bl);
 
-	// If Blockade order is valid or not. If the order is valid, it will output its effect.
+	// Verifies if Blockade order is valid or not
 	bool validate() override;
 
-	// If Blockade order is successfully executed or not.
+	// If Blockade order is valid, execute order
 	bool execute() override;
 };
 
 class AirliftOrder : public Order {
 public:
-	// Constructors
+	// Default Constructor
 	AirliftOrder();
 
 	// Copy Constructor
@@ -157,22 +162,22 @@ public:
 	// Destructor
 	~AirliftOrder();
 
-	//assignment operator
+	// Assignment operator
 	AirliftOrder& operator=(const AirliftOrder& air);
 
 	// Sends order description to the output stream
 	friend ostream& operator<<(ostream& out, const AirliftOrder& air);
 
-	// If Airlift order is valid or not. If the order is valid, it will output its effect.
+	// Verifies if Airlift order is valid or not.
 	bool validate() override;
 
-	// If Airlift order is successfully executed or not.
+	// If Airlift order is valid, execute order
 	bool execute() override;
 };
 
 class NegotiateOrder : public Order {
 public:
-	// Constructors
+	// Default Constructor
 	NegotiateOrder();
 
 	// Copy Constructor
@@ -181,23 +186,23 @@ public:
 	// Destructor
 	~NegotiateOrder();
 
-	//assignment operator
+	// Assignment operator
 	NegotiateOrder& operator=(const NegotiateOrder& n);
 
 	// Sends order description to the output stream
 	friend ostream& operator<<(ostream& out, const NegotiateOrder& n);
 
-	// If Negotiate order is valid or not. If the order is valid, it will output its effect.
+	// Verifies if Negotiate order is valid or not
 	bool validate() override;
 
-	// If Negotiate order is successfully executed or not.
+	// If Negotiate order is valid, executed order
 	bool execute() override;
 };
 
 
 class OrdersList {
 public:
-	// Constructors
+	// Default Constructor
 	OrdersList();
 
 	// Copy constructor
@@ -206,7 +211,7 @@ public:
 	// Destructor
 	~OrdersList();
 
-	//assignment operator
+	// Assignment operator
 	OrdersList& operator=(const OrdersList& ol);
 
 	// Sends order description to the output stream
@@ -218,12 +223,13 @@ public:
 	//Display orders from the orderslist
 	vector<Order*> showOrdersList();
 
-	// Move an order in the list of orders
+	// Move an order in the list of orders from a start index to an end index
 	void move(int startIndex, int endIndex);
 
 	// Removes the order at the specified position (index)
 	void remove(int index);
 
+	// Getter for the Orders vector
 	vector<Order*> getOrdersVector();
 
 private:

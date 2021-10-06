@@ -8,6 +8,7 @@
 using namespace std;
 #include "Orders.h"
 
+// Stream insertion operator for Enum Order Types
 ostream& operator<<(ostream& out, OrdersEnum orderType) {
 	switch (orderType) {
 	case None:
@@ -70,12 +71,13 @@ bool Order::validate() {
 	return true;
 }
 
+// Getter for Order Types
 OrdersEnum Order::getOrdersType()
 {
 	return OrdersType;
 }
 
-// If order is valid, verify if it is executable
+// If order is valid, execute order
 bool Order::execute()
 {
 	if (validate()) {
@@ -487,6 +489,7 @@ void OrdersList::remove(int index) {
 
 }
 
+// Getter for Orders vector
 vector<Order*> OrdersList::getOrdersVector()
 {
 	return OrdersVector;
