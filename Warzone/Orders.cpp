@@ -8,6 +8,34 @@
 using namespace std;
 #include "Orders.h"
 
+ostream& operator<<(ostream& out, OrdersEnum orderType) {
+	switch (orderType) {
+	case None:
+		out << "None";
+		break;
+	case Deploy:
+		out << "Deploy";
+		break;
+	case Advance:
+		out << "Advance";
+		break;
+	case Bomb:
+		out << "Bomb";
+		break;
+	case Blockade:
+		out << "Blockade";
+		break;
+	case Airlift:
+		out << "Airlift";
+		break;
+	case Negotiate:
+		out << "Negotiate";
+		break;
+	}
+
+	return out;
+}
+
 // ---------- Order class ---------- //
 
 // Default constructor

@@ -163,6 +163,8 @@ Player* playerDriver(Map* map) {
 	player1->setCanDefend(owned);
 	player1->setCanAttack(unowned);
 
+	cout << *player1;
+
 	return player1;
  }
 
@@ -188,7 +190,7 @@ ostream& operator <<(ostream& out, Player& player)
 		out << "    " << c->getCardType() << endl;
 	}
 
-	out << "Orders list contains these cards: ";
+	out << "Orders list contains these orders: " << endl;
 
 	for (Order* o : player.getOrders()->getOrdersVector()) {
 		out << "    " << o->getOrdersType() << endl;

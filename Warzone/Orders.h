@@ -17,6 +17,8 @@ enum OrdersEnum
 	Negotiate = 6
 };
 
+ostream& operator<<(ostream& out, OrdersEnum orderType);
+
 class Order {
 private:
 	// Enum for Order type
