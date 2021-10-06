@@ -94,6 +94,9 @@ void Player::addOwnedTerritory(Territory* territory) {
 	 if (orderType == "Negotiate Order")
 		 order = new NegotiateOrder();
 	
+	 if (order == NULL)
+		 return;
+
 	 Orders->addOrder(order);
 }
 
