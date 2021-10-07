@@ -81,7 +81,7 @@ OrdersEnum Order::getOrdersType()
 bool Order::execute()
 {
 	if (validate()) {
-		cout << "The order is executable!" << endl;
+		effect = "This is the effect of the order.";
 		return true;
 	}
 	else {
@@ -92,7 +92,7 @@ bool Order::execute()
 
 // Overloads the stream insertion operator.
 ostream& operator<<(ostream& out, const Order& orderOutStream) {
-	out << "The order is being executed" << endl;
+	out << orderOutStream.effect << endl;
 	return out;
 }
 
@@ -124,7 +124,7 @@ DeployOrder& DeployOrder::operator=(const DeployOrder& d)
 
 // Stream insertion operator
 ostream& operator<<(ostream& out, const DeployOrder& deployOrderOutStream) {
-	out << "The Deploy order is being executed" << endl;
+	out << deployOrderOutStream.effect << endl;
 	return out;
 }
 
@@ -136,9 +136,9 @@ bool DeployOrder::validate() {
 
 // Execute Deploy order if valid
 bool DeployOrder::execute() {
-
+	cout << "Executing Deploy order..." << endl;
 	if (validate()) {
-		cout << "The Deploy order is executable!" << endl;
+		effect = "This is the effect of the order.";
 		return true;
 	}
 	else {
@@ -176,7 +176,7 @@ AdvanceOrder& AdvanceOrder::operator=(const AdvanceOrder& a)
 
 // Stream insertion operator
 ostream& operator<<(ostream& out, const AdvanceOrder& advanceOrderOutStream) {
-	out << "The Advance order is being executed" << endl;
+	out << advanceOrderOutStream.effect << endl;
 	return out;
 }
 
@@ -188,9 +188,9 @@ bool AdvanceOrder::validate() {
 
 // Execute Advance order if valid
 bool AdvanceOrder::execute() {
-
+	cout << "Executing Advance order..." << endl;
 	if (validate()) {
-		cout << "The Advance order is executable!" << endl;
+		effect = "This is the effect of the order.";
 		return true;
 	}
 	else {
@@ -228,7 +228,7 @@ BombOrder& BombOrder::operator=(const BombOrder& b)
 
 // Stream insertion operator
 ostream& operator<<(ostream& out, const BombOrder& bombOrderOutStream) {
-	out << "The Bomb order is being executed" << endl;
+	out << bombOrderOutStream.effect << endl;
 	return out;
 }
 
@@ -240,9 +240,9 @@ bool BombOrder::validate() {
 
 // Execute Bomb order if valid
 bool BombOrder::execute() {
-
+	cout << "Executing Bomb order..." << endl;
 	if (validate()) {
-		cout << "The Bomb order is executable!" << endl;
+		effect = "This is the effect of the order.";
 		return true;
 	}
 	else {
@@ -280,7 +280,7 @@ BlockadeOrder& BlockadeOrder::operator=(const BlockadeOrder& bl)
 
 // Stream insertion operator
 ostream& operator<<(ostream& out, const BlockadeOrder& blockadeOrderOutStream) {
-	out << "The Blockade order is being executed" << endl;
+	out << blockadeOrderOutStream.effect << endl;
 	return out;
 }
 
@@ -292,9 +292,9 @@ bool BlockadeOrder::validate() {
 
 // Execute Blockade order if valid
 bool BlockadeOrder::execute() {
-
+	cout << "Executing Blockade order..." << endl;
 	if (validate()) {
-		cout << "The Blockade order is executable!" << endl;
+		effect = "This is the effect of the order.";
 		return true;
 	}
 	else {
@@ -332,7 +332,7 @@ AirliftOrder& AirliftOrder::operator=(const AirliftOrder& air)
 
 // Stream insertion operator
 ostream& operator<<(ostream& out, const AirliftOrder& airliftOrderOutStream) {
-	out << "The Airlift order is being executed" << endl;
+	out << airliftOrderOutStream.effect << endl;
 	return out;
 }
 
@@ -344,9 +344,9 @@ bool AirliftOrder::validate() {
 
 // Execute Airlift order if valid
 bool AirliftOrder::execute() {
-
+	cout << "Executing Airlift order..." << endl;
 	if (validate()) {
-		cout << "The Airlift order is executable!" << endl;
+		effect = "This is the effect of the order.";
 		return true;
 	}
 	else {
@@ -384,7 +384,7 @@ NegotiateOrder& NegotiateOrder::operator=(const NegotiateOrder& n)
 
 // Stream insertion operator
 ostream& operator<<(ostream& out, const NegotiateOrder& negotiateOrderOutStream) {
-	out << "The Negotiate order is being executed" << endl;
+	out << negotiateOrderOutStream.effect << endl;
 	return out;
 }
 
@@ -396,9 +396,9 @@ bool NegotiateOrder::validate() {
 
 // Execute Negotiate order if valid
 bool NegotiateOrder::execute() {
-
+	cout << "Executing Negotiate order..." << endl;
 	if (validate()) {
-		cout << "The Negotiate order is executable!" << endl;
+		effect = "This is the effect of the order.";
 		return true;
 	}
 	else {

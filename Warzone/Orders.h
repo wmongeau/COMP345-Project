@@ -24,6 +24,9 @@ class Order {
 private:
 	// Enum for Order type
 	OrdersEnum OrdersType;
+protected:
+	// Effect of order
+	string effect = "Order has not yet been executed.";
 public:
 	// Default Constructor
 	Order();
@@ -45,6 +48,7 @@ public:
 
 	// Getter for Enum Order Type
 	OrdersEnum getOrdersType();
+
 
 	// Verifies if order is valid
 	virtual bool validate();

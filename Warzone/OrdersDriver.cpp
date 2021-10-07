@@ -75,11 +75,17 @@ void test(){
 	cout << "Testing our execute() method for every Order type:" << endl;
 	//testing the execute method
 	deployOrder->execute();
+	cout << *deployOrder;
 	advanceOrder->execute();
+	cout << *advanceOrder;
 	bombOrder->execute();
+	cout << *bombOrder;
 	blockadeOrder->execute();
+	cout << *blockadeOrder;
 	airliftOrder->execute();
+	cout << *airliftOrder;
 	negotiateOrder->execute();
+	cout << *negotiateOrder;
 
 	cout << "----------" << endl;
 
