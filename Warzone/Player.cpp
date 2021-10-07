@@ -1,7 +1,4 @@
 #include "Player.h"
-/* ------------------------- */
-/* The #include Of this file */
-/* ------------------------- */
 
 #include <iostream>
 #include <string>
@@ -82,24 +79,30 @@ void Player::issueOrder(OrdersEnum orderType) {
 	Order* order;
 
 	switch (orderType) {
-	 case Deploy:
+		case Deploy:
 		 order = new DeployOrder();
-		 break;
-	 case Advance:
-		 order = new AdvanceOrder();
-		 break;
-	 case Bomb:
-		 order = new BombOrder();
-		 break;
-	 case Blockade:
-		 order = new BlockadeOrder();
-		 break;
-	 case Airlift:
-		 order = new AirliftOrder();
-		 break;
-	 case Negotiate:
-		 order = new NegotiateOrder();
-		 break;
+			break;
+		case Advance:
+			order = new AdvanceOrder();
+			break;
+		case Bomb:
+			order = new BombOrder();
+			break;
+		case Blockade:
+			order = new BlockadeOrder();
+			break;
+		case Airlift:
+			order = new AirliftOrder();
+			break;
+		case Negotiate:
+			order = new NegotiateOrder();
+			break;
+		case None: 
+			order = new Order();
+			break;
+		default:
+			order = NULL;
+			break;
 	}
 	
 	 if (order == NULL)
@@ -138,11 +141,12 @@ void Player::issueOrder(OrdersEnum orderType) {
 	 CanAttack = territories;
  }
 
+ //Temporary method to add cards to the players' hand
  void Player::addCardToHand(Card* card) {
 	 PlayerHand->selectCard(card);
  }
 
- //Temporary method used to demo the functionality of the Player class
+//Temporary method used to demo the functionality of the Player class
 Player* playerDriver(Map* map) {
 	Player* player1 = new Player("Will");
 	Card* card1 = new Card("CardType1");
@@ -176,6 +180,7 @@ Player* playerDriver(Map* map) {
 	return player1;
  }
 
+//Stream insertion operator for the Player class. Prints all info relevant to the player.
 ostream& operator <<(ostream& out, Player& player)
 {
 	out << "Name: " << player.getPlayerName() << endl;
