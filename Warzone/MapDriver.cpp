@@ -17,19 +17,23 @@ void mapDriver() {
 		while (!valid) {
 			map = MapLoader::loadMap();
 			if (map == NULL) {
-				cout << "Error, map was null";
-				return;
+				cout << "----------------------------------------------" << endl;
+				cout << "Error: map was null"<<endl;
+				cout << "----------------------------------------------" << endl;
+				continue;
 			}
 			valid = map->validate();
 			if (valid)
 				cout << "Map is valid and playable!!" << endl;
 			else
 				cout << "Map is invalid!!" << endl;
+			cout << "----------------------------------------------" << endl;
 		}
 	}
 	catch (exception e)
 	{
 		string answer;
+		cout << "----------------------------------------------" << endl;
 		cout << "Unexpected error found!"<<endl
 			<<"Press any key to exit application...";
 		cin >> answer; 
@@ -38,6 +42,7 @@ void mapDriver() {
 	cout << "Do you want to see the map's information?(y/n) ";
 	char seeMap;
 	cin >> seeMap;
+	cout << "----------------------------------------------" << endl;
 	seeMap = toupper(seeMap);
 	if (seeMap == 'Y')
 		map->print();
@@ -63,7 +68,7 @@ vector<string> splitString(string stringToSplit) {
 	return l;
 };
 
-
+//Function to load a map file and return a Map object
 Map* MapLoader::loadMap() {
 	cout << "Enter the file path to the map you wish to play!" << endl;
 	string filePath;
@@ -113,6 +118,7 @@ Map* MapLoader::loadMap() {
 	return map;
 };
 
+//Function to create Contitent object from a map file
 void MapLoader::loadContinent(string continentStr, int *continentId, Map* map) {
 	if(continentStr == "\r"){
 		return;
@@ -124,6 +130,7 @@ void MapLoader::loadContinent(string continentStr, int *continentId, Map* map) {
 	*continentId = *continentId + 1;
 }
 
+//Function to create Territory object from a map file
 void MapLoader::loadCountry(string country, Map* map) {
 	if(country == "\r"){
 		return;
@@ -134,6 +141,7 @@ void MapLoader::loadCountry(string country, Map* map) {
 	map->addTerritory(territory);
 }
 
+//Function to create a graph for all Territory object
 void MapLoader::loadBorder(string border, Map* map) {
 	if(border == "\r"){
 		return;
@@ -148,8 +156,6 @@ void MapLoader::loadBorder(string border, Map* map) {
 	for (int i = 1; i < bordersAsArray.size(); i++) {
 		edge = stoi(bordersAsArray[i]);
 		currentTerritory->addBorder(map->getTerritoryById(edge));
-		if (currentTerritory->getContinentId() != map->getTerritoryById(edge)->getContinentId())
-			map->getContinentById(currentTerritory->getContinentId())->addBorderContinent(map->getContinentById(map->getTerritoryById(edge)->getContinentId()));
 	}
 }
 
