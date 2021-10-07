@@ -249,7 +249,6 @@ bool BombOrder::execute() {
 		cout << "The Bomb order cannot be executed!" << endl;
 		return false;
 	}
-
 }
 
 // ---------- End of BombOrder class ---------- //
