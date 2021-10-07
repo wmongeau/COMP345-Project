@@ -38,14 +38,4 @@ void playerDriver(Map* map) {
 	player1->setCanAttack(unowned);
 
 	cout << *player1;
-
-	delete player1;
-	player1 = NULL;
-
-	delete card1;
-	card1 = NULL;
-
-	delete card2;
-	card2 = NULL; 
  }
-
