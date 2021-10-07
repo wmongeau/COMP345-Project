@@ -89,4 +89,25 @@ void ordersDriver(){
 	//testing the remove function
 	ordersListDriver->remove(1);
 	cout << *ordersListDriver;
+	
+	delete ordersListDriver;
+	ordersListDriver = NULL;
+
+	delete deployOrder;
+	deployOrder = NULL;
+
+	delete advanceOrder;
+	advanceOrder = NULL;
+
+	delete bombOrder;
+	bombOrder = NULL;
+
+	delete airliftOrder;
+	airliftOrder = NULL;
+
+	delete blockadeOrder;
+	blockadeOrder = NULL;
+
+	delete negotiateOrder;
+	negotiateOrder = NULL;
 }

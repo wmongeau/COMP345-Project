@@ -46,6 +46,8 @@ void mapDriver() {
 	seeMap = toupper(seeMap);
 	if (seeMap == 'Y')
 		map->print();
+	delete map;
+	map = NULL;
 };
 
 //FUNCTIONS
@@ -158,6 +160,3 @@ void MapLoader::loadBorder(string border, Map* map) {
 		currentTerritory->addBorder(map->getTerritoryById(edge));
 	}
 }
-
-
-

@@ -29,6 +29,9 @@ void gameEngineDriver() {
 
 		engine -> execute(availableTransitions[selected]);
 	} while(Enums::statesEnumToString(engine -> getCurrentState() -> getStateName()) != "Quit");
+
+	delete engine;
+	engine = NULL;
 }
 
 // Entry point for the game
@@ -78,6 +81,8 @@ int main() {
 				Map* map;
 				map = MapLoader::loadMap();
 				playerDriver(map);
+				delete map;
+				map = NULL;
 			}
 			else if(selectedModule == 3) {
 				ordersDriver();
