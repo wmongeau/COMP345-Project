@@ -9,18 +9,7 @@
 using namespace std;
 #include "Orders.h"
 
-void test();
-
-//int main(){
-//
-//	test();
-//
-//	return 1;
-//	//contains a main function that creates a list of orders and demonstrates that the OrdersList implemented
-//}
-
-// Testing Orders and OrdersList.
-void test(){
+void ordersDriver(){
 
 	// Creating an OrdersList object.
 	OrdersList* ordersListDriver = new OrdersList();
@@ -75,11 +64,17 @@ void test(){
 	cout << "Testing our execute() method for every Order type:" << endl;
 	//testing the execute method
 	deployOrder->execute();
+	cout << *deployOrder;
 	advanceOrder->execute();
+	cout << *advanceOrder;
 	bombOrder->execute();
+	cout << *bombOrder;
 	blockadeOrder->execute();
+	cout << *blockadeOrder;
 	airliftOrder->execute();
+	cout << *airliftOrder;
 	negotiateOrder->execute();
+	cout << *negotiateOrder;
 
 	cout << "----------" << endl;
 

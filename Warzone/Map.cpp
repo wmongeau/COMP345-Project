@@ -11,11 +11,12 @@ using namespace std;
 #include "Map.h"
 
 // ---------- Map class ---------- //
+//Default constructor
 Map::Map() {
     Continents = vector<Continent*>();
     Territories = vector<Territory*>();
 };
-
+//Copy constructor
 Map::Map(Map* map) {
     Continents = vector<Continent*>();
     Territories = vector<Territory*>();
@@ -23,18 +24,17 @@ Map::Map(Map* map) {
     {
         Continents.push_back(new Continent(map-> Continents[i]));
     }
-    copyContinentBorders(map->Continents);
     for (int i = 0; i < map->Territories.size(); i++)
     {
         Territories.push_back(new Territory(map->Territories[i]));
     }
     copyTerritoryBorders(map->Territories);
 };
-
+//Assignment operator
 Map& Map::operator =(Map* map) {
     return *this;
 };
-
+//Function to copy the graph layout of a Map object
 void Map::copyTerritoryBorders(std::vector<Territory*> copyTerritories) {
     int copyId = 0;
     for (int i = 0; i < Territories.size(); i++) {
@@ -46,77 +46,93 @@ void Map::copyTerritoryBorders(std::vector<Territory*> copyTerritories) {
     }
 }
 
-void Map::copyContinentBorders(std::vector<Continent*> copyContinent) {
-    int copyId = 0;
-    for (int i = 0; i < Continents.size(); i++) {
-        for (int j = 0; j < copyContinent[i]->getBorders().size(); j++)
-        {
-            copyId = copyContinent[i]->getBorders()[j]->getId();
-            Continents[i]->addBorderContinent(getContinentById(copyId));
-        }
-    }
-}
-
+//Function to add a Continent object to Map
 void Map::addContinent(Continent* continent) {
     Continents.push_back(continent);
 }
-
+//Function to add a Territory oobject to Map
 void Map::addTerritory(Territory* territory)
 {
     Territories.push_back(territory);
 };
 
+//Function to print the map details
 void Map::print() {
     cout << endl << "-----LIST OF CONTINENTS AND THEIR BORDERS----- " << endl;
     for(Continent* var : Continents)
     {
-        cout << var->toString() << endl;
+        cout << var->toString();
     }
     cout << "-----LIST OF TERRITORIES AND THEIR BORDERS----- " << endl;
     for(Territory* var : Territories) {
-        cout << var->toString() << endl;
+        cout << var->toString();
     }
 
 }
-ostream& operator << (ostream& out, const Map& c)
+//stream insertion operator
+ostream& operator << (ostream& out, const Map& m)
 {
     out << endl << "-----LIST OF CONTINENTS AND THEIR BORDERS----- " << endl;
-    for (Continent* var : c.Continents)
+    for (Continent* var : m.Continents)
     {
         out << var->toString() << endl;
     }
     out << "-----LIST OF TERRITORIES AND THEIR BORDERS----- " << endl;
-    for (Territory* var : c.Territories) {
+    for (Territory* var : m.Territories) {
         out << var->toString() << endl;
     }
     return out;
 }
+
+//Function to validate if a map respect the requirements
 bool Map::validate() {
-    bool territoryIsGraph = false, continentIsGraph = false, singleContinent = false;;
-    vector<bool> visitedTerritories(Territories.size()+1), visitedContinents(Continents.size()+1);
-    dfsTerritory(Territories[0]->getId(), Territories[0], visitedTerritories);
-    dfsContinent(Continents[0]->getId(), Continents[0], visitedContinents);
-    int countT = 0,countC=0;
-    for (int i = 0; i < Territories.size()+1; i++) {
+    bool territoryIsGraph = false, continentIsGraph = true, singleContinent = false;
+    vector<bool> visitedTerritories(Territories.size()+1);
+    vector<int> subGraphCount(Continents.size() + 1);
+    int countT = 0, countC = 0, initIndex = 0;
+
+    //Checking if territories are a valid graph
+    dfsTerritory(Territories[initIndex]->getId(), Territories[initIndex], visitedTerritories);
+    for (int i = 0; i < Territories.size() + 1; i++) {
         if (visitedTerritories[i])
             countT++;
+
     }
-    for (int i = 0; i < Continents.size()+1; i++) {
-        if (visitedContinents[i])
-            countC++;
-    }
+    cout << "----------------------------------------------" << endl;
     if (countT == visitedTerritories.size() - 1) {
         territoryIsGraph = true;
         cout << "Territory graph is valid!" << endl;
     }
     else
         cout << "Territory graph is invalid!" << endl;
-    if (countC == visitedContinents.size() - 1) {
-        continentIsGraph = true;
-        cout << "Territory graph is valid!" << endl;
+
+    //Checking if territories are a valid sub-graph for each Continents
+    visitedTerritories = vector<bool>(Territories.size() + 1);
+    for (int i = 0; i < Continents.size(); i++) {
+        while (Territories[initIndex]->getContinentId() != Continents[i]->getId())
+            initIndex++;
+        dfsTerritorySubGraph(Territories[initIndex]->getId(), Continents[i]->getId(), Territories[initIndex], visitedTerritories, subGraphCount);
+        for (int j = 0; j < Territories.size(); j++) {
+            if (Territories[j]->getContinentId() == Continents[i]->getId())
+                countC++;
+        }
+        if (countC != subGraphCount[i+1]) {
+            continentIsGraph = false;
+            break;
+        }
+        initIndex = 0;
+        countC = 0;
     }
+    cout << "------------------------" << endl;
+    if (continentIsGraph) {
+        continentIsGraph = true;
+        cout << "Continent has a valid Sub-graph!" << endl;
+   }
     else
-         cout << "Continent graph is invalid!" << endl;
+         cout << "Continent has a invalid Sub-graph!" << endl;
+    cout << "------------------------" << endl;
+
+    //Checking if every territories belong to a single continent
     if (checkContinentCount())
     {
         singleContinent = true;
@@ -124,9 +140,12 @@ bool Map::validate() {
     }
     else
         cout << "1 or more territory has more than a single contient!" << endl;
+    cout << "----------------------------------------------" << endl;
+
     return territoryIsGraph && continentIsGraph && singleContinent;
 }
 
+//Function to traverse the whole map from a chosen territory
 void Map::dfsTerritory(int Id,Territory* country,vector<bool> &visited) {
     visited[Id] = true;
     int adjCountry;
@@ -137,16 +156,20 @@ void Map::dfsTerritory(int Id,Territory* country,vector<bool> &visited) {
     }
 }
 
-void Map::dfsContinent(int Id, Continent* continent, vector<bool>& visited) {
-    visited[Id] = true;
-    int adjContinent;
-    for (int i = 0; i < continent->getBorders().size(); i++) {
-        adjContinent = continent->getBorders()[i]->getId();
-        if (!visited[adjContinent])
-            dfsContinent(adjContinent, continent->getBorders()[i], visited);
+//Function to traverse the whole chosen continent from a chosen territory
+void Map::dfsTerritorySubGraph(int Id, int continentId, Territory* country, vector<bool>& visited, vector<int>& subGraphCount ) {
+    visited[Id]=true;
+    subGraphCount[continentId]++;
+    int adjCountry,adjContinentId;
+    for (int i = 0; i < country->getBorders().size(); i++) {
+        adjCountry = country->getBorders()[i]->getId();
+        adjContinentId = country->getBorders()[i]->getContinentId();
+        if (!visited[adjCountry] && adjContinentId==continentId)
+            dfsTerritorySubGraph(adjCountry,continentId, country->getBorders()[i], visited,subGraphCount);
     }
 }
 
+//Function to check if a territory belongs to a single continent
 bool Map::checkContinentCount() {
     vector<int> count(Territories.size() + 1);
     for (int i = 1; i < count.size(); i++)
@@ -158,21 +181,21 @@ bool Map::checkContinentCount() {
             return false;
     return true;
 }
-
+//Function to get a continent by searching its id
 Continent* Map::getContinentById(int continentId) {
     for (int i = 0; i < Continents.size(); i++)
         if (Continents[i]->getId() == continentId)
             return Continents[i];
     return NULL;
 }
-
+//Function ro get a territory by searching its id
 Territory* Map::getTerritoryById(int territoryId) {
     for (int i = 0; i < Territories.size(); i++)
         if (Territories[i]->getId() == territoryId)
             return Territories[i];
     return NULL;
 }
-
+//Destructor
 Map::~Map() {
     for (auto p : Territories) {
         delete p;
@@ -185,13 +208,14 @@ Map::~Map() {
 }
 
 // ---------- Continent class ---------- //
+//Constructor
 Continent::Continent(int id, string name, int armyVal, string colour) {
     Id = id;
     Name = name;
     Colour = colour;
     ArmyValue = armyVal;
 }
-
+//Copy constructor
 Continent::Continent(Continent* continent)
 {
     Id = continent->getId();
@@ -199,7 +223,7 @@ Continent::Continent(Continent* continent)
     Colour = continent->getColour();
     ArmyValue = continent->getArmyValue();
 }
-
+//Assignment Operator
 Continent& Continent::operator =(Continent* continent)
 {
     Id = continent->getId();
@@ -209,69 +233,51 @@ Continent& Continent::operator =(Continent* continent)
     return *this;
 }
 
-void Continent::addBorderContinent(Continent* continent) {
-    for (int i = 0; i < Borders.size(); i++)
-        if (Borders[i]->Id == continent->Id)
-            return;
-    Borders.push_back(continent);
-}
-
+//Funciton to get the continent id
 const int Continent::getId()const
 {
     return Id;
 }
-
+//Funciton to get the continent name
 const std::string Continent::getName() const
 {
     return Name;
 }
-
+//Funciton to get the continent army value
 const int Continent::getArmyValue()const
 {
     return ArmyValue;
 }
-
+//Funciton to get the continent colour
 const std::string Continent::getColour()const
 {
     return Colour;
 }
-
-const std::vector<Continent*> Continent::getBorders()const
-{
-    return Borders;
-}
-
-Continent::~Continent() {
-    for (auto p : Borders) {
-        delete p;
-        p = NULL;
-    }
-}
-
 string Continent::toString()
 {
     string result;
 
-    result.append(Name + " -->");
-    for(Continent* var : Borders) {
-        result.append(" ");
-        result.append(var->getName());
-    }
+    result.append(to_string(Id) + " ");
+    result.append(Name + " ");
+    result.append(to_string(ArmyValue) + " ");
+    result.append(Colour);
     result.append("\n");
     return result;
 }
-
+//Stream insertion operator
 ostream& operator << (ostream& out, const Continent& c)
 {
-    out << c.getName() << " -->";
-    for (Continent* var : c.getBorders()) {
-        out << " "<< var->getName();
-    }
-    out << endl;
+    out << c.getId() << " " << c.getName() << " " << c.getArmyValue() << " " << c.getColour() << endl;
     return out;
 }
 
+//Destructor
+Continent::~Continent() {
+    
+}
+
 // ---------- Territory class ---------- //
+//Constructor
 Territory::Territory(int id, string name, int continentId, int x, int y) {
     Id = id;
     Name = name;
@@ -279,7 +285,7 @@ Territory::Territory(int id, string name, int continentId, int x, int y) {
     X = x;
     Y = y;
 }
-
+//Copy constructor
 Territory::Territory(Territory* territory)
 {
     Id = territory->getId();
@@ -288,7 +294,7 @@ Territory::Territory(Territory* territory)
     X = territory->getX();
     Y = territory->getY();
 }
-
+//Assignment operator
 Territory& Territory::operator = (Territory * territory)
 {
     Id = territory->getId();
@@ -298,45 +304,51 @@ Territory& Territory::operator = (Territory * territory)
     Y = territory->getY();
     return *this;
 }
-
+//Function to add an adjacent territory
 void Territory::addBorder(Territory* territory) {
     Borders.push_back(territory);
 }
 
+//Function to get the Territory id
 const int Territory::getId()const
 {
     return Id;
 }
-
+//Function to get the Territory name
 const std::string Territory::getName()const
 {
     return Name;
 }
-
+//Function to get the continent id
 const int Territory::getContinentId()const
 {
     return ContinentId;
 }
-
+//Function to get x
 const int Territory::getX()const
 {
     return X;
 }
-
+//Function to get y
 const int Territory::getY()const
 {
     return Y;
 }
-
+//Function to get the Territory borders
 const std::vector<Territory*> Territory::getBorders() const
 {
     return Borders;
 }
-
+//Function to return the Territory information
 string Territory::toString()
 {
     string result;
-
+    result.append(to_string(Id) + " ");
+    result.append(Name + " ");
+    result.append(to_string(ContinentId) + " ");
+    result.append(to_string(X) + " ");
+    result.append(to_string(Y) + " ");
+    result.append("\n   ");
     result.append(Name+" -->");
     for (Territory* var : Borders) {
         result.append(" ");
@@ -345,16 +357,18 @@ string Territory::toString()
     result.append("\n");
     return result;
 }
+//Stream insertion operator
 ostream& operator << (ostream& out, const Territory& c)
 {
-    out << c.getName() << " -->";
+    out << c.getId() << " " << c.getName() << " " << c.getContinentId() << " " << c.getX() << " " << c.getY() << " " << endl;
+    out <<"   " << c.getName() << " -->";
     for (Territory* var : c.getBorders()) {
         out << " " << var->getName();
     }
     out << endl;
     return out;
 }
-
+//Destructor
 Territory::~Territory() {
     for (auto p : Borders) {
         delete p;
