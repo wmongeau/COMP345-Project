@@ -3,6 +3,13 @@
 #include <vector>
 
 using namespace std;
+
+namespace CardTypeEnums{
+//enum of card types
+enum cardType {Bomb, Reinforcement, Blockade, Airlift, Diplomacy};
+// method to convert card types to strings
+string cardTypeEnumToString(cardType value);
+}
 class Card
 {
 public:
@@ -14,15 +21,17 @@ public:
     Card(const Card &c);
     //assignment operator
     Card &operator=(const Card &c);
+    //stream insertion operator
+    friend ostream& operator<<(ostream& os, const Card& c);
     //parametrized card constructor
-    Card(string c);
+    Card(CardTypeEnums::cardType);
     //plays the card
     void play();
     //returns the card type
     string getCardType();
 private:
     //card type
-    string type;
+    CardTypeEnums::cardType type;
 };
 class Deck
 {
@@ -35,14 +44,19 @@ public:
     Deck(const Deck &d);
     //assignment operator
     Deck &operator=(const Deck &d);
-    //deck of cards
-    vector<Card *> deckOfCards;
-    // method to draw the card
+    //stream insertion operator
+    friend ostream& operator<<(ostream& os, const Deck& d);
+    // method to draw a card from the deck
     Card *draw();
     // method to return the card back to the deck
     void returnCardToDeck(Card *c);
     // method to show the deck
     void showDeck();
+    // method to get the deck of cards
+    vector<Card*> getDeckOfCards();
+private:
+    //deck of cards
+    vector<Card *> deckOfCards;
 };
 
 class Hand
@@ -56,12 +70,16 @@ public:
     Hand(const Hand &h);
     //assignment operator
     Hand &operator=(const Hand &h);
+    //stream insertion operator
+    friend ostream& operator<<(ostream& os, const Hand& h);
     //method to remove the card from the hand
     Card *removeCardFromHand(int i);
+    //method to select a card
     void selectCard(Card *c);
+    //method to show your current hand
     void showHand();
+    //method to get the players hand
     vector<Card*> getPlayerHand();
-
 private:
     //players hand
     vector<Card*> playersHand;

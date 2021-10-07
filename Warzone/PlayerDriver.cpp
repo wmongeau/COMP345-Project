@@ -11,8 +11,8 @@ using namespace std;
 //Temporary method used to demo the functionality of the Player class
 void playerDriver(Map* map) {
 	Player* player1 = new Player("Will");
-	Card* card1 = new Card("CardType1");
-	Card* card2 = new Card("CardType2");
+	Card* card1 = new Card(CardTypeEnums::Airlift);
+	Card* card2 = new Card(CardTypeEnums::Blockade);
 	player1->addCardToHand(card1);
 	player1->addCardToHand(card2);
 	player1->issueOrder(Negotiate);
