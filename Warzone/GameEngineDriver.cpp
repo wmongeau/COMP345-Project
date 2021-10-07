@@ -68,10 +68,13 @@ int main() {
 				cin >> selectedModule;
 			}
 
+			cin.ignore();
+
 			if(selectedModule == 1) {
 				mapDriver();
 			}
 			else if(selectedModule == 2) {
+				cout << "Before demonstrating the player class, we must load a map!" << endl; 
 				Map* map;
 				map = MapLoader::loadMap();
 				playerDriver(map);
