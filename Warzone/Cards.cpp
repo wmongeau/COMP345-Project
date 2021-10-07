@@ -8,60 +8,104 @@
 
 using namespace std;
 
-const int CARDS = 5;
-
-//Card Constructor
+// ---------- Card class ---------- //
+//constructor
 Card::Card()
 {
 }
-
-//Card Destructor
+//destructor
 Card::~Card()
 {
 }
-
-//Constructor with a string parameter
-Card::Card(string c)
-{
-    this->type = c;
-}
-
-//Copy constructor
+//copy constructor
 Card::Card(const Card &c)
 {
     this->type = c.type;
+}
+//assignment operator
+Card& Card::operator=(const Card& c){
+    type = c.type;
+    return *this;
+}
+
+//stream insertion operator
+ostream& operator<<(ostream& os, const Card& c){
+    os << CardTypeEnums::cardTypeEnumToString(c.type);
+	return os;
+}
+
+//parametrized card constructor
+Card::Card(CardTypeEnums::cardType c){
+    this->type=c;
 }
 
 //method to play a card
 void Card::play()
 {
-    cout << type << " card is being played" << endl;
+    cout << CardTypeEnums::cardTypeEnumToString(type) << " card is being played" << endl;
 }
 
-// method to return the card type
+//method to return the card type
 string Card::getCardType()
 {
-    return type;
+    return CardTypeEnums::cardTypeEnumToString(type);
 }
 
-//Constructor to create a deck of cards
+//method to convert card types to strings
+string CardTypeEnums::cardTypeEnumToString(CardTypeEnums::cardType value){
+	switch (value){
+		case CardTypeEnums::Bomb: {
+			return "Bomb" ;
+	     	}
+		case CardTypeEnums::Reinforcement: {
+			return "Reinforcement" ;
+	     	}
+		case CardTypeEnums::Blockade: {
+			return "Blockade" ;
+	     	}
+		case CardTypeEnums::Airlift: {
+			return "Airlift" ;
+	     	}
+		case CardTypeEnums::Diplomacy: {
+			return "Diplomacy" ;
+	     	}
+	}
+	return "Error";
+}
+// ---------- Deck class ---------- //
+//constructor to create a deck of cards
 Deck::Deck()
 {
-    string type[] = {"Bomb", "Reinforcement", "Blockade", "Airlift", "Diplomacy"};
-
+CardTypeEnums::cardType typelist[] ={CardTypeEnums::Bomb,CardTypeEnums::Reinforcement,CardTypeEnums::Blockade,CardTypeEnums::Airlift,CardTypeEnums::Diplomacy};
+    const int CARDS = 5;
     for (int count = 0; count < CARDS; count++)
     {
-        deckOfCards.push_back(new Card(type[count % 5]));
+        deckOfCards.push_back(new Card(typelist[count % 5]));
     }
     cout << "A deck of " << CARDS << " cards has been created" << endl;
 }
 
-//Destructor for a deck of cards
+//destructor for a deck of cards
 Deck::~Deck()
 {
 }
+//copy constructor
+Deck::Deck(const Deck &d)
+{
+    this->deckOfCards = d.deckOfCards;
+}
+//assignment operator
+Deck& Deck::operator=(const Deck& d){
+    this->deckOfCards = d.deckOfCards;
+    return *this;
+}
+//stream insertion operator
+ostream& operator<<(ostream& os, const Deck& d){
+    os << "There is " << d.deckOfCards.size() << " cards in the deck."<<endl;
+	return os;
+}
 
-// Draws card from deck
+// method to draw a card from the deck
 Card *Deck::draw()
 {
 
@@ -71,7 +115,6 @@ Card *Deck::draw()
     {
         // finds a random value in the deck of card range
         int j = rand() % deckOfCards.size();
-
         //shuffles the two cards
         Card *temp = deckOfCards[i];
         deckOfCards[i] = deckOfCards[j];
@@ -85,7 +128,14 @@ Card *Deck::draw()
     return drawCard;
 }
 
-// method to show the current card deck
+// method to return the card back to the deck
+void Deck::returnCardToDeck(Card *c)
+{
+    deckOfCards.push_back(c);
+    cout << c->getCardType() << " card is back in the deck" << endl;
+}
+
+// method to show the deck
 void Deck::showDeck()
 {
     cout << "------- CURRENT DECK -------" << endl;
@@ -96,28 +146,35 @@ void Deck::showDeck()
     }
     cout << "----------------------------" << endl;
 }
-
-// returns the card back into the deck
-void Deck::returnCardToDeck(Card *c)
+// method to get the deck of cards
+vector<Card*> Deck::getDeckOfCards()
 {
-    deckOfCards.push_back(c);
-    cout << c->getCardType() << " card is back in the deck" << endl;
+    return deckOfCards;
 }
 
-// hand constructor
+// ---------- Hand class ---------- //
+// constructor
 Hand::Hand()
 {
 }
-
-// hand destructor
+// destructor
 Hand::~Hand()
 {
 }
-
-// method to select a card and putting it in the players hand
-void Hand::selectCard(Card *c)
+//copy constructor
+Hand::Hand(const Hand &h)
 {
-    playersHand.push_back(c);
+    this->playersHand = h.playersHand;
+}
+//assignment operator
+Hand& Hand::operator=(const Hand& h){
+    this->playersHand = h.playersHand;
+    return *this;
+}
+//stream insertion operator
+ostream& operator<<(ostream& os, const Hand& h){
+    os << "There is " << h.playersHand.size() << " cards in the players hand."<<endl;
+	return os;
 }
 
 // method to remove card from players hand
@@ -127,6 +184,12 @@ Card *Hand::removeCardFromHand(int i)
     playersHand.erase(playersHand.begin() + i);
     cout << c->getCardType() << " has been removed from hand" << endl;
     return c;
+}
+
+// method to select a card and putting it in the players hand
+void Hand::selectCard(Card *c)
+{
+    playersHand.push_back(c);
 }
 
 // method to show the players current hand
@@ -140,7 +203,7 @@ void Hand::showHand()
     }
     cout << "----------------------------" << endl;
 }
-
+//method to get the players hand
 vector<Card*> Hand::getPlayerHand()
 {
     return playersHand;
