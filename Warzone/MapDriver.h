@@ -17,3 +17,5 @@ private:
 	static void loadCountry(string country,Map* map);
 	static void loadBorder(string border,Map* map);
 };
+
+void mapDriver();

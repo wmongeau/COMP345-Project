@@ -39,4 +39,3 @@ private:
 };
 
 ostream& operator <<(ostream& out, Player& player);
-Player* playerDriver(Map* map);

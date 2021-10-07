@@ -9,23 +9,23 @@
 
 using namespace std;
 
-//MAIN FUNCTIONS
-int main() {
+//Driver for the map loading
+void mapDriver() {
 	Map* map;
 	bool valid = false;
-	Player* player;
 	try {
 		while (!valid) {
 			map = MapLoader::loadMap();
-			if (map == NULL)
-				return 1;
+			if (map == NULL) {
+				cout << "Error, map was null";
+				return;
+			}
 			valid = map->validate();
 			if (valid)
 				cout << "Map is valid and playable!!" << endl;
 			else
 				cout << "Map is invalid!!" << endl;
 		}
-		player = playerDriver(map);
 	}
 	catch (exception e)
 	{
@@ -33,17 +33,14 @@ int main() {
 		cout << "Unexpected error found!"<<endl
 			<<"Press any key to exit application...";
 		cin >> answer; 
-		return 1;
+		return;
 	}
 	cout << "Do you want to see the map's information?(y/n) ";
 	char seeMap;
 	cin >> seeMap;
 	seeMap = toupper(seeMap);
-	delete player;
-	player = NULL;
 	if (seeMap == 'Y')
 		map->print();
-	return 1;
 };
 
 //FUNCTIONS

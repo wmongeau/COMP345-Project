@@ -9,18 +9,7 @@
 using namespace std;
 #include "Orders.h"
 
-void test();
-
-//int main(){
-//
-//	test();
-//
-//	return 1;
-//	//contains a main function that creates a list of orders and demonstrates that the OrdersList implemented
-//}
-
-// Testing Orders and OrdersList.
-void test(){
+void ordersDriver(){
 
 	// Creating an OrdersList object.
 	OrdersList* ordersListDriver = new OrdersList();
