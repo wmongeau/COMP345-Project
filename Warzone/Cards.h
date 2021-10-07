@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include "Orders.h"
 
 using namespace std;
 
@@ -26,7 +27,7 @@ public:
     //parametrized card constructor
     Card(CardTypeEnums::cardType);
     //plays the card
-    void play();
+    Order* play();
     //returns the card type
     string getCardType();
 private:

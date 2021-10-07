@@ -15,6 +15,9 @@ void playerDriver(Map* map) {
 	Card* card2 = new Card(CardTypeEnums::Blockade);
 	player1->addCardToHand(card1);
 	player1->addCardToHand(card2);
+	player1->getPlayerHand()->showHand();
+	cout << *player1 << endl;
+	player1->getOrders()->addOrder(player1->getPlayerHand()->getPlayerHand()[0]->play());
 	player1->issueOrder(Negotiate);
 	player1->issueOrder(Bomb);
 

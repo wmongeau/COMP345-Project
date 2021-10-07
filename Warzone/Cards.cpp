@@ -40,9 +40,31 @@ Card::Card(CardTypeEnums::cardType c){
 }
 
 //method to play a card
-void Card::play()
+Order* Card::play()
 {
     cout << CardTypeEnums::cardTypeEnumToString(type) << " card is being played" << endl;
+    switch (type)
+    {
+    case CardTypeEnums::Bomb:
+        return dynamic_cast<Order*>(new BombOrder());
+        break;
+    case CardTypeEnums::Reinforcement:
+        return dynamic_cast<Order*>(new DeployOrder());
+        break;
+    case CardTypeEnums::Blockade:
+        return dynamic_cast<Order*>(new BlockadeOrder());
+        break;
+    case CardTypeEnums::Airlift:
+        return dynamic_cast<Order*>(new AirliftOrder());
+        break;
+    case CardTypeEnums::Diplomacy:
+        return dynamic_cast<Order*>(new NegotiateOrder());
+        break;
+    default:
+        break;
+    }
+    
+    return NULL;
 }
 
 //method to return the card type
@@ -88,6 +110,10 @@ CardTypeEnums::cardType typelist[] ={CardTypeEnums::Bomb,CardTypeEnums::Reinforc
 //destructor for a deck of cards
 Deck::~Deck()
 {
+    for (auto p : deckOfCards) {
+        delete p;
+        p = NULL;
+    }
 }
 //copy constructor
 Deck::Deck(const Deck &d)
@@ -160,6 +186,10 @@ Hand::Hand()
 // destructor
 Hand::~Hand()
 {
+    for (auto p : playersHand) {
+        delete p;
+        p = NULL;
+    }
 }
 //copy constructor
 Hand::Hand(const Hand &h)

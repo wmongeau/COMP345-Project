@@ -40,4 +40,16 @@ void cardsDriver(){
     hand->showHand();
     // showing the deck of the current hand
     deck ->showDeck();
+    delete hand;
+    hand = NULL;
+    delete deck;
+    deck = NULL;
+    //delete first;
+    first = NULL;
+    //delete second;
+    second = NULL;
+    //delete third;
+    third = NULL;
+    //delete check;
+    check = NULL;
 }
