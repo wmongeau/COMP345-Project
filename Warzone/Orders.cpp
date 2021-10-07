@@ -117,8 +117,9 @@ DeployOrder::~DeployOrder() {
 }
 
 // Assignment operator
-DeployOrder& DeployOrder::operator=(const DeployOrder& d)
+DeployOrder& DeployOrder::operator=(const DeployOrder& d) 
 {
+	Order::operator=(d);
 	return *this;
 }
 
@@ -171,6 +172,7 @@ AdvanceOrder::~AdvanceOrder() {
 // Assignment operator
 AdvanceOrder& AdvanceOrder::operator=(const AdvanceOrder& a)
 {
+	Order::operator=(a);
 	return *this;
 }
 
@@ -223,6 +225,7 @@ BombOrder::~BombOrder() {
 // Assignment operator
 BombOrder& BombOrder::operator=(const BombOrder& b)
 {
+	Order::operator=(b);
 	return *this;
 }
 
@@ -274,6 +277,7 @@ BlockadeOrder::~BlockadeOrder() {
 // Assignment operator
 BlockadeOrder& BlockadeOrder::operator=(const BlockadeOrder& bl)
 {
+	Order::operator=(bl);
 	return *this;
 }
 
@@ -326,6 +330,7 @@ AirliftOrder::~AirliftOrder() {
 // Assignment operator
 AirliftOrder& AirliftOrder::operator=(const AirliftOrder& air)
 {
+	Order::operator=(air);
 	return *this;
 }
 
@@ -378,6 +383,7 @@ NegotiateOrder::~NegotiateOrder() {
 // Assignment operator
 NegotiateOrder& NegotiateOrder::operator=(const NegotiateOrder& n)
 {
+	Order::operator=(n);
 	return *this;
 }
 
@@ -443,12 +449,13 @@ OrdersList::OrdersList(const OrdersList& ol) {
 
 // Destructor
 OrdersList::~OrdersList() {
-
+	OrdersVector.clear();
 }
 
 // Assignment operator
 OrdersList& OrdersList::operator=(const OrdersList& ol)
 {
+	OrdersVector = ol.OrdersVector;
 	return *this;
 }
 

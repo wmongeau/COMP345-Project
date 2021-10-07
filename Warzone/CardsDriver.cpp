@@ -33,11 +33,17 @@ void cardsDriver(){
     // playing the first card
     first ->play();
     // card is removed from the hand
-    Card* check=hand->removeCardFromHand(0);
+    Card* check = hand->removeCardFromHand(0);
     // card is returned back to the deck
     deck->returnCardToDeck(check);
     // showing the current hand
     hand->showHand();
     // showing the deck of the current hand
     deck ->showDeck();
+
+    delete deck;
+    deck = NULL;
+
+    delete hand;
+    hand = NULL;
 }

@@ -158,6 +158,3 @@ void MapLoader::loadBorder(string border, Map* map) {
 		currentTerritory->addBorder(map->getTerritoryById(edge));
 	}
 }
-
-
-
