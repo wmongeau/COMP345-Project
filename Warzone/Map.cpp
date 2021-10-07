@@ -382,7 +382,6 @@ ostream& operator << (ostream& out, const Territory& c)
 //Destructor
 Territory::~Territory() {
     for (auto p : Borders) {
-        delete p;
         p = NULL;
     }
 }

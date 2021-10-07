@@ -81,6 +81,8 @@ int main() {
 				Map* map;
 				map = MapLoader::loadMap();
 				playerDriver(map);
+				delete map;
+				map = NULL;
 			}
 			else if(selectedModule == 3) {
 				ordersDriver();

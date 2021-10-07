@@ -46,6 +46,7 @@ void mapDriver() {
 	seeMap = toupper(seeMap);
 	if (seeMap == 'Y')
 		map->print();
+	delete map;
 };
 
 //FUNCTIONS
