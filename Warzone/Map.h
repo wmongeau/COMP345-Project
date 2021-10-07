@@ -61,6 +61,7 @@ public:
 	void addTerritory(Territory* territory);
 	bool validate();
 	void dfsTerritory(int Id, Territory* country, std::vector<bool> &visited);
+	void dfsTerritorySubGraph(int Id, int continentId, Territory* country, std::vector<bool>& visited, std::vector<int>& subGraphCount);
 	void dfsContinent(int Id, Continent* continent, std::vector<bool>& visited);
 	bool checkContinentCount();
 	Continent* getContinentById(int ContinentId);
