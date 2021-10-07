@@ -32,6 +32,17 @@ Map::Map(Map* map) {
 };
 //Assignment operator
 Map& Map::operator =(Map* map) {
+    Continents = vector<Continent*>();
+    Territories = vector<Territory*>();
+    for (int i = 0; i < map->Continents.size(); i++)
+    {
+        Continents.push_back(new Continent(map->Continents[i]));
+    }
+    for (int i = 0; i < map->Territories.size(); i++)
+    {
+        Territories.push_back(new Territory(map->Territories[i]));
+    }
+    copyTerritoryBorders(map->Territories);
     return *this;
 };
 //Function to copy the graph layout of a Map object
