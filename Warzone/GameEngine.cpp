@@ -348,53 +348,53 @@ GameEngine::GameEngine(const GameEngine& engine) {
 void GameEngine::updateAvailableTransitions() {
 	switch(currentState -> getStateName()) {
 		case Enums::start: {
-			availableTransitions.clear();
+			availableTransitions.erase(availableTransitions.begin(), availableTransitions.end());
 			availableTransitions.push_back(new LoadMapTransition());
 			break;
 		}
 		case Enums::mapLoaded: {
-			availableTransitions.clear();
+			availableTransitions.erase(availableTransitions.begin(), availableTransitions.end());
 			availableTransitions.push_back(new LoadMapTransition());
 			availableTransitions.push_back(new ValidateMapTransition());
 			break;
 		}
 		case Enums::mapValidated: {
-			availableTransitions.clear();
+			availableTransitions.erase(availableTransitions.begin(), availableTransitions.end());
 			availableTransitions.push_back(new AddPlayerTransition());
 			break;
 		}
 		case Enums::playersAdded: {
-			availableTransitions.clear();
+			availableTransitions.erase(availableTransitions.begin(), availableTransitions.end());
 			availableTransitions.push_back(new AddPlayerTransition());
 			availableTransitions.push_back(new AssignCountriesTransition());
 			break;
 		}
 		case Enums::assignReinforcement: {
-			availableTransitions.clear();
+			availableTransitions.erase(availableTransitions.begin(), availableTransitions.end());
 			availableTransitions.push_back(new IssueOrderTransition());
 			break;
 		}
 		case Enums::issueOrders: {
-			availableTransitions.clear();
+			availableTransitions.erase(availableTransitions.begin(), availableTransitions.end());
 			availableTransitions.push_back(new IssueOrderTransition());
 			availableTransitions.push_back(new EndIssueOrdersTransition());
 			break;
 		}
 		case Enums::executeOrders: {
-			availableTransitions.clear();
+			availableTransitions.erase(availableTransitions.begin(), availableTransitions.end());
 			availableTransitions.push_back(new ExecOrderTransition());
 			availableTransitions.push_back(new EndExecOrdersTransition());
 			availableTransitions.push_back(new WinTransition());
 			break;
 		}
 		case Enums::winState: {
-			availableTransitions.clear();
+			availableTransitions.erase(availableTransitions.begin(), availableTransitions.end());
 			availableTransitions.push_back(new PlayTransition());
 			availableTransitions.push_back(new EndTransition());
 			break;
 		}
 		case Enums::quit: {
-			availableTransitions.clear();
+			availableTransitions.erase(availableTransitions.begin(), availableTransitions.end());
 		}
 	}
 }
@@ -446,7 +446,7 @@ GameEngine& GameEngine::operator= (const GameEngine& engine) {
 GameEngine::~GameEngine() {
 	delete currentState;
 	currentState = NULL;
-	availableTransitions.clear();
+	availableTransitions.erase(availableTransitions.begin(), availableTransitions.end());
 }
 
 //Method that converts a states enum to a string
