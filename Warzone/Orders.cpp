@@ -429,7 +429,10 @@ OrdersList::OrdersList(const OrdersList& ol) {
 
 // Destructor
 OrdersList::~OrdersList() {
-	OrdersVector.clear();
+	for (auto p : OrdersVector) {
+		delete p;
+		p = NULL;
+	}
 }
 
 // Assignment operator
@@ -471,8 +474,8 @@ void OrdersList::move(int startIndex, int endIndex) {
 
 // Remove order at the specified index
 void OrdersList::remove(int index) {
+	delete OrdersVector.at(index);
 	OrdersVector.erase(OrdersVector.begin() + index);
-
 }
 
 // Getter for Orders vector

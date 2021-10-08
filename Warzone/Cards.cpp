@@ -46,19 +46,19 @@ Order* Card::play()
     switch (type)
     {
     case CardTypeEnums::Bomb:
-        return dynamic_cast<Order*>(new BombOrder());
+        return new BombOrder();
         break;
     case CardTypeEnums::Reinforcement:
-        return dynamic_cast<Order*>(new DeployOrder());
+        return new DeployOrder();
         break;
     case CardTypeEnums::Blockade:
-        return dynamic_cast<Order*>(new BlockadeOrder());
+        return new BlockadeOrder();
         break;
     case CardTypeEnums::Airlift:
-        return dynamic_cast<Order*>(new AirliftOrder());
+        return new AirliftOrder();
         break;
     case CardTypeEnums::Diplomacy:
-        return dynamic_cast<Order*>(new NegotiateOrder());
+        return new NegotiateOrder();
         break;
     default:
         break;

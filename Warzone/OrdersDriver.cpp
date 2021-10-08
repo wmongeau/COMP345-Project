@@ -36,12 +36,12 @@ void ordersDriver(){
 	cout << "- Negotiate order works!" << endl;
 
 	// Using the addOrder function to fill our OrdersList object.
-	ordersListDriver->addOrder(dynamic_cast<Order*>(deployOrder));
-	ordersListDriver->addOrder(dynamic_cast<Order*>(advanceOrder));
-	ordersListDriver->addOrder(dynamic_cast<Order*>(bombOrder));
-	ordersListDriver->addOrder(dynamic_cast<Order*>(airliftOrder));
-	ordersListDriver->addOrder(dynamic_cast<Order*>(blockadeOrder));
-	ordersListDriver->addOrder(dynamic_cast<Order*>(negotiateOrder));
+	ordersListDriver->addOrder(deployOrder);
+	ordersListDriver->addOrder(advanceOrder);
+	ordersListDriver->addOrder(bombOrder);
+	ordersListDriver->addOrder(airliftOrder);
+	ordersListDriver->addOrder(blockadeOrder);
+	ordersListDriver->addOrder(negotiateOrder);
 	
 	cout << "----------" << endl;
 
@@ -92,22 +92,4 @@ void ordersDriver(){
 	
 	delete ordersListDriver;
 	ordersListDriver = NULL;
-
-	delete deployOrder;
-	deployOrder = NULL;
-
-	delete advanceOrder;
-	advanceOrder = NULL;
-
-	delete bombOrder;
-	bombOrder = NULL;
-
-	delete airliftOrder;
-	airliftOrder = NULL;
-
-	delete blockadeOrder;
-	blockadeOrder = NULL;
-
-	delete negotiateOrder;
-	negotiateOrder = NULL;
 }

@@ -348,53 +348,89 @@ GameEngine::GameEngine(const GameEngine& engine) {
 void GameEngine::updateAvailableTransitions() {
 	switch(currentState -> getStateName()) {
 		case Enums::start: {
-			availableTransitions.erase(availableTransitions.begin(), availableTransitions.end());
+			for (auto p : availableTransitions) {
+				delete p;
+				p = NULL;
+			}
+			availableTransitions.clear();
 			availableTransitions.push_back(new LoadMapTransition());
 			break;
 		}
 		case Enums::mapLoaded: {
-			availableTransitions.erase(availableTransitions.begin(), availableTransitions.end());
+			for (auto p : availableTransitions) {
+				delete p;
+				p = NULL;
+			}
+			availableTransitions.clear();
 			availableTransitions.push_back(new LoadMapTransition());
 			availableTransitions.push_back(new ValidateMapTransition());
 			break;
 		}
 		case Enums::mapValidated: {
-			availableTransitions.erase(availableTransitions.begin(), availableTransitions.end());
+			for (auto p : availableTransitions) {
+				delete p;
+				p = NULL;
+			}
+			availableTransitions.clear();
 			availableTransitions.push_back(new AddPlayerTransition());
 			break;
 		}
 		case Enums::playersAdded: {
-			availableTransitions.erase(availableTransitions.begin(), availableTransitions.end());
+			for (auto p : availableTransitions) {
+				delete p;
+				p = NULL;
+			}
+			availableTransitions.clear();
 			availableTransitions.push_back(new AddPlayerTransition());
 			availableTransitions.push_back(new AssignCountriesTransition());
 			break;
 		}
 		case Enums::assignReinforcement: {
-			availableTransitions.erase(availableTransitions.begin(), availableTransitions.end());
+			for (auto p : availableTransitions) {
+				delete p;
+				p = NULL;
+			}
+			availableTransitions.clear();
 			availableTransitions.push_back(new IssueOrderTransition());
 			break;
 		}
 		case Enums::issueOrders: {
-			availableTransitions.erase(availableTransitions.begin(), availableTransitions.end());
+			for (auto p : availableTransitions) {
+				delete p;
+				p = NULL;
+			}
+			availableTransitions.clear();
 			availableTransitions.push_back(new IssueOrderTransition());
 			availableTransitions.push_back(new EndIssueOrdersTransition());
 			break;
 		}
 		case Enums::executeOrders: {
-			availableTransitions.erase(availableTransitions.begin(), availableTransitions.end());
+			for (auto p : availableTransitions) {
+				delete p;
+				p = NULL;
+			}
+			availableTransitions.clear();
 			availableTransitions.push_back(new ExecOrderTransition());
 			availableTransitions.push_back(new EndExecOrdersTransition());
 			availableTransitions.push_back(new WinTransition());
 			break;
 		}
 		case Enums::winState: {
-			availableTransitions.erase(availableTransitions.begin(), availableTransitions.end());
+			for (auto p : availableTransitions) {
+				delete p;
+				p = NULL;
+			}
+			availableTransitions.clear();
 			availableTransitions.push_back(new PlayTransition());
 			availableTransitions.push_back(new EndTransition());
 			break;
 		}
 		case Enums::quit: {
-			availableTransitions.erase(availableTransitions.begin(), availableTransitions.end());
+			for (auto p : availableTransitions) {
+				delete p;
+				p = NULL;
+			}
+			availableTransitions.clear();
 		}
 	}
 }
@@ -412,7 +448,8 @@ vector<Transition*> GameEngine::getAvailableTransitions() {
 //Method that tells the game engine to execute a transitioin that is given as a parameter
 void GameEngine::execute(Transition* transition) {
 	transition -> execute();
-	currentState = transition -> getNextState();
+	delete currentState;
+	currentState = new State(*(transition -> getNextState()));
 	updateAvailableTransitions();
 }
 
@@ -446,7 +483,11 @@ GameEngine& GameEngine::operator= (const GameEngine& engine) {
 GameEngine::~GameEngine() {
 	delete currentState;
 	currentState = NULL;
-	availableTransitions.erase(availableTransitions.begin(), availableTransitions.end());
+
+	for (auto p : availableTransitions) {
+		delete p;
+		p = NULL;
+	}
 }
 
 //Method that converts a states enum to a string
