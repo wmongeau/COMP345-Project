@@ -40,4 +40,3 @@ void playerDriver(Map* map) {
 
 	cout << *player1;
  }
-
