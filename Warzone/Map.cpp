@@ -97,46 +97,55 @@ ostream& operator << (ostream& out, const Map& m)
 
 //Function to validate if a map respect the requirements
 bool Map::validate() {
-    bool territoryIsGraph = false, continentIsGraph = true, singleContinent = false;
+    bool territoryIsGraph = true, continentIsGraph = true, singleContinent = false;
     vector<bool> visitedTerritories(Territories.size()+1);
     vector<int> subGraphCount(Continents.size() + 1);
     int countT = 0, countC = 0, initIndex = 0;
-
     //Checking if territories are a valid graph
-    dfsTerritory(Territories[initIndex]->getId(), Territories[initIndex], visitedTerritories);
-    for (int i = 0; i < Territories.size() + 1; i++) {
-        if (visitedTerritories[i])
-            countT++;
+    for (int k = 0; k < Territories.size(); k++) {
+        dfsTerritory(Territories[k]->getId(), Territories[k], visitedTerritories);
+        for (int i = 0; i < Territories.size() + 1; i++) {
+            if (visitedTerritories[i])
+                countT++;
 
+        }
+        if (countT != visitedTerritories.size() - 1) {
+            territoryIsGraph = false;
+            break;
+        }
+        countT = 0;
+        visitedTerritories = vector<bool>(Territories.size() + 1);
     }
     cout << "----------------------------------------------" << endl;
-    if (countT == visitedTerritories.size() - 1) {
-        territoryIsGraph = true;
+    if (territoryIsGraph) {
         cout << "Territory graph is valid!" << endl;
     }
     else
-        cout << "Territory graph is invalid!" << endl;
-
+        cout << "Territory graph is invalid!" << endl; 
     //Checking if territories are a valid sub-graph for each Continents
-    visitedTerritories = vector<bool>(Territories.size() + 1);
     for (int i = 0; i < Continents.size(); i++) {
-        while (Territories[initIndex]->getContinentId() != Continents[i]->getId())
-            initIndex++;
-        dfsTerritorySubGraph(Territories[initIndex]->getId(), Continents[i]->getId(), Territories[initIndex], visitedTerritories, subGraphCount);
-        for (int j = 0; j < Territories.size(); j++) {
-            if (Territories[j]->getContinentId() == Continents[i]->getId())
-                countC++;
-        }
-        if (countC != subGraphCount[i+1]) {
-            continentIsGraph = false;
-            break;
-        }
-        initIndex = 0;
         countC = 0;
+        for (int j = 0; j < Territories.size(); j++) {
+            if (Territories[j]->getContinentId() == Continents[i]->getId()) {
+                countC++;
+            }
+        }
+        for (int j = 0; j < Territories.size(); j++) {
+            visitedTerritories = vector<bool>(Territories.size() + 1);
+            subGraphCount[Continents[i]->getId()] = 0;
+            if (Territories[j]->getContinentId() == Continents[i]->getId()) {
+                dfsTerritorySubGraph(Territories[j]->getId(), Continents[i]->getId(), Territories[j], visitedTerritories, subGraphCount);
+                if (countC != subGraphCount[Continents[i]->getId()]) {
+                    continentIsGraph = false;
+                    break;
+                }
+            }
+        }
+        if (!continentIsGraph)
+            break;
     }
     cout << "------------------------" << endl;
     if (continentIsGraph) {
-        continentIsGraph = true;
         cout << "Continent has a valid Sub-graph!" << endl;
    }
     else
