@@ -6,7 +6,7 @@
 #include <string>
 
 using namespace std;
-#include "GameEngine.h"
+#include "./Headers/GameEngine.h"
 
 //Default constructor for the State class
 State::State() {

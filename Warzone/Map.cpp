@@ -8,7 +8,7 @@
 #include <vector>
 
 using namespace std;
-#include "Map.h"
+#include "./Headers/Map.h"
 
 // ---------- Map class ---------- //
 //Default constructor

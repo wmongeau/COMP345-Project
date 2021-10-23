@@ -7,6 +7,6 @@ cmake_minimum_required (VERSION 3.8)
 project ("Warzone")
 
 # Add source to this project's executable.
-add_executable (Warzone "Map.cpp" "MapDriver.cpp" "PlayerDriver.cpp" "Player.cpp" "Orders.cpp" "OrdersDriver.cpp" "Cards.cpp" "CardsDriver.cpp" "GameEngine.cpp" "GameEngineDriver.cpp" "Map.h" "Player.h" "Cards.h" "GameEngine.h" "Orders.h"  "MapDriver.h")
+add_executable (Warzone "Map.cpp" "Drivers/MapDriver.cpp" "Drivers/PlayerDriver.cpp" "Player.cpp" "Orders.cpp" "Drivers/OrdersDriver.cpp" "Cards.cpp" "Drivers/CardsDriver.cpp" "GameEngine.cpp" "Drivers/GameEngineDriver.cpp" "Headers/Map.h" "Headers/Player.h" "Headers/Cards.h" "Headers/GameEngine.h" "Headers/Orders.h"  "Headers/MapDriver.h")
 
 # TODO: Add tests and install targets if needed.
