@@ -450,7 +450,14 @@ void GameEngine::execute(Transition* transition) {
 	transition -> execute();
 	delete currentState;
 	currentState = new State(*(transition -> getNextState()));
+	notify(this);
 	updateAvailableTransitions();
+}
+
+//ILoggable function
+string GameEngine::stringToLog()
+{
+	return "GameEngine has been switch\n";
 }
 
 //Strem operator overload for the GameEngine class
