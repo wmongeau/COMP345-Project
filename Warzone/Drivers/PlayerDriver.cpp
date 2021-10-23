@@ -6,7 +6,7 @@
 #include <string>
 
 using namespace std;
-#include "Player.h"
+#include "../Headers/Player.h"
 
 //Temporary method used to demo the functionality of the Player class
 void playerDriver(Map* map) {

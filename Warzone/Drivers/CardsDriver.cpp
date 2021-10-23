@@ -6,7 +6,7 @@
 #include <string>
 
 using namespace std;
-#include "Cards.h"
+#include "../Headers/Cards.h"
 
 void cardsDriver(){
     // creates a deck of cards of all different kinds

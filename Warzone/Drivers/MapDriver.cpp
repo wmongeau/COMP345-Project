@@ -4,8 +4,8 @@
 #include <vector>
 #include <cstring>
 
-#include "MapDriver.h"
-#include "Player.h"
+#include "../Headers/MapDriver.h"
+#include "../Headers/Player.h"
 
 using namespace std;
 
