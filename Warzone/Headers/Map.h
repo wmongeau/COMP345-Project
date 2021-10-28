@@ -3,6 +3,7 @@
 #include <string>
 #include <list>
 #include <vector>
+#include "Player.h"
 
 
 class Territory {
