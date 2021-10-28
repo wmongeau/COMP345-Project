@@ -98,6 +98,11 @@ vector<Command*> CommandProcessing::getCommandList()
 	return this->commandList;
 }
 
+string CommandProcessing::stringToLog()
+{
+	return "Command: "+commandList[commandList.size()-1]->getCommand()+'\n';
+}
+
 Command* CommandProcessing::readCommand()
 {
 	string commandString;
@@ -124,6 +129,7 @@ Command* CommandProcessing::readCommand()
 void CommandProcessing::saveCommand(Command* command)
 {
 	commandList.push_back(command);
+	notify(this);
 }
 
 bool CommandProcessing::validate(State* currentState, Command* command)
@@ -187,9 +193,15 @@ CommandType Command::getCommandType()
 	return commandType;
 }
 
+string Command::stringToLog()
+{
+	return "Command's Effect: "+effect+'\n';
+}
+
 void Command::saveEffect(string effect)
 {
 	this->effect = effect;
+	notify(this);
 }
 
 string Command::getEffect()

@@ -457,7 +457,7 @@ void GameEngine::execute(Transition* transition) {
 //ILoggable function
 string GameEngine::stringToLog()
 {
-	return "GameEngine has been switch\n";
+	return "GameEngine new state: "+to_string(currentState->getStateName())+'\n';
 }
 
 //Strem operator overload for the GameEngine class

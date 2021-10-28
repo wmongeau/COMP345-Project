@@ -79,7 +79,7 @@ OrdersEnum Order::getOrdersType()
 //ILoggable function
 string Order::stringToLog()
 {
-	return effect+'\n';
+	return "Order executed: "+effect + '\n';
 }
 
 // If order is valid, execute order
@@ -493,6 +493,6 @@ vector<Order*> OrdersList::getOrdersVector()
 //ILoggable function
 string OrdersList::stringToLog()
 {
-	return "New Orders have been added to OrderList\n";
+	return "Order Issued:" + to_string(OrdersVector.back()->getOrdersType())+'\n';
 }
 // ---------- End of OrdersList class ---------- //
