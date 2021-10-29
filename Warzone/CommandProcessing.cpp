@@ -1,5 +1,6 @@
 #include "Headers/CommandProcessing.h"
 #include <regex>
+#include <fstream>
 
 using namespace std;
 
@@ -36,7 +37,7 @@ ostream& operator<<(ostream& out, const Command& c)
 	return out;
 }
 
-ostream& operator<<(ostream& out, const CommandProcessing& c)
+ostream& operator<<(ostream& out, const CommandProcessor& c)
 {
 	out << "The command processor contains the following commands: " << endl;
 	for (auto c : c.commandList) {
@@ -60,12 +61,32 @@ ostream& operator<<(ostream& os, const FileCommandProcessorAdaptor& c)
 	return os;
 }
 
-CommandProcessing::CommandProcessing()
+string extractPlayerName(Command* command)
+{
+	if (command->getCommandType() != CommandType::addPlayer) return "";
+
+	string commandString = command->getCommand();
+	string delimiter = " ";
+
+	return commandString.substr(1, commandString.find(delimiter));
+}
+
+string extractMapFile(Command* command)
+{
+	if (command->getCommandType() != CommandType::loadMap) return "";
+
+	string commandString = command->getCommand();
+	string delimiter = " ";
+
+	return commandString.substr(1, commandString.find(delimiter));
+}
+
+CommandProcessor::CommandProcessor()
 {
 	this->commandList = vector<Command*>();
 }
 
-CommandProcessing::~CommandProcessing()
+CommandProcessor::~CommandProcessor()
 {
 	for(auto c : commandList) {
 		delete c;
@@ -73,19 +94,19 @@ CommandProcessing::~CommandProcessing()
 	}
 }
 
-CommandProcessing::CommandProcessing(const CommandProcessing& c)
+CommandProcessor::CommandProcessor(const CommandProcessor& c)
 {
 	this->commandList = c.commandList;
 }
 
-CommandProcessing& CommandProcessing::operator=(const CommandProcessing& c)
+CommandProcessor& CommandProcessor::operator=(const CommandProcessor& c)
 {
 	this->commandList = c.commandList;
 
 	return *this;
 }
 
-void CommandProcessing::getCommand(State* currentState)
+void CommandProcessor::getCommand(State* currentState)
 {
 	Command* command = readCommand();
 
@@ -93,57 +114,69 @@ void CommandProcessing::getCommand(State* currentState)
 		saveCommand(command);
 }
 
-vector<Command*> CommandProcessing::getCommandList()
+vector<Command*> CommandProcessor::getCommandList()
 {
 	return this->commandList;
 }
 
-Command* CommandProcessing::readCommand()
+Command* CommandProcessor::readCommand()
 {
 	string commandString;
-	cin >> commandString;
-	regex loadmapRegex("loadmap <.+>");
-	regex addplayerRegex("addplayer <[a-zA-Z]+>");
+	getline(cin, commandString);
+	regex loadmapRegex("loadmap .+");
+	regex addplayerRegex("addplayer [a-zA-Z]+");
 
 	if (commandString == "validatemap")
-		return new Command(CommandType::validateMap, commandString, "Validate the map that was loaded");
+		return new Command(CommandType::validateMap, commandString);
 	else if (commandString == "gamestart")
-		return new Command(CommandType::gameStart, commandString, "Start the game");
+		return new Command(CommandType::gameStart, commandString);
 	else if (commandString == "replay")
-		return new Command(CommandType::replay, commandString, "Replay the game");
+		return new Command(CommandType::replay, commandString);
 	else if (commandString == "quit")
-		return new Command(CommandType::quit, commandString, "Quit the game");
+		return new Command(CommandType::quit, commandString);
 	else if (regex_match(commandString, loadmapRegex)) 
-		return new Command(CommandType::loadMap, commandString, "Load the map");
+		return new Command(CommandType::loadMap, commandString);
 	else if (regex_match(commandString, addplayerRegex)) 
-		return new Command(CommandType::addPlayer, commandString, "Adding player");
+		return new Command(CommandType::addPlayer, commandString);
 
-	return new Command(CommandType::error, commandString, "There was an error creating a command or the command was invalid");
+	return new Command(CommandType::error, commandString);
 }
 
-void CommandProcessing::saveCommand(Command* command)
+void CommandProcessor::saveCommand(Command* command)
 {
 	commandList.push_back(command);
 }
 
-bool CommandProcessing::validate(State* currentState, Command* command)
+bool CommandProcessor::validate(State* currentState, Command* command)
 {
-	if (command->getCommandType() == CommandType::error)
+	if (command->getCommandType() == CommandType::error) {
+		command->saveEffect("effect: The command: " + command->getCommand() + " was invalid, therefore nothing happened.");
 		return false;
-	else if (command->getCommandType() == CommandType::addPlayer && (currentState->getStateName() == Enums::states::mapValidated || currentState->getStateName() == Enums::states::playersAdded))
+	}
+	else if (command->getCommandType() == CommandType::addPlayer && (currentState->getStateName() == Enums::states::mapValidated || currentState->getStateName() == Enums::states::playersAdded)) {
+		command->saveEffect("effect: The player: " + extractPlayerName(command) + " is being added to the game.");
 		return true;
-	else if (command->getCommandType() == CommandType::gameStart && currentState->getStateName() == Enums::states::playersAdded)
+	}
+	else if (command->getCommandType() == CommandType::gameStart && currentState->getStateName() == Enums::states::playersAdded) {
+		command->saveEffect("effects: The game is starting.");
 		return true;
-	else if (command->getCommandType() == CommandType::replay && currentState->getStateName() == Enums::states::winState)
+	}
+	else if (command->getCommandType() == CommandType::replay && currentState->getStateName() == Enums::states::winState) {
+		command->saveEffect("effect: The game is being replayed.");
 		return true;
-	else if (command->getCommandType() == CommandType::quit && currentState->getStateName() == Enums::states::winState)
+	}
+	else if (command->getCommandType() == CommandType::quit && currentState->getStateName() == Enums::states::winState) {
+		command->saveEffect("effect: Quitting out of the game.");
 		return true;
-	else if (command->getCommandType() == CommandType::validateMap && currentState->getStateName() == Enums::states::mapLoaded)
+	}
+	else if (command->getCommandType() == CommandType::validateMap && currentState->getStateName() == Enums::states::mapLoaded) {
+		command->saveEffect("effect: The map: " + extractMapFile(command) + " is being validated");
 		return true;
-	else if (command->getCommandType() == CommandType::loadMap && (currentState->getStateName() == Enums::states::start || currentState->getStateName() == Enums::states::mapLoaded))
+	}
+	else if (command->getCommandType() == CommandType::loadMap && (currentState->getStateName() == Enums::states::start || currentState->getStateName() == Enums::states::mapLoaded)) {
+		command->saveEffect("effect: The game is starting.");
 		return true;
-	else if (command->getCommandType() == CommandType::addPlayer && (currentState->getStateName() == Enums::states::mapValidated || currentState->getStateName() == Enums::states::playersAdded))
-		return true;
+	}
 
 	return false;
 }
@@ -155,11 +188,10 @@ Command::Command()
 	this->effect = "";
 }
 
-Command::Command(CommandType commandType, string command, string effect)
+Command::Command(CommandType commandType, string command)
 {
 	this->commandType = commandType;
 	this->command = command;
-	this->effect = effect;
 }
 
 Command::~Command()
@@ -202,8 +234,10 @@ string Command::getCommand()
 	return this->command;
 }
 
-FileLineReader::FileLineReader()
+FileLineReader::FileLineReader(string fileDirectory)
 {
+	this->currentLine = 1;
+	this->fileDirectory = fileDirectory;
 }
 
 FileLineReader::~FileLineReader()
@@ -212,6 +246,8 @@ FileLineReader::~FileLineReader()
 
 FileLineReader::FileLineReader(const FileLineReader& c)
 {
+	this->currentLine = c.currentLine;
+	this->fileDirectory = c.fileDirectory;
 }
 
 FileLineReader& FileLineReader::operator=(const FileLineReader& c)
@@ -221,13 +257,21 @@ FileLineReader& FileLineReader::operator=(const FileLineReader& c)
 
 string FileLineReader::readLineFromFile()
 {
-	// todo, read the file maybe all at once? or line by line? idk
-	return string();
+	fstream file(fileDirectory);
+	string line;
+
+	for (int i = 1; i <= currentLine; i++) {
+		getline(file, line);
+	}
+
+	currentLine++;
+
+	return line;
 }
 
-FileCommandProcessorAdaptor::FileCommandProcessorAdaptor()
+FileCommandProcessorAdaptor::FileCommandProcessorAdaptor(string fileDirectory)
 {
-	this->flr = new FileLineReader();
+	this->flr = new FileLineReader(fileDirectory);
 }
 
 FileCommandProcessorAdaptor::~FileCommandProcessorAdaptor()
@@ -248,7 +292,24 @@ FileCommandProcessorAdaptor& FileCommandProcessorAdaptor::operator=(const FileCo
 	return *this;
 }
 
-void FileCommandProcessorAdaptor::readCommand()
+Command* FileCommandProcessorAdaptor::readCommand()
 {
-	// todo use the adapter pattern here idk how though
+	string commandString = flr->readLineFromFile();
+	regex loadmapRegex("loadmap .+");
+	regex addplayerRegex("addplayer [a-zA-Z]+");
+
+	if (commandString == "validatemap")
+		return new Command(CommandType::validateMap, commandString);
+	else if (commandString == "gamestart")
+		return new Command(CommandType::gameStart, commandString);
+	else if (commandString == "replay")
+		return new Command(CommandType::replay, commandString);
+	else if (commandString == "quit")
+		return new Command(CommandType::quit, commandString);
+	else if (regex_match(commandString, loadmapRegex))
+		return new Command(CommandType::loadMap, commandString);
+	else if (regex_match(commandString, addplayerRegex))
+		return new Command(CommandType::addPlayer, commandString);
+
+	return new Command(CommandType::error, commandString);
 }
