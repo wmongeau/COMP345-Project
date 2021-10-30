@@ -257,7 +257,7 @@ FileLineReader& FileLineReader::operator=(const FileLineReader& c)
 
 string FileLineReader::readLineFromFile()
 {
-	fstream file(fileDirectory);
+	ifstream file(fileDirectory);
 	string line;
 
 	for (int i = 1; i <= currentLine; i++) {
@@ -265,6 +265,7 @@ string FileLineReader::readLineFromFile()
 	}
 
 	currentLine++;
+	file.close();
 
 	return line;
 }
