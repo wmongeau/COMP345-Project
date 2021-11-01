@@ -34,7 +34,7 @@ private:
 	string effect;
 };
 
-class CommandProcessing:ILoggable, SubJect {
+class CommandProcessor:ILoggable, SubJect {
 public:
 	CommandProcessor();
 	~CommandProcessor();
