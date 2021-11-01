@@ -6,11 +6,12 @@
 #include <string>
 
 using namespace std;
-#include "GameEngine.h"
-#include "CardsDriver.h"
-#include "MapDriver.h"
-#include "OrdersDriver.h"
-#include "PlayerDriver.h"
+#include "../Headers/GameEngine.h"
+#include "../Headers/CardsDriver.h"
+#include "../Headers/MapDriver.h"
+#include "../Headers/OrdersDriver.h"
+#include "../Headers/PlayerDriver.h"
+#include "../Headers/CommandProcessing.h"
 
 void gameEngineDriver() {
 	GameEngine *engine;
