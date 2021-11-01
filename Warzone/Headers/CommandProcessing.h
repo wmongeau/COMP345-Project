@@ -18,7 +18,7 @@ ostream& operator<<(ostream& out, CommandType commandType);
 class Command:ILoggable, SubJect {
 public:
 	Command();
-	Command(CommandType commandType, string command, string effect);
+	Command(CommandType commandType, string command);
 	~Command();
 	Command(const Command& c);
 	Command& operator=(const Command& c);
@@ -36,16 +36,16 @@ private:
 
 class CommandProcessing:ILoggable, SubJect {
 public:
-	CommandProcessing();
-	~CommandProcessing();
-	CommandProcessing(const CommandProcessing& c);
-	CommandProcessing& operator=(const CommandProcessing& c);
-	friend ostream& operator<<(ostream& out, const CommandProcessing& c);
+	CommandProcessor();
+	~CommandProcessor();
+	CommandProcessor(const CommandProcessor& c);
+	CommandProcessor& operator=(const CommandProcessor& c);
+	friend ostream& operator<<(ostream& out, const CommandProcessor& c);
 	void getCommand(State* currentState);
 	vector<Command*> getCommandList();
 	string stringToLog();
 private:
-	Command* readCommand();
+	virtual Command* readCommand();
 	void saveCommand(Command* command);
 	bool validate(State* currentState, Command* command);
 	vector<Command*> commandList;
@@ -53,22 +53,28 @@ private:
 
 class FileLineReader {
 public:
-	FileLineReader();
+	FileLineReader(string fileDirectory);
 	~FileLineReader();
 	FileLineReader(const FileLineReader& c);
 	FileLineReader& operator=(const FileLineReader& c);
 	friend ostream& operator<<(ostream& os, const FileLineReader& c);
 	string readLineFromFile();
+private:
+	int currentLine;
+	string fileDirectory;
 };
 
-class FileCommandProcessorAdaptor : public CommandProcessing {
+class FileCommandProcessorAdaptor: public CommandProcessor {
 public:
-	FileCommandProcessorAdaptor();
+	FileCommandProcessorAdaptor(string fileDirectory);
 	~FileCommandProcessorAdaptor();
 	FileCommandProcessorAdaptor(const FileCommandProcessorAdaptor& c);
 	FileCommandProcessorAdaptor& operator=(const FileCommandProcessorAdaptor& c);
 	friend ostream& operator<<(ostream& os, const FileCommandProcessorAdaptor& c);
 private:
-	void readCommand();
+	Command* readCommand();
 	FileLineReader* flr;
 };
+
+string extractPlayerName(Command* command);
+string extractMapFile(Command* command);
