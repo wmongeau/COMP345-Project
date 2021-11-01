@@ -11,6 +11,7 @@ using namespace std;
 #include "../Headers/MapDriver.h"
 #include "../Headers/OrdersDriver.h"
 #include "../Headers/PlayerDriver.h"
+#include "../Headers/CommandProcessing.h"
 
 void gameEngineDriver() {
 	GameEngine *engine;
