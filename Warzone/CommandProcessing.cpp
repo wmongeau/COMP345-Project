@@ -119,12 +119,12 @@ vector<Command*> CommandProcessor::getCommandList()
 	return this->commandList;
 }
 
-string CommandProcessing::stringToLog()
+string CommandProcessor::stringToLog()
 {
 	return "Command: "+commandList[commandList.size()-1]->getCommand()+'\n';
 }
 
-Command* CommandProcessing::readCommand()
+Command* CommandProcessor::readCommand()
 {
 	string commandString;
 	getline(cin, commandString);
