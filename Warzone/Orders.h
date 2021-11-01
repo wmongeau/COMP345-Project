@@ -30,7 +30,7 @@ protected:
 public:
 	// Default Constructor
 	Order();
-
+	 
 	//Parameterized constructor
 	Order(OrdersEnum value);
 
