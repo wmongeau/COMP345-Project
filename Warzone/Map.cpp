@@ -304,7 +304,7 @@ Territory::Territory(int id, string name, int continentId, int x, int y) {
     ContinentId = continentId;
     X = x;
     Y = y;
-    player = NULL;
+    //player = NULL;
     armyValue = 50;
 }
 //Copy constructor
@@ -315,7 +315,7 @@ Territory::Territory(Territory* territory)
     ContinentId = territory->getContinentId();
     X = territory->getX();
     Y = territory->getY();
-    player = new Player(*territory->player);
+    //player = new Player(*territory->player);
     armyValue = territory->armyValue;
 }
 //Assignment operator
@@ -329,10 +329,10 @@ Territory& Territory::operator = (Territory * territory)
     return *this;
 }
 //Function to update who owns this territory
-void Territory::updatePlayer(Player* newPlayer)
-{
-    *player = *newPlayer;
-}
+//void Territory::updatePlayer(Player* newPlayer)
+//{
+//    *player = *newPlayer;
+//}
 //Function to update the army value
 void Territory::updateArmyValue(int newArmyValue)
 {
@@ -368,10 +368,10 @@ const int Territory::getY()const
 {
     return Y;
 }
-const Player* Territory::getPlayer() const
-{
-    return player;
-}
+//const Player* Territory::getPlayer() const
+//{
+//    return player;
+//}
 const int Territory::getArmyValue() const
 {
     return armyValue;
@@ -391,10 +391,10 @@ const string Territory::toString() const
     result.append(to_string(X) + " ");
     result.append(to_string(Y) + " ");
     result.append(to_string(armyValue) + " ");
-    if(player != NULL)
+   /* if(player != NULL)
         result.append(player->getPlayerName() + " ");
     else
-        result.append("NULL");
+        result.append("NULL");*/
     result.append("\n   ");
     result.append(Name+" -->");
     for (Territory* var : Borders) {
