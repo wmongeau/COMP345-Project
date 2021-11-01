@@ -4,17 +4,17 @@
 #include <fstream>
 using namespace std;
 
-string stringToLog();
-
 class ILoggable{
    public:
       virtual string stringToLog() = 0; // Pure Virtual Function
+      ~ILoggable();
 };
 
 
 class Observer {
 public:
     virtual void update(ILoggable *log)=0;
+    ~Observer();
 };
 
 class LogObserver :Observer {
@@ -29,4 +29,5 @@ class SubJect {
 public:
     LogObserver* view = new LogObserver();
     void notify(ILoggable* log);
+    ~SubJect();
 };

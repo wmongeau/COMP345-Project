@@ -9,6 +9,12 @@ void SubJect::notify(ILoggable *log)
 	view->update(log);
 }
 
+SubJect::~SubJect()
+{
+	delete view;
+	view = NULL;
+}
+
 
 void LogObserver::update(ILoggable *log){
 	if (!gameLog.is_open()) {
@@ -25,4 +31,12 @@ LogObserver::LogObserver()
 LogObserver::~LogObserver()
 {
 	gameLog.close();
+}
+
+Observer::~Observer()
+{
+}
+
+ILoggable::~ILoggable()
+{
 }
