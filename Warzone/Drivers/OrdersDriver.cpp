@@ -10,14 +10,16 @@ using namespace std;
 #include "../Headers/Orders.h"
 
 void ordersDriver(){
-
+	Player* player = new Player();
+	Territory* territory = new Territory(1, "Amadou", 1, 0, 0);
+	player->addOwnedTerritory(territory);
 	// Creating an OrdersList object.
 	OrdersList* ordersListDriver = new OrdersList();
 
 	cout << "Creating our Orders using the subclasses:" << endl;
 
 	// Creating an order of every type (each being a subclass of Order).
-	DeployOrder* deployOrder = new DeployOrder();
+	DeployOrder* deployOrder = new DeployOrder(*player,*territory, 50);
 	cout << "- Deploy order works!" << endl;
 
 	AdvanceOrder* advanceOrder = new AdvanceOrder();

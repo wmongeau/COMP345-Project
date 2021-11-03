@@ -2,9 +2,9 @@
 
 #include <iostream>
 #include <list>
-#include "Map.h"
-#include "Player.h"
 #include "LoggingObserver.h"
+#include "Player.h"
+#include "Map.h"
 
 using namespace std;
 
@@ -216,6 +216,9 @@ public:
 
 	// If Airlift order is valid, execute order
 	bool execute() override;
+private:
+	Territory* _sourceTerritory;
+	Territory* _targetedTerritory;
 };
 
 class NegotiateOrder : public Order {
