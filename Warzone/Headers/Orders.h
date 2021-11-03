@@ -4,6 +4,7 @@
 #include <list>
 #include "Map.h"
 #include "Player.h"
+#include "LoggingObserver.h"
 
 using namespace std;
 
@@ -21,7 +22,7 @@ enum OrdersEnum
 
 ostream& operator<<(ostream& out, OrdersEnum orderType);
 
-class Order {
+class Order:ILoggable,SubJect {
 private:
 	// Enum for Order type
 	OrdersEnum OrdersType;
@@ -51,6 +52,9 @@ public:
 
 	// Getter for Enum Order Type
 	OrdersEnum getOrdersType();
+
+	//ILoggable function
+	string stringToLog();
 
 	// Verifies if order is valid
 	virtual bool validate();
@@ -246,7 +250,7 @@ private:
 };
 
 
-class OrdersList {
+class OrdersList:ILoggable,SubJect {
 public:
 	// Default Constructor
 	OrdersList();
@@ -277,6 +281,9 @@ public:
 
 	// Getter for the Orders vector
 	vector<Order*> getOrdersVector();
+
+	//ILoggable function
+	string stringToLog();
 
 private:
 	vector<Order*> OrdersVector;

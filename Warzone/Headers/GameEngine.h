@@ -2,6 +2,7 @@
 
 #include <string> 
 #include <vector>
+#include "LoggingObserver.h"
 
 namespace Enums{
 	enum states { start, mapLoaded, mapValidated, playersAdded, assignReinforcement, issueOrders, executeOrders, winState, quit };
@@ -128,13 +129,14 @@ public:
 	EndTransition& operator= (const EndTransition& endTransition);
 };
 
-class GameEngine {
+class GameEngine:ILoggable,SubJect {
 public: 
 	GameEngine();
 	GameEngine(const GameEngine& engine);
 	State* getCurrentState();
 	std::vector<Transition*> getAvailableTransitions();
 	void execute(Transition* transition);
+	string stringToLog();
 	friend std::ostream& operator<< (std::ostream& os, const GameEngine& engine);
 	GameEngine& operator= (const GameEngine& engine);
 	~GameEngine();
