@@ -135,6 +135,7 @@ public:
 	State* getCurrentState();
 	std::vector<Transition*> getAvailableTransitions();
 	void execute(Transition* transition);
+	void startupPhase();
 	friend std::ostream& operator<< (std::ostream& os, const GameEngine& engine);
 	GameEngine& operator= (const GameEngine& engine);
 	~GameEngine();

@@ -453,7 +453,31 @@ void GameEngine::execute(Transition* transition) {
 	updateAvailableTransitions();
 }
 
-//Strem operator overload for the GameEngine class
+//Method that is used to start up the game and process commands from the user(S)
+void GameEngine::startupPhase() {
+	do {
+		vector<Transition*> availableTransitions = getAvailableTransitions();
+		int selected;
+		cin >> selected;
+		
+		while(selected < 0 || selected >= availableTransitions.size()){
+			cout << "Please select one of the available actions:" << endl;
+			cin >> selected;
+		}
+
+		execute(availableTransitions[selected]);
+	} while(Enums::statesEnumToString(getCurrentState() -> getStateName()) != "Quit");
+///////////////////////////////////////////////////////////////////////////////////////////////	
+	cout << "Welcome to COMP 345 Warzone! Here are the currently available commands:" << endl;
+	
+	for(Transition* transition : availableTransitions) {
+		cout << *transition << endl;
+	}
+
+	cout << "Please enter one of the available commands"
+}
+
+//Stream operator overload for the GameEngine class
 std::ostream& operator<< (std::ostream& os, const GameEngine& engine) {
 	os << "-------------------------------------------------------------" << endl;
 	os << "You are currently in the " << *engine.currentState << " state." << endl;
@@ -529,7 +553,7 @@ std::string Enums::statesEnumToString(Enums::states value){
 std::string Enums::transitionsEnumToString(Enums::transitions value) {
 	switch(value) {
 		case Enums::loadMap: {
-			return "Load Map";
+			return "loadmap <filename>";
 		}
 		case Enums::validateMap: {
 			return "Validate Map";
