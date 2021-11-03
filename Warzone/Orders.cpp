@@ -9,7 +9,6 @@ using namespace std;
 #include "./Headers/Orders.h"
 #include "./Headers/Map.h"
 #include "./Headers/Player.h"
-#include "Orders.h"
 
 // Stream insertion operator for Enum Order Types
 ostream& operator<<(ostream& out, OrdersEnum orderType) {
