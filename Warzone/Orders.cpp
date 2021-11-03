@@ -57,7 +57,6 @@ Order::Order(const Order& c) {
 
 // Destructor
 Order::~Order() {
-	
 }
 
 // Assignment operator
@@ -77,17 +76,17 @@ OrdersEnum Order::getOrdersType()
 	return OrdersType;
 }
 
+//ILoggable function
+string Order::stringToLog()
+{
+	return "Order executed: "+effect + '\n';
+}
+
 // If order is valid, execute order
 bool Order::execute()
 {
-	if (validate()) {
-		effect = "This is the effect of the order.";
+		notify(this);
 		return true;
-	}
-	else {
-		cout << "The order cannot be executed!" << endl;
-		return false;
-	}
 }
 
 // Overloads the stream insertion operator.
@@ -140,6 +139,7 @@ bool DeployOrder::execute() {
 	cout << "Executing Deploy order..." << endl;
 	if (validate()) {
 		effect = "This is the effect of the order.";
+		Order::execute();
 		return true;
 	}
 	else {
@@ -193,6 +193,7 @@ bool AdvanceOrder::execute() {
 	cout << "Executing Advance order..." << endl;
 	if (validate()) {
 		effect = "This is the effect of the order.";
+		Order::execute();
 		return true;
 	}
 	else {
@@ -246,6 +247,7 @@ bool BombOrder::execute() {
 	cout << "Executing Bomb order..." << endl;
 	if (validate()) {
 		effect = "This is the effect of the order.";
+		Order::execute();
 		return true;
 	}
 	else {
@@ -298,6 +300,7 @@ bool BlockadeOrder::execute() {
 	cout << "Executing Blockade order..." << endl;
 	if (validate()) {
 		effect = "This is the effect of the order.";
+		Order::execute();
 		return true;
 	}
 	else {
@@ -351,6 +354,7 @@ bool AirliftOrder::execute() {
 	cout << "Executing Airlift order..." << endl;
 	if (validate()) {
 		effect = "This is the effect of the order.";
+		Order::execute();
 		return true;
 	}
 	else {
@@ -404,6 +408,7 @@ bool NegotiateOrder::execute() {
 	cout << "Executing Negotiate order..." << endl;
 	if (validate()) {
 		effect = "This is the effect of the order.";
+		Order::execute();
 		return true;
 	}
 	else {
@@ -455,6 +460,7 @@ ostream& operator<<(ostream& out, const OrdersList& ol)
 void OrdersList::addOrder(Order* order)
 {
 	OrdersVector.push_back(order);
+	notify(this);
 }
 
 // Displays the orders within the orderslist
@@ -482,5 +488,11 @@ void OrdersList::remove(int index) {
 vector<Order*> OrdersList::getOrdersVector()
 {
 	return OrdersVector;
+}
+
+//ILoggable function
+string OrdersList::stringToLog()
+{
+	return "Order Issued:" + to_string(OrdersVector.back()->getOrdersType())+'\n';
 }
 // ---------- End of OrdersList class ---------- //

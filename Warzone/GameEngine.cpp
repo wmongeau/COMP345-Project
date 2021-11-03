@@ -450,6 +450,7 @@ void GameEngine::execute(Transition* transition) {
 	transition -> execute();
 	delete currentState;
 	currentState = new State(*(transition -> getNextState()));
+	notify(this);
 	updateAvailableTransitions();
 }
 
@@ -477,7 +478,13 @@ void GameEngine::startupPhase() {
 	cout << "Please enter one of the available commands"
 }
 
-//Stream operator overload for the GameEngine class
+//ILoggable function
+string GameEngine::stringToLog()
+{
+	return "GameEngine new state: "+to_string(currentState->getStateName())+'\n';
+}
+
+//Strem operator overload for the GameEngine class
 std::ostream& operator<< (std::ostream& os, const GameEngine& engine) {
 	os << "-------------------------------------------------------------" << endl;
 	os << "You are currently in the " << *engine.currentState << " state." << endl;
