@@ -2,9 +2,9 @@
 
 #include <iostream>
 #include <list>
-#include "Map.h"
-#include "Player.h"
 #include "LoggingObserver.h"
+#include "Player.h"
+#include "Map.h"
 
 using namespace std;
 
