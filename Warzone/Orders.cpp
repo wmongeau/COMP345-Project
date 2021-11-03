@@ -113,10 +113,11 @@ DeployOrder::DeployOrder(const DeployOrder& d) : Order(d){
 }
 
 //Parameterized constructor
-DeployOrder::DeployOrder(Player& playerIssuingOrder, Territory& targetedTerritory)
+DeployOrder::DeployOrder(Player& playerIssuingOrder, Territory& targetedTerritory, int _numOfArmies)
 {
 	this->_playerIssuingOrder = &playerIssuingOrder;
 	this->_targetedTerritory = &targetedTerritory;
+	this->numOfArmies = _numOfArmies;
 }
 
 // Destructor
@@ -139,15 +140,22 @@ ostream& operator<<(ostream& out, const DeployOrder& deployOrderOutStream) {
 
 // Validate Deploy order
 bool DeployOrder::validate() {
-	cout << "The Deploy order is valid!" << endl;
-	return true;
+	for (int i = 0; i < _playerIssuingOrder->getOwnedTerritories().size(); i++) {
+		if (_playerIssuingOrder->getOwnedTerritories()[i]->getId() == _targetedTerritory->getId()) {
+			cout << "The Deploy order is valid!" << endl;
+			return true;
+		}
+	}
+	cout << "The Deploy order is invalid!" << endl;
+	return false;
 }
 
 // Execute Deploy order if valid
 bool DeployOrder::execute() {
 	cout << "Executing Deploy order..." << endl;
 	if (validate()) {
-		effect = "This is the effect of the order.";
+		_targetedTerritory->updateArmyValue(_targetedTerritory->getArmyValue()+numOfArmies);
+		effect = "Player " + _playerIssuingOrder->getPlayerName() + "has deployed " + to_string(numOfArmies) + "in " + _targetedTerritory->getName();
 		Order::execute();
 		return true;
 	}

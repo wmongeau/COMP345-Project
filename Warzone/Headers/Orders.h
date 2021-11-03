@@ -29,7 +29,6 @@ private:
 protected:
 	// Effect of order
 	string effect = "Order has not yet been executed.";
-	
 public:
 	Player* _playerIssuingOrder{ nullptr };
 	// Default Constructor
@@ -74,7 +73,7 @@ public:
 	DeployOrder(const DeployOrder& d);
 
 	// Parameterized Constructor
-	DeployOrder(Player& playerIssuingOrder, Territory& targetedTerritory);
+	DeployOrder(Player& playerIssuingOrder, Territory& targetedTerritory, int _numOfArmies);
 
 	// Destructor
 	~DeployOrder();
@@ -94,6 +93,7 @@ public:
 private:
 	//Data members
 	Territory* _targetedTerritory{ nullptr };
+	int numOfArmies;
 };
 
 class AdvanceOrder : public Order {
