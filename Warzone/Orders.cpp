@@ -7,6 +7,9 @@
 
 using namespace std;
 #include "./Headers/Orders.h"
+#include "./Headers/Map.h"
+#include "./Headers/Player.h"
+#include "Orders.h"
 
 // Stream insertion operator for Enum Order Types
 ostream& operator<<(ostream& out, OrdersEnum orderType) {
@@ -111,6 +114,13 @@ DeployOrder::DeployOrder(const DeployOrder& d) : Order(d){
 
 }
 
+//Parameterized constructor
+DeployOrder::DeployOrder(Player& playerIssuingOrder, Territory& targetedTerritory)
+{
+	this->_playerIssuingOrder = &playerIssuingOrder;
+	this->_targetedTerritory = &targetedTerritory;
+}
+
 // Destructor
 DeployOrder::~DeployOrder() {
 	
@@ -162,6 +172,14 @@ AdvanceOrder::AdvanceOrder() : Order(Advance) {
 // Copy constructor
 AdvanceOrder::AdvanceOrder(const AdvanceOrder& a) : Order (a) {
 
+}
+
+//Parameterized constructor
+AdvanceOrder::AdvanceOrder(Player& playerIssuingOrder, Territory& sourceTerritory, Territory& targetedTerritory)
+{
+	this->_playerIssuingOrder = &playerIssuingOrder;
+	this->_sourceTerritory = &sourceTerritory;
+	this->_targetedTerritory = &targetedTerritory;
 }
 
 // Destructor
@@ -217,6 +235,13 @@ BombOrder::BombOrder(const BombOrder& b) : Order(b) {
 
 }
 
+BombOrder::BombOrder(Player& playerIssuingOrder, Player& targetedPlayer, Territory& targetedTerritory)
+{
+	this->_playerIssuingOrder = &playerIssuingOrder;
+	this->_targetedPlayer = &targetedPlayer;
+	this->_targetedTerritory = &targetedTerritory;
+}
+
 // Destructor
 BombOrder::~BombOrder() {
 
@@ -267,6 +292,13 @@ BlockadeOrder::BlockadeOrder() : Order(Blockade) {
 // Copy constructor
 BlockadeOrder::BlockadeOrder(const BlockadeOrder& bl) : Order(bl) {
 
+}
+
+//Parameterized constructor
+BlockadeOrder::BlockadeOrder(Player& playerIssuingOrder, Territory& targetedTerritory)
+{
+	this->_playerIssuingOrder = &playerIssuingOrder;
+	this->_targetedTerritory = &targetedTerritory;
 }
 
 // Destructor
@@ -322,6 +354,14 @@ AirliftOrder::AirliftOrder(const AirliftOrder& air) : Order(air) {
 
 }
 
+//Parameterized constructor
+AirliftOrder::AirliftOrder(Player& playerIssuingOrder, Territory& sourceTerritory, Territory& targetedTerritory)
+{
+	this->_playerIssuingOrder = &playerIssuingOrder;
+	this->_sourceTerritory = &sourceTerritory;
+	this->_targetedTerritory = &targetedTerritory;
+}
+
 // Destructor
 AirliftOrder::~AirliftOrder() {
 
@@ -373,6 +413,12 @@ NegotiateOrder::NegotiateOrder() : Order(Negotiate) {
 // Copy constructor
 NegotiateOrder::NegotiateOrder(const NegotiateOrder& n) : Order(n) {
 
+}
+
+NegotiateOrder::NegotiateOrder(Player& playerIssuingOrder, Player& otherPlayer)
+{
+	this->_playerIssuingOrder = &playerIssuingOrder;
+	this->_otherPlayer = &otherPlayer;
 }
 
 // Destructor
