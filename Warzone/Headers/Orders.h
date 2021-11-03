@@ -105,7 +105,7 @@ public:
 	AdvanceOrder(const AdvanceOrder& a);
 
 	// Parameterized Constructor
-	AdvanceOrder(Player& playerIssuingOrder, Territory& sourceTerritory, Territory& targetedTerritory);
+	AdvanceOrder(Player& playerIssuingOrder, Territory& sourceTerritory, Territory& targetedTerritory, int _numOfArmies);
 
 	// Destructor
 	~AdvanceOrder();
@@ -126,6 +126,7 @@ private:
 	//Data members
 	Territory* _sourceTerritory{ nullptr };
 	Territory* _targetedTerritory{ nullptr };
+	int numOfArmies;
 };
 
 class BombOrder : public Order {
@@ -200,7 +201,7 @@ public:
 	AirliftOrder(const AirliftOrder& air);
 
 	// Parameterized Constructor
-	AirliftOrder(Player& playerIssuingOrder, Territory& sourceTerritory, Territory& targetedTerritory);
+	AirliftOrder(Player& playerIssuingOrder, Territory& sourceTerritory, Territory& targetedTerritory, int _numOfArmies);
 
 	// Destructor
 	~AirliftOrder();
@@ -216,6 +217,12 @@ public:
 
 	// If Airlift order is valid, execute order
 	bool execute() override;
+
+private:
+	//Data members
+	Territory* _targetedTerritory{ nullptr };
+	Territory* _sourceTerritory{ nullptr };
+	int numOfArmies;
 };
 
 class NegotiateOrder : public Order {
@@ -227,7 +234,7 @@ public:
 	NegotiateOrder(const NegotiateOrder& n);
 
 	// Parameterized Constructor
-	NegotiateOrder(Player& playerIssuingOrder, Player& otherPlayer);
+	NegotiateOrder(Player& playerIssuingOrder, Player& ennemyPlayer);
 
 	// Destructor
 	~NegotiateOrder();
@@ -246,7 +253,7 @@ public:
 
 private:
 	//Data members
-	Player* _otherPlayer{nullptr};
+	Player* _ennemyPlayer{nullptr};
 };
 
 
