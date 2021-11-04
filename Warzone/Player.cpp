@@ -71,6 +71,7 @@ vector<Territory*> Player::toDefend() {
 //Method used to add a new owned territory to the players list of owned territories
 void Player::addOwnedTerritory(Territory* territory) {
 	OwnedTerritories.push_back(territory);
+	territory->updatePlayer(this);
 }
 
 //Method used to create an order and add it to the players order list
@@ -140,6 +141,54 @@ void Player::issueOrder(OrdersEnum orderType) {
  //Temporary setter method for the territories that a player can attack
  void Player::setCanAttack(std::vector<Territory*> territories) {
 	 CanAttack = territories;
+ }
+
+ void Player::addTerritoryToDefend(Territory* territory)
+ {
+	 CanDefend.push_back(territory);
+ }
+
+ void Player::addTerritoryToAttack(Territory* territory)
+ {
+	 CanAttack.push_back(territory);
+ }
+
+ void Player::removeTerritoryToDefend(Territory* territory)
+ {
+	 int index = 0;
+	 for (vector<Territory*>::iterator it = CanDefend.begin(); it != CanDefend.end(); ++it)
+	 {
+		 if (CanDefend[index]->getId() == territory->getId()) {
+			 CanDefend.erase(it);
+			 break;
+		 }
+		 index++;
+	 }
+ }
+
+ void Player::removeTerritoryToAttack(Territory* territory)
+ {
+	 int index = 0;
+	 for (vector<Territory*>::iterator it = CanAttack.begin(); it != CanAttack.end(); ++it)
+	 {
+		 if (CanAttack[index]->getId() == territory->getId()) {
+			 CanAttack.erase(it);
+			 break;
+		 }
+		 index++;
+	 }
+ }
+
+ bool Player::playerCanAttack(Territory* territory)
+ {
+	 int index = 0;
+	 for (vector<Territory*>::iterator it = CanAttack.begin(); it != CanAttack.end(); ++it)
+	 {
+		 if (CanAttack[index]->getId() == territory->getId())
+			 return true;
+		 index++;
+	 }
+	 return false;
  }
 
  //Temporary method to add cards to the players' hand
