@@ -71,7 +71,24 @@ vector<Territory*> Player::toDefend() {
 //Method used to add a new owned territory to the players list of owned territories
 void Player::addOwnedTerritory(Territory* territory) {
 	OwnedTerritories.push_back(territory);
+	removeTerritoryToAttack(territory);
+	addTerritoryToDefend(territory);
 	territory->updatePlayer(this);
+}
+
+void Player::removeOwnedTerritory(Territory* territory)
+{
+	removeTerritoryToDefend(territory);
+	addTerritoryToAttack(territory);
+	int index = 0;
+	for (vector<Territory*>::iterator it = OwnedTerritories.begin(); it != OwnedTerritories.end(); ++it)
+	{
+		if (OwnedTerritories[index]->getId() == territory->getId()) {
+			OwnedTerritories.erase(it);
+			break;
+		}
+		index++;
+	}
 }
 
 //Method used to create an order and add it to the players order list

@@ -152,7 +152,7 @@ bool DeployOrder::validate() {
 bool DeployOrder::execute() {
 	cout << "Executing Deploy order..." << endl;
 	if (validate()) {
-		_targetedTerritory->updateArmyValue(_targetedTerritory->getArmyValue()+numOfArmies);
+		_targetedTerritory->addToArmy(numOfArmies);
 		effect = "Player " + _playerIssuingOrder->getPlayerName() + " has deployed " + to_string(numOfArmies) + " in " + _targetedTerritory->getName();
 		Order::execute();
 		return true;
@@ -255,32 +255,39 @@ bool AdvanceOrder::execute() {
 				break;
 			}
 		}
-
+		if (_sourceTerritory->getArmyValue() < numOfArmies);
+			numOfArmies = _sourceTerritory->getArmyValue();
 		if (isTerritoryOwned) {
-			_sourceTerritory->updateArmyValue(_sourceTerritory->getArmyValue() - numOfArmies);
-			_targetedTerritory->updateArmyValue(_targetedTerritory->getArmyValue() + numOfArmies);
-			effect = "Player " + _playerIssuingOrder->getPlayerName() + " has moved " + to_string(numOfArmies) + " army unit(s) from " + _sourceTerritory->getName() + " to " + _targetedTerritory->getName();
+			_sourceTerritory->removeFromArmy(numOfArmies);
+			_targetedTerritory->addToArmy(numOfArmies);
+			effect = _playerIssuingOrder->getPlayerName() + " has moved " + to_string(numOfArmies) + " army unit(s) from " + _sourceTerritory->getName() + " to " + _targetedTerritory->getName();
 		}
 		else {
 			int attackingChance = rand() % 100 + 1;
+			int attackDeath = 0;
 			int defendingChance = rand() % 100 + 1;
-			for (int i = 0; i < _targetedTerritory->getArmyValue(); i++) {
+			int defendDeath = 0;
+			for (int i = 0; i < numOfArmies; i++) {
 				attackingChance = rand() % 100 + 1;
 				if (attackingChance <= 60) {
-					_targetedTerritory->updateArmyValue(_targetedTerritory->getArmyValue() - 1);
+					attackDeath++;
 				}
 			}
 
-			for (int i = 0; i < _sourceTerritory->getArmyValue(); i++) {
+			for (int i = 0; i < _targetedTerritory->getArmyValue(); i++) {
 				defendingChance = rand() % 100 + 1;
 				if (defendingChance <= 70) {
-					_sourceTerritory->updateArmyValue(_sourceTerritory->getArmyValue() - 1);
-					if (_sourceTerritory->getArmyValue() == 0) {
-						//_playerIssuingOrder->addOwnedTerritory(_targetedTerritory);
-					}
+					defendDeath++;
 				}
 			}
-			
+			_sourceTerritory->removeFromArmy(attackDeath);
+			_targetedTerritory->removeFromArmy(defendDeath);
+			if (_targetedTerritory->getArmyValue() == 0) {
+				//Fix remove for target player
+				//_targetedTerritory->getPlayer()->removeOwnedTerritory(_targetedTerritory);
+				_playerIssuingOrder->addOwnedTerritory(_targetedTerritory);
+
+			}
 
 			effect = _playerIssuingOrder->getPlayerName() + " advanced and attacked " + _targetedTerritory->getName();
 		}
