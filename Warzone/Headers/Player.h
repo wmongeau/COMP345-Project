@@ -8,7 +8,7 @@
 
 using namespace std;
 
-//Class decalaration for the Player class
+//Class declaration for the Player class
 class Player {
 public:
 	Player();

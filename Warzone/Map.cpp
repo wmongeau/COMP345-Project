@@ -305,7 +305,7 @@ Territory::Territory(int id, string name, int continentId, int x, int y) {
     X = x;
     Y = y;
     //player = NULL;
-    armyValue = 50;
+    armyValue = 0;
 }
 //Copy constructor
 Territory::Territory(Territory* territory)
