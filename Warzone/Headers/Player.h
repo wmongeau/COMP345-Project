@@ -2,12 +2,14 @@
 
 #include <vector>
 #include <string>
-#include "Map.h"
-#include "Cards.h"
-//#include "Orders.h"
 
 using namespace std;
 
+class Territory;
+class Hand;
+class OrdersList;
+class Card;
+enum OrdersEnum;
 //Class declaration for the Player class
 class Player {
 public:
