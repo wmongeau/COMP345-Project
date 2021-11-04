@@ -103,8 +103,12 @@ LoadMapTransition::LoadMapTransition(const LoadMapTransition& loadMapTransition)
 }
 
 //Method that executes the LoadMapTransition
-void LoadMapTransition::execute(string args) {
+void LoadMapTransition::execute(string args, GameEngine* engine) {
 	cout << "Executing Load Map Transition" << endl;
+	engine -> setMap(MapLoader::loadMap(args));	
+	cout << "Loaded Map " << args << endl;
+	Map* map = engine -> getMap(); 
+	map -> print();
 }
 
 //Assignment operator override for the LoadMapTransition
@@ -125,7 +129,7 @@ ValidateMapTransition::ValidateMapTransition(const ValidateMapTransition& valida
 }
 
 //Method that executes the ValidateMapTransition
-void ValidateMapTransition::execute(string args) {
+void ValidateMapTransition::execute(string args, GameEngine* engine) {
 	cout << "Executing Validate Map Transiton" << endl;
 }
 
@@ -147,7 +151,7 @@ AddPlayerTransition::AddPlayerTransition(const AddPlayerTransition& addPlayerTra
 }
 
 //Method that executes the AddPlayerTransition 
-void AddPlayerTransition::execute(string args) {
+void AddPlayerTransition::execute(string args, GameEngine* engine) {
 	cout << "Executing Add Player Transition" << endl;
 }
 
@@ -169,7 +173,7 @@ AssignCountriesTransition::AssignCountriesTransition(const AssignCountriesTransi
 }
 
 //Method that executes the AssignCountriesTransition
-void AssignCountriesTransition::execute(string args) {
+void AssignCountriesTransition::execute(string args, GameEngine* engine) {
 	cout << "Executing Assign Countries Transition" << endl;
 }
 
@@ -191,7 +195,7 @@ IssueOrderTransition::IssueOrderTransition(const IssueOrderTransition& issueOrde
 }
 
 //Method that executes the IssueOrderTransition
-void IssueOrderTransition::execute(string args) {
+void IssueOrderTransition::execute(string args, GameEngine* engine) {
 	cout << "Executing Issue Order Transition" << endl;
 }
 
@@ -213,7 +217,7 @@ EndIssueOrdersTransition::EndIssueOrdersTransition(const EndIssueOrdersTransitio
 }
 
 //Method that executes the EndIssueOrdersTransition
-void EndIssueOrdersTransition::execute(string args) {
+void EndIssueOrdersTransition::execute(string args, GameEngine* engine) {
 	cout << "Executing End Issue Orders Transition" << endl;
 }
 
@@ -235,7 +239,7 @@ ExecOrderTransition::ExecOrderTransition(const ExecOrderTransition& execOrderTra
 }
 
 //Method that executes the ExecOrderTransition
-void ExecOrderTransition::execute(string args) {
+void ExecOrderTransition::execute(string args, GameEngine* engine) {
 	cout << "Executing Exec Order Transition" << endl;
 }
 
@@ -257,7 +261,7 @@ EndExecOrdersTransition::EndExecOrdersTransition(const EndExecOrdersTransition& 
 }
 
 //Method that executes the EndExecOrdersTransition
-void EndExecOrdersTransition::execute(string args) {
+void EndExecOrdersTransition::execute(string args, GameEngine* engine) {
 	cout << "Executing End Exec Orders Transition" << endl;
 }
 
@@ -279,7 +283,7 @@ WinTransition::WinTransition(const WinTransition& winTransition) : Transition(wi
 }
 
 //Method that executes the WinTransition
-void WinTransition::execute(string args) {
+void WinTransition::execute(string args, GameEngine* engine) {
 	cout << "Executing Win Transition" << endl;
 }
 
@@ -301,7 +305,7 @@ PlayTransition::PlayTransition(const PlayTransition& playTransition) : Transitio
 }
 
 //Method that executes the PlayTransition
-void PlayTransition::execute(string args) {
+void PlayTransition::execute(string args, GameEngine* engine) {
 	cout << "Executing Play Transition" << endl;
 }
 
@@ -323,7 +327,7 @@ EndTransition::EndTransition(const EndTransition& endTransition) : Transition(en
 }
 
 //Method that executes the EndTransition
-void EndTransition::execute(string args) {
+void EndTransition::execute(string args, GameEngine* engine) {
 	cout << "Executing End Transition" << endl;
 }
 
@@ -338,12 +342,16 @@ EndTransition& EndTransition::operator= (const EndTransition& endTransition) {
 GameEngine::GameEngine() {
 	currentState = new State(Enums::start);
 	updateAvailableTransitions();
+	map = NULL;
+	processor = new CommandProcessor();
 }
 
 //Copy constructor for the GameEngine class
 GameEngine::GameEngine(const GameEngine& engine) {
 	currentState = engine.currentState;
 	availableTransitions = engine.availableTransitions;
+	processor = engine.processor;
+	map = engine.map;
 }
 
 //Method that updates the available transitions of the game engine, given the current state
@@ -449,7 +457,7 @@ vector<Transition*> GameEngine::getAvailableTransitions() {
 
 //Method that tells the game engine to execute a transitioin that is given as a parameter
 void GameEngine::execute(Transition* transition, string args) {
-	transition -> execute(args);
+	transition -> execute(args, this);
 	delete currentState;
 	currentState = new State(*(transition -> getNextState()));
 	notify(this);
@@ -458,16 +466,15 @@ void GameEngine::execute(Transition* transition, string args) {
 
 //Method that is used to start up the game and process commands from the user(S)
 void GameEngine::startupPhase() {
-	CommandProcessor* commandProcessor = new CommandProcessor();
 	cout << "Welcome to COMP 345 Warzone! Here are the currently available commands:" << endl;
 	
 	for(Transition* transition : availableTransitions) {
 		cout << *transition << endl;
 	}
 
-	cout << "Please enter one of the available commands";
-	commandProcessor -> getCommand(getCurrentState());
-	Command* command = commandProcessor -> getCommandList().back();
+	cout << "Please enter one of the available commands" << endl;
+	processor -> getCommand(getCurrentState());
+	Command* command = processor -> getCommandList().back();
 	execute(command);
 
 }
@@ -512,6 +519,14 @@ string GameEngine::stringToLog()
 	return "GameEngine new state: "+to_string(currentState->getStateName())+'\n';
 }
 
+Map* GameEngine::getMap() {
+	return map;
+}
+
+void GameEngine::setMap(Map* loadedMap) {
+	map = loadedMap;
+}
+
 //Strem operator overload for the GameEngine class
 std::ostream& operator<< (std::ostream& os, const GameEngine& engine) {
 	os << "-------------------------------------------------------------" << endl;
@@ -535,6 +550,8 @@ std::ostream& operator<< (std::ostream& os, const GameEngine& engine) {
 GameEngine& GameEngine::operator= (const GameEngine& engine) {
 	currentState = engine.currentState;
 	availableTransitions = engine.availableTransitions;
+	map = engine.map;
+	processor = engine.processor;
 	return *this;
 }
 
@@ -547,6 +564,12 @@ GameEngine::~GameEngine() {
 		delete p;
 		p = NULL;
 	}
+
+	delete map;
+	map = NULL;
+
+	delete processor;
+	processor = NULL;
 }
 
 //Method that converts a states enum to a string
