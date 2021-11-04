@@ -20,6 +20,8 @@ public:
 	Territory(int id, std::string name, int continentId, int x, int y);
 	Territory(Territory* territory);
 	Territory& operator=(Territory* territory);
+	void addToArmy(int val);
+	void removeFromArmy(int val);
 	void updatePlayer(Player* newPlayer);
 	void updateArmyValue(int newArmyValue);
 	void addBorder(Territory* territory);

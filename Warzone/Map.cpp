@@ -318,6 +318,19 @@ Territory::Territory(Territory* territory)
     //player = new Player(*territory->player);
     armyValue = territory->armyValue;
 }
+
+void Territory::addToArmy(int val)
+{
+    armyValue += val;
+}
+
+void Territory::removeFromArmy(int val)
+{
+	armyValue -= val;
+	if (armyValue < 0)
+		armyValue = 0;
+}
+
 //Assignment operator
 Territory& Territory::operator = (Territory * territory)
 {

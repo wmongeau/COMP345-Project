@@ -72,6 +72,7 @@ vector<Territory*> Player::toDefend() {
 //Method used to add a new owned territory to the players list of owned territories
 void Player::addOwnedTerritory(Territory* territory) {
 	OwnedTerritories.push_back(territory);
+	territory->updatePlayer(this);
 }
 
 //Method used to create an order and add it to the players order list
