@@ -315,7 +315,7 @@ Territory::Territory(Territory* territory)
     ContinentId = territory->getContinentId();
     X = territory->getX();
     Y = territory->getY();
-    //player = new Player(*territory->player);
+    player = new Player(*territory->player);
     armyValue = territory->armyValue;
 }
 
@@ -344,7 +344,7 @@ Territory& Territory::operator = (Territory * territory)
 //Function to update who owns this territory
 void Territory::updatePlayer(Player* newPlayer)
 {
-    *player = *newPlayer;
+    player = newPlayer;
 }
 //Function to update the army value
 void Territory::updateArmyValue(int newArmyValue)

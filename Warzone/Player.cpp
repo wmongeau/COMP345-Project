@@ -144,6 +144,54 @@ void Player::issueOrder(OrdersEnum orderType) {
 	 CanAttack = territories;
  }
 
+ void Player::addTerritoryToDefend(Territory* territory)
+ {
+	 CanDefend.push_back(territory);
+ }
+
+ void Player::addTerritoryToAttack(Territory* territory)
+ {
+	 CanAttack.push_back(territory);
+ }
+
+ void Player::removeTerritoryToDefend(Territory* territory)
+ {
+	 int index = 0;
+	 for (vector<Territory*>::iterator it = CanDefend.begin(); it != CanDefend.end(); ++it)
+	 {
+		 if (CanDefend[index]->getId() == territory->getId()) {
+			 CanDefend.erase(it);
+			 break;
+		 }
+		 index++;
+	 }
+ }
+
+ void Player::removeTerritoryToAttack(Territory* territory)
+ {
+	 int index = 0;
+	 for (vector<Territory*>::iterator it = CanAttack.begin(); it != CanAttack.end(); ++it)
+	 {
+		 if (CanAttack[index]->getId() == territory->getId()) {
+			 CanAttack.erase(it);
+			 break;
+		 }
+		 index++;
+	 }
+ }
+
+ bool Player::playerCanAttack(Territory* territory)
+ {
+	 int index = 0;
+	 for (vector<Territory*>::iterator it = CanAttack.begin(); it != CanAttack.end(); ++it)
+	 {
+		 if (CanAttack[index]->getId() == territory->getId())
+			 return true;
+		 index++;
+	 }
+	 return false;
+ }
+
  //Temporary method to add cards to the players' hand
  void Player::addCardToHand(Card* card) {
 	 PlayerHand->selectCard(card);
