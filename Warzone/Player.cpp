@@ -1,5 +1,7 @@
 #include "./Headers/Player.h"
-
+#include "./Headers/Cards.h"
+#include "./Headers/Map.h"
+#include "./Headers/Orders.h"
 #include <iostream>
 #include <string>
 
