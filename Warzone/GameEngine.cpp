@@ -7,6 +7,8 @@
 
 using namespace std;
 #include "./Headers/GameEngine.h"
+#include "./Headers/CommandProcessing.h"
+#include "./Headers/MapDriver.h"
 
 //Default constructor for the State class
 State::State() {
@@ -101,7 +103,7 @@ LoadMapTransition::LoadMapTransition(const LoadMapTransition& loadMapTransition)
 }
 
 //Method that executes the LoadMapTransition
-void LoadMapTransition::execute() {
+void LoadMapTransition::execute(string args) {
 	cout << "Executing Load Map Transition" << endl;
 }
 
@@ -123,7 +125,7 @@ ValidateMapTransition::ValidateMapTransition(const ValidateMapTransition& valida
 }
 
 //Method that executes the ValidateMapTransition
-void ValidateMapTransition::execute() {
+void ValidateMapTransition::execute(string args) {
 	cout << "Executing Validate Map Transiton" << endl;
 }
 
@@ -145,7 +147,7 @@ AddPlayerTransition::AddPlayerTransition(const AddPlayerTransition& addPlayerTra
 }
 
 //Method that executes the AddPlayerTransition 
-void AddPlayerTransition::execute() {
+void AddPlayerTransition::execute(string args) {
 	cout << "Executing Add Player Transition" << endl;
 }
 
@@ -167,7 +169,7 @@ AssignCountriesTransition::AssignCountriesTransition(const AssignCountriesTransi
 }
 
 //Method that executes the AssignCountriesTransition
-void AssignCountriesTransition::execute() {
+void AssignCountriesTransition::execute(string args) {
 	cout << "Executing Assign Countries Transition" << endl;
 }
 
@@ -189,7 +191,7 @@ IssueOrderTransition::IssueOrderTransition(const IssueOrderTransition& issueOrde
 }
 
 //Method that executes the IssueOrderTransition
-void IssueOrderTransition::execute() {
+void IssueOrderTransition::execute(string args) {
 	cout << "Executing Issue Order Transition" << endl;
 }
 
@@ -211,7 +213,7 @@ EndIssueOrdersTransition::EndIssueOrdersTransition(const EndIssueOrdersTransitio
 }
 
 //Method that executes the EndIssueOrdersTransition
-void EndIssueOrdersTransition::execute() {
+void EndIssueOrdersTransition::execute(string args) {
 	cout << "Executing End Issue Orders Transition" << endl;
 }
 
@@ -233,7 +235,7 @@ ExecOrderTransition::ExecOrderTransition(const ExecOrderTransition& execOrderTra
 }
 
 //Method that executes the ExecOrderTransition
-void ExecOrderTransition::execute() {
+void ExecOrderTransition::execute(string args) {
 	cout << "Executing Exec Order Transition" << endl;
 }
 
@@ -255,7 +257,7 @@ EndExecOrdersTransition::EndExecOrdersTransition(const EndExecOrdersTransition& 
 }
 
 //Method that executes the EndExecOrdersTransition
-void EndExecOrdersTransition::execute() {
+void EndExecOrdersTransition::execute(string args) {
 	cout << "Executing End Exec Orders Transition" << endl;
 }
 
@@ -277,7 +279,7 @@ WinTransition::WinTransition(const WinTransition& winTransition) : Transition(wi
 }
 
 //Method that executes the WinTransition
-void WinTransition::execute() {
+void WinTransition::execute(string args) {
 	cout << "Executing Win Transition" << endl;
 }
 
@@ -299,7 +301,7 @@ PlayTransition::PlayTransition(const PlayTransition& playTransition) : Transitio
 }
 
 //Method that executes the PlayTransition
-void PlayTransition::execute() {
+void PlayTransition::execute(string args) {
 	cout << "Executing Play Transition" << endl;
 }
 
@@ -321,7 +323,7 @@ EndTransition::EndTransition(const EndTransition& endTransition) : Transition(en
 }
 
 //Method that executes the EndTransition
-void EndTransition::execute() {
+void EndTransition::execute(string args) {
 	cout << "Executing End Transition" << endl;
 }
 
@@ -446,8 +448,8 @@ vector<Transition*> GameEngine::getAvailableTransitions() {
 }
 
 //Method that tells the game engine to execute a transitioin that is given as a parameter
-void GameEngine::execute(Transition* transition) {
-	transition -> execute();
+void GameEngine::execute(Transition* transition, string args) {
+	transition -> execute(args);
 	delete currentState;
 	currentState = new State(*(transition -> getNextState()));
 	notify(this);
@@ -456,26 +458,52 @@ void GameEngine::execute(Transition* transition) {
 
 //Method that is used to start up the game and process commands from the user(S)
 void GameEngine::startupPhase() {
-	do {
-		vector<Transition*> availableTransitions = getAvailableTransitions();
-		int selected;
-		cin >> selected;
-		
-		while(selected < 0 || selected >= availableTransitions.size()){
-			cout << "Please select one of the available actions:" << endl;
-			cin >> selected;
-		}
-
-		execute(availableTransitions[selected]);
-	} while(Enums::statesEnumToString(getCurrentState() -> getStateName()) != "Quit");
-///////////////////////////////////////////////////////////////////////////////////////////////	
+	CommandProcessor* commandProcessor = new CommandProcessor();
 	cout << "Welcome to COMP 345 Warzone! Here are the currently available commands:" << endl;
 	
 	for(Transition* transition : availableTransitions) {
 		cout << *transition << endl;
 	}
 
-	cout << "Please enter one of the available commands"
+	cout << "Please enter one of the available commands";
+	commandProcessor -> getCommand(getCurrentState());
+	Command* command = commandProcessor -> getCommandList().back();
+	execute(command);
+
+}
+
+void GameEngine::execute(Command* command) {
+	switch(command->getCommandType()) {
+		case CommandType::loadMap : {
+			string args = splitString(command -> getCommand()).back();
+			execute(new LoadMapTransition(), args);
+			break;
+	        }
+		case CommandType::validateMap : {
+			string args = "";
+			execute(new ValidateMapTransition(), args);
+			break;
+		}
+		case CommandType::addPlayer : {
+			string args = splitString(command -> getCommand()).back();
+			execute(new AddPlayerTransition(), args);
+			break;
+                }
+		case CommandType::gameStart : {
+			string args = "";
+			execute(new AssignCountriesTransition(), args);
+			break;
+                }
+		case CommandType::replay : {
+		        break;
+		}
+		case CommandType::quit :  {
+	                break;
+	        }
+		case CommandType::error : {
+			cout << "The command you entered was invalid." << endl;
+	        }
+	}
 }
 
 //ILoggable function
