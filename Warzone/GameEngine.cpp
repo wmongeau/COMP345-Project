@@ -107,8 +107,6 @@ void LoadMapTransition::execute(string args, GameEngine* engine) {
 	cout << "Executing Load Map Transition" << endl;
 	engine -> setMap(MapLoader::loadMap(args));	
 	cout << "Loaded Map " << args << endl;
-	Map* map = engine -> getMap(); 
-	map -> print();
 }
 
 //Assignment operator override for the LoadMapTransition
@@ -131,6 +129,8 @@ ValidateMapTransition::ValidateMapTransition(const ValidateMapTransition& valida
 //Method that executes the ValidateMapTransition
 void ValidateMapTransition::execute(string args, GameEngine* engine) {
 	cout << "Executing Validate Map Transiton" << endl;
+	bool valid = engine -> getMap() -> validate();
+	cout << "Map is valid: " << valid << endl;
 }
 
 //Assignment operator override for the ValidateMapTransition class
@@ -153,6 +153,13 @@ AddPlayerTransition::AddPlayerTransition(const AddPlayerTransition& addPlayerTra
 //Method that executes the AddPlayerTransition 
 void AddPlayerTransition::execute(string args, GameEngine* engine) {
 	cout << "Executing Add Player Transition" << endl;
+	if(engine -> getPlayers().size() >= 6) {
+		cout << "The maximum number of players is 6." << endl;
+		return;
+	}
+	string name = args + "(Player "+ to_string(engine -> getPlayers().size()) + ")";
+	engine -> addPlayer(new Player(name));	
+	cout << "Added " + name << endl;
 }
 
 //Assignment operator override for the AddPlayerTransition class
@@ -175,6 +182,8 @@ AssignCountriesTransition::AssignCountriesTransition(const AssignCountriesTransi
 //Method that executes the AssignCountriesTransition
 void AssignCountriesTransition::execute(string args, GameEngine* engine) {
 	cout << "Executing Assign Countries Transition" << endl;
+	engine -> setStarting(false);
+	cout << "Startup phase is done!" << endl;
 }
 
 //Assignment operator override for the AssignCountriesTransition class
@@ -344,6 +353,8 @@ GameEngine::GameEngine() {
 	updateAvailableTransitions();
 	map = NULL;
 	processor = new CommandProcessor();
+	players = vector<Player*>();
+	starting = true;
 }
 
 //Copy constructor for the GameEngine class
@@ -352,6 +363,8 @@ GameEngine::GameEngine(const GameEngine& engine) {
 	availableTransitions = engine.availableTransitions;
 	processor = engine.processor;
 	map = engine.map;
+	players = engine.players;
+	starting = engine.starting;
 }
 
 //Method that updates the available transitions of the game engine, given the current state
@@ -466,17 +479,19 @@ void GameEngine::execute(Transition* transition, string args) {
 
 //Method that is used to start up the game and process commands from the user(S)
 void GameEngine::startupPhase() {
-	cout << "Welcome to COMP 345 Warzone! Here are the currently available commands:" << endl;
-	
-	for(Transition* transition : availableTransitions) {
-		cout << *transition << endl;
+	cout << "Welcome to COMP 345 Warzone!" << endl;
+
+	while(starting) {
+		cout << "These are the currently available commands: " << endl;
+		for(Transition* transition : availableTransitions) {
+			cout << *transition << endl;
+		}
+
+		cout << "Please enter one of the available commands" << endl;
+		processor -> getCommand(getCurrentState());
+		Command* command = processor -> getCommandList().back();
+		execute(command);
 	}
-
-	cout << "Please enter one of the available commands" << endl;
-	processor -> getCommand(getCurrentState());
-	Command* command = processor -> getCommandList().back();
-	execute(command);
-
 }
 
 void GameEngine::execute(Command* command) {
@@ -527,6 +542,22 @@ void GameEngine::setMap(Map* loadedMap) {
 	map = loadedMap;
 }
 
+vector<Player*> GameEngine::getPlayers() {
+	return players;
+}
+
+void GameEngine::addPlayer(Player* player) {
+	players.push_back(player);
+}
+
+bool GameEngine::getStarting() {
+	return starting;
+}
+
+void GameEngine::setStarting(bool isStarting) {
+	starting = isStarting;
+}
+
 //Strem operator overload for the GameEngine class
 std::ostream& operator<< (std::ostream& os, const GameEngine& engine) {
 	os << "-------------------------------------------------------------" << endl;
@@ -552,6 +583,8 @@ GameEngine& GameEngine::operator= (const GameEngine& engine) {
 	availableTransitions = engine.availableTransitions;
 	map = engine.map;
 	processor = engine.processor;
+	players = engine.players;
+	starting = engine.starting;
 	return *this;
 }
 
@@ -561,6 +594,11 @@ GameEngine::~GameEngine() {
 	currentState = NULL;
 
 	for (auto p : availableTransitions) {
+		delete p;
+		p = NULL;
+	}
+
+	for(auto p : players) {
 		delete p;
 		p = NULL;
 	}
@@ -614,13 +652,13 @@ std::string Enums::transitionsEnumToString(Enums::transitions value) {
 			return "loadmap <filename>";
 		}
 		case Enums::validateMap: {
-			return "Validate Map";
+			return "validatemap";
 		}
 		case Enums::addPlayer: {
-			return "Add Player";
+			return "addplayer <playername>";
 		}
 		case Enums::assignCountries: {
-			return "Assign Countries";
+			return "gamestart";
 		}
 		case Enums::issueOrder: {
 			return "Issue an Order";

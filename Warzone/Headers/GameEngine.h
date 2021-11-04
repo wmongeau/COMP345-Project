@@ -5,6 +5,7 @@
 #include "LoggingObserver.h"
 #include "CommandProcessing.h"
 #include "Map.h"
+#include "Player.h"
 
 namespace Enums{
 	enum states { start, mapLoaded, mapValidated, playersAdded, assignReinforcement, issueOrders, executeOrders, winState, quit };
@@ -146,6 +147,10 @@ public:
 	void execute(Command* command);
 	Map* getMap();
 	void setMap(Map* loadedMap);
+	vector<Player*> getPlayers();
+	void addPlayer(Player* player);
+	bool getStarting();
+	void setStarting(bool isStarting);
 	string stringToLog();
 	friend std::ostream& operator<< (std::ostream& os, const GameEngine& engine);
 	GameEngine& operator= (const GameEngine& engine);
@@ -154,6 +159,8 @@ private:
 	State* currentState;
 	Map* map;
 	CommandProcessor* processor;
+	vector<Player*> players;
+	bool starting;
 	std::vector<Transition*> availableTransitions;
 	void updateAvailableTransitions();
 };
