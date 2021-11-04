@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <string>
+#include <algorithm>
 
 using namespace std;
 #include "./Headers/GameEngine.h"
@@ -182,9 +183,34 @@ AssignCountriesTransition::AssignCountriesTransition(const AssignCountriesTransi
 //Method that executes the AssignCountriesTransition
 void AssignCountriesTransition::execute(string args, GameEngine* engine) {
 	cout << "Executing Assign Countries Transition" << endl;
+
 	engine -> setStarting(false);
+	
+	vector<Player*> enginePlayers = engine -> getPlayers();
+	random_shuffle(enginePlayers.begin(),enginePlayers.end());
+	engine -> setPlayers(enginePlayers);
+
+	cout << "Order of play: " << endl;
+	for(Player* p : engine -> getPlayers()) {
+		cout << p -> getPlayerName() << endl;
+	}
+
+	for(Player* p : engine -> getPlayers()) {
+		p -> setReinforcementPool(50);
+		cout << p -> getPlayerName() << " now has 50 armies in their reiforcement pool." << endl;
+	}
+
+
+	for(Player* p : engine -> getPlayers()) {
+		p -> addCardToHand(engine -> getDeck() -> draw());
+		p -> addCardToHand(engine -> getDeck() -> draw());
+
+		cout << p -> getPlayerName() << " has drawn two cards." << endl;
+	}
+
 	cout << "Startup phase is done!" << endl;
 }
+
 
 //Assignment operator override for the AssignCountriesTransition class
 AssignCountriesTransition& AssignCountriesTransition::operator= (const AssignCountriesTransition& assignCountriesTranstion) {
@@ -355,6 +381,7 @@ GameEngine::GameEngine() {
 	processor = new CommandProcessor();
 	players = vector<Player*>();
 	starting = true;
+	deck = new Deck();
 }
 
 //Copy constructor for the GameEngine class
@@ -365,6 +392,7 @@ GameEngine::GameEngine(const GameEngine& engine) {
 	map = engine.map;
 	players = engine.players;
 	starting = engine.starting;
+	deck = engine.deck;
 }
 
 //Method that updates the available transitions of the game engine, given the current state
@@ -550,12 +578,25 @@ void GameEngine::addPlayer(Player* player) {
 	players.push_back(player);
 }
 
+void GameEngine::setPlayers(vector<Player*> newPlayers) {
+	/* for(auto p : players) { */
+	/* 	delete p; */
+	/* 	p = NULL; */
+	/* } */
+
+	players = newPlayers;
+}
+
 bool GameEngine::getStarting() {
 	return starting;
 }
 
 void GameEngine::setStarting(bool isStarting) {
 	starting = isStarting;
+}
+
+Deck* GameEngine::getDeck() {
+	return deck;
 }
 
 //Strem operator overload for the GameEngine class
@@ -585,6 +626,7 @@ GameEngine& GameEngine::operator= (const GameEngine& engine) {
 	processor = engine.processor;
 	players = engine.players;
 	starting = engine.starting;
+	deck = engine.deck;
 	return *this;
 }
 
@@ -608,6 +650,9 @@ GameEngine::~GameEngine() {
 
 	delete processor;
 	processor = NULL;
+	
+	delete deck;
+	deck = NULL;
 }
 
 //Method that converts a states enum to a string

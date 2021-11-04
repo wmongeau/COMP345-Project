@@ -6,6 +6,7 @@
 #include "CommandProcessing.h"
 #include "Map.h"
 #include "Player.h"
+#include "Cards.h"
 
 namespace Enums{
 	enum states { start, mapLoaded, mapValidated, playersAdded, assignReinforcement, issueOrders, executeOrders, winState, quit };
@@ -149,8 +150,10 @@ public:
 	void setMap(Map* loadedMap);
 	vector<Player*> getPlayers();
 	void addPlayer(Player* player);
+	void setPlayers(vector<Player*> newPlayers);
 	bool getStarting();
 	void setStarting(bool isStarting);
+	Deck* getDeck();
 	string stringToLog();
 	friend std::ostream& operator<< (std::ostream& os, const GameEngine& engine);
 	GameEngine& operator= (const GameEngine& engine);
@@ -161,6 +164,7 @@ private:
 	CommandProcessor* processor;
 	vector<Player*> players;
 	bool starting;
+	Deck* deck;
 	std::vector<Transition*> availableTransitions;
 	void updateAvailableTransitions();
 };
