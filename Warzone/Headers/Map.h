@@ -3,7 +3,7 @@
 #include <string>
 #include <list>
 #include <vector>
-//#include "Player.h"
+#include "Player.h"
 
 
 class Territory {
@@ -14,13 +14,13 @@ private:
 	int X;
 	int Y;
 	std::vector<Territory*> Borders;
-	//Player* player{nullptr};
+	Player* player{nullptr};
 	int armyValue;
 public:
 	Territory(int id, std::string name, int continentId, int x, int y);
 	Territory(Territory* territory);
 	Territory& operator=(Territory* territory);
-	//void updatePlayer(Player* newPlayer);
+	void updatePlayer(Player* newPlayer);
 	void updateArmyValue(int newArmyValue);
 	void addBorder(Territory* territory);
 	const int getId() const;
@@ -28,7 +28,7 @@ public:
 	const int getContinentId() const;
 	const int getX() const;
 	const int getY() const;
-	//const Player* getPlayer() const;
+	const Player* getPlayer() const;
 	const int getArmyValue() const;
 	const std::vector<Territory*> getBorders() const;
 	const std::string toString() const;

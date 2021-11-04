@@ -159,7 +159,7 @@ bool Map::validate() {
         cout << "All territories belong to a single continent!" << endl;
     }
     else
-        cout << "1 or more territory has more than a single contient!" << endl;
+        cout << "1 or more territory has more than a single continent!" << endl;
     cout << "----------------------------------------------" << endl;
 
     return territoryIsGraph && continentIsGraph && singleContinent;
@@ -208,7 +208,7 @@ Continent* Map::getContinentById(int continentId) {
             return Continents[i];
     return NULL;
 }
-//Function ro get a territory by searching its id
+//Function to get a territory by searching its id
 Territory* Map::getTerritoryById(int territoryId) {
     for (int i = 0; i < Territories.size(); i++)
         if (Territories[i]->getId() == territoryId)
@@ -253,22 +253,22 @@ Continent& Continent::operator =(Continent* continent)
     return *this;
 }
 
-//Funciton to get the continent id
+//Function to get the continent id
 const int Continent::getId()const
 {
     return Id;
 }
-//Funciton to get the continent name
+//Function to get the continent name
 const std::string Continent::getName() const
 {
     return Name;
 }
-//Funciton to get the continent army value
+//Function to get the continent army value
 const int Continent::getArmyValue()const
 {
     return ArmyValue;
 }
-//Funciton to get the continent colour
+//Function to get the continent colour
 const std::string Continent::getColour()const
 {
     return Colour;
@@ -304,7 +304,7 @@ Territory::Territory(int id, string name, int continentId, int x, int y) {
     ContinentId = continentId;
     X = x;
     Y = y;
-    //player = NULL;
+    player = NULL;
     armyValue = 0;
 }
 //Copy constructor
@@ -329,10 +329,10 @@ Territory& Territory::operator = (Territory * territory)
     return *this;
 }
 //Function to update who owns this territory
-//void Territory::updatePlayer(Player* newPlayer)
-//{
-//    *player = *newPlayer;
-//}
+void Territory::updatePlayer(Player* newPlayer)
+{
+    *player = *newPlayer;
+}
 //Function to update the army value
 void Territory::updateArmyValue(int newArmyValue)
 {
@@ -368,10 +368,10 @@ const int Territory::getY()const
 {
     return Y;
 }
-//const Player* Territory::getPlayer() const
-//{
-//    return player;
-//}
+const Player* Territory::getPlayer() const
+{
+    return player;
+}
 const int Territory::getArmyValue() const
 {
     return armyValue;
@@ -391,10 +391,10 @@ const string Territory::toString() const
     result.append(to_string(X) + " ");
     result.append(to_string(Y) + " ");
     result.append(to_string(armyValue) + " ");
-   /* if(player != NULL)
+    if(player != NULL)
         result.append(player->getPlayerName() + " ");
     else
-        result.append("NULL");*/
+        result.append("NULL");
     result.append("\n   ");
     result.append(Name+" -->");
     for (Territory* var : Borders) {
