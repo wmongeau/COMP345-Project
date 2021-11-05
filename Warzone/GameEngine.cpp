@@ -194,9 +194,25 @@ void AssignCountriesTransition::execute(string args, GameEngine* engine) {
 		cout << p -> getPlayerName() << endl;
 	}
 
+	vector<Territory*> availableTerritories = vector<Territory*>(engine -> getMap() -> Territories);
+	random_shuffle(availableTerritories.begin(),availableTerritories.end());
+	int playerIndex = 0;
+
+	for(Territory* t : availableTerritories) {
+		engine -> getPlayers().at(playerIndex) -> addOwnedTerritory(t);
+		if(playerIndex == engine -> getPlayers().size() - 1) {
+			playerIndex = 0;
+		}
+		else {
+			playerIndex++;
+		}
+	}
+
+	cout << "Territories have been assigned to players randomly" << endl;
+
 	for(Player* p : engine -> getPlayers()) {
 		p -> setReinforcementPool(50);
-		cout << p -> getPlayerName() << " now has 50 armies in their reiforcement pool." << endl;
+		cout << p -> getPlayerName() << " now has 50 armies in their reinforcement pool." << endl;
 	}
 
 
@@ -518,12 +534,14 @@ void GameEngine::startupPhase() {
 		for(Transition* transition : availableTransitions) {
 			cout << *transition << endl;
 		}
+		cout << "-------------------------------------------------------------" << endl;
 
 		cout << "Please enter one of the available commands" << endl;
 		processor -> getCommand(getCurrentState());
 		Command* command = processor -> getCommandList().back();
 		cout << "-------------------------------------------------------------" << endl;
 		execute(command);
+		cout << "-------------------------------------------------------------" << endl;
 	}
 }
 
