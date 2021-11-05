@@ -6,7 +6,7 @@
 #include <string>
 
 using namespace std;
-#include "./Headers/GameEngine.h"
+#include "GameEngine.h"
 
 //Default constructor for the State class
 State::State() {
@@ -450,14 +450,7 @@ void GameEngine::execute(Transition* transition) {
 	transition -> execute();
 	delete currentState;
 	currentState = new State(*(transition -> getNextState()));
-	notify(this);
 	updateAvailableTransitions();
-}
-
-//ILoggable function
-string GameEngine::stringToLog()
-{
-	return "GameEngine new state: "+to_string(currentState->getStateName())+'\n';
 }
 
 //Strem operator overload for the GameEngine class

@@ -140,6 +140,10 @@ public:
 	friend std::ostream& operator<< (std::ostream& os, const GameEngine& engine);
 	GameEngine& operator= (const GameEngine& engine);
 	~GameEngine();
+	void mainGameLoop();
+	void reinforcementPhase();
+	void issueOrderPhase();
+	void executeOrderPhase();
 private:
 	State* currentState;
 	std::vector<Transition*> availableTransitions;
