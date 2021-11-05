@@ -7,6 +7,9 @@
 
 using namespace std;
 #include "../Headers/Player.h"
+#include "../Headers/Cards.h"
+#include "../Headers/Map.h"
+#include "../Headers/Orders.h"
 
 //Temporary method used to demo the functionality of the Player class
 void playerDriver(Map* map) {
@@ -39,7 +42,6 @@ void playerDriver(Map* map) {
 	player1->setCanAttack(unowned);
 
 	cout << *player1;
-
 	delete player1;
 	player1 = NULL;
  }

@@ -1,5 +1,7 @@
 #include "./Headers/Player.h"
-
+#include "./Headers/Cards.h"
+#include "./Headers/Map.h"
+#include "./Headers/Orders.h"
 #include <iostream>
 #include <string>
 
@@ -13,6 +15,7 @@ Player::Player() {
 	OwnedTerritories = vector<Territory*>();
 	CanAttack = vector<Territory*>();
 	CanDefend = vector<Territory*>();
+	reinforcementPool = 0;
 }
 
 //Copy constructor for the class Player
@@ -23,6 +26,7 @@ Player::Player(const Player& p) {
 	OwnedTerritories = p.OwnedTerritories;
 	CanAttack = p.CanAttack;
 	CanDefend = p.CanDefend;
+	reinforcementPool = p.reinforcementPool;
 }
 
 //Constructor taking a parameter of type string to be set as the name of the player
@@ -33,6 +37,7 @@ Player::Player(string playerName) {
 	OwnedTerritories = vector<Territory*>();
 	CanAttack = vector<Territory*>();
 	CanDefend = vector<Territory*>();
+	reinforcementPool = 0;
 }
 
 //Assignment operator for the class Player
@@ -43,6 +48,7 @@ Player& Player::operator =(const Player& p) {
 	OwnedTerritories = p.OwnedTerritories;
 	CanAttack = p.CanAttack;
 	CanDefend = p.CanDefend;
+	reinforcementPool = p.reinforcementPool;
 
 	return *this;
 }
@@ -70,6 +76,7 @@ vector<Territory*> Player::toDefend() {
 //Method used to add a new owned territory to the players list of owned territories
 void Player::addOwnedTerritory(Territory* territory) {
 	OwnedTerritories.push_back(territory);
+	territory->updatePlayer(this);
 }
 
 //Method used to create an order and add it to the players order list
@@ -141,10 +148,68 @@ void Player::issueOrder(OrdersEnum orderType) {
 	 CanAttack = territories;
  }
 
+ void Player::addTerritoryToDefend(Territory* territory)
+ {
+	 CanDefend.push_back(territory);
+ }
+
+ void Player::addTerritoryToAttack(Territory* territory)
+ {
+	 CanAttack.push_back(territory);
+ }
+
+ void Player::removeTerritoryToDefend(Territory* territory)
+ {
+	 int index = 0;
+	 for (vector<Territory*>::iterator it = CanDefend.begin(); it != CanDefend.end(); ++it)
+	 {
+		 if (CanDefend[index]->getId() == territory->getId()) {
+			 CanDefend.erase(it);
+			 break;
+		 }
+		 index++;
+	 }
+ }
+
+ void Player::removeTerritoryToAttack(Territory* territory)
+ {
+	 int index = 0;
+	 for (vector<Territory*>::iterator it = CanAttack.begin(); it != CanAttack.end(); ++it)
+	 {
+		 if (CanAttack[index]->getId() == territory->getId()) {
+			 CanAttack.erase(it);
+			 break;
+		 }
+		 index++;
+	 }
+ }
+
+ bool Player::playerCanAttack(Territory* territory)
+ {
+	 int index = 0;
+	 for (vector<Territory*>::iterator it = CanAttack.begin(); it != CanAttack.end(); ++it)
+	 {
+		 if (CanAttack[index]->getId() == territory->getId())
+			 return true;
+		 index++;
+	 }
+	 return false;
+ }
+
  //Temporary method to add cards to the players' hand
  void Player::addCardToHand(Card* card) {
 	 PlayerHand->selectCard(card);
  }
+
+//Method to set the size of the reinforcementPool of the player
+void Player::setReinforcementPool(int pool) {
+	reinforcementPool = pool;
+}
+
+//Method to get the size of the reinforcement pool 
+int Player::getReinforcementPool() {
+	return reinforcementPool;
+}
 
 //Stream insertion operator for the Player class. Prints all info relevant to the player.
 ostream& operator <<(ostream& out, Player& player)
