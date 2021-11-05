@@ -154,10 +154,6 @@ AddPlayerTransition::AddPlayerTransition(const AddPlayerTransition& addPlayerTra
 //Method that executes the AddPlayerTransition 
 void AddPlayerTransition::execute(string args, GameEngine* engine) {
 	cout << "Executing Add Player Transition" << endl;
-	if(engine -> getPlayers().size() >= 6) {
-		cout << "The maximum number of players is 6." << endl;
-		return;
-	}
 	string name = args + "(Player "+ to_string(engine -> getPlayers().size()) + ")";
 	engine -> addPlayer(new Player(name));	
 	cout << "Added " + name << endl;
@@ -432,8 +428,12 @@ void GameEngine::updateAvailableTransitions() {
 				p = NULL;
 			}
 			availableTransitions.clear();
-			availableTransitions.push_back(new AddPlayerTransition());
-			availableTransitions.push_back(new AssignCountriesTransition());
+			if(players.size() <= 5) {
+				availableTransitions.push_back(new AddPlayerTransition());
+			}
+			if(players.size() >= 2) {
+				availableTransitions.push_back(new AssignCountriesTransition());
+			}
 			break;
 		}
 		case Enums::assignReinforcement: {
@@ -508,7 +508,8 @@ void GameEngine::execute(Transition* transition, string args) {
 //Method that is used to start up the game and process commands from the user(S)
 void GameEngine::startupPhase() {
 	cout << "Welcome to COMP 345 Warzone!" << endl;
-
+	cout << "-------------------------------------------------------------" << endl;
+	
 	while(starting) {
 		cout << "These are the currently available commands: " << endl;
 		for(Transition* transition : availableTransitions) {
@@ -518,6 +519,7 @@ void GameEngine::startupPhase() {
 		cout << "Please enter one of the available commands" << endl;
 		processor -> getCommand(getCurrentState());
 		Command* command = processor -> getCommandList().back();
+		cout << "-------------------------------------------------------------" << endl;
 		execute(command);
 	}
 }
