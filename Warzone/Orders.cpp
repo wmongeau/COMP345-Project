@@ -286,12 +286,15 @@ bool AdvanceOrder::execute() {
 				//Fix remove for target player
 				//_targetedTerritory->getPlayer()->removeOwnedTerritory(_targetedTerritory);
 				_playerIssuingOrder->addOwnedTerritory(_targetedTerritory);
+				_targetedTerritory->updateArmyValue(numOfArmies);
 
+				effect: _playerIssuingOrder->getPlayerName() + "attacked and conquered " + _targetedTerritory->getName();
 			}
-
-			effect = _playerIssuingOrder->getPlayerName() + " advanced and attacked " + _targetedTerritory->getName();
+			else {
+				effect = _playerIssuingOrder->getPlayerName() + " lost " + to_string(attackDeath) + " army units and his ennemy on "
+					+ _targetedTerritory->getName() + " lost " + to_string(defendDeath) + " army units.";
+			}
 		}
-
 
 		Order::execute();
 		return true;
@@ -615,7 +618,23 @@ bool NegotiateOrder::validate() {
 bool NegotiateOrder::execute() {
 	cout << "Executing Negotiate order..." << endl;
 	if (validate()) {
-		//Wait for code..
+		for (int i = 0; i < _playerIssuingOrder->getOwnedTerritories().size(); i++) {
+			for (int j = 0; j < _ennemyPlayer->toAttack().size(); j++) {
+				if (_playerIssuingOrder->getOwnedTerritories()[i] == _ennemyPlayer->toAttack()[j]) {
+					_ennemyPlayer->removeTerritoryToAttack(_ennemyPlayer->toAttack()[j]);
+					break;
+				}
+			}
+		}
+
+		for (int i = 0; i < _ennemyPlayer->getOwnedTerritories().size(); i++) {
+			for (int j = 0; j < _playerIssuingOrder->toAttack().size(); j++) {
+				if (_ennemyPlayer->getOwnedTerritories()[i] == _playerIssuingOrder->toAttack()[j]) {
+					_playerIssuingOrder->removeTerritoryToAttack(_playerIssuingOrder->toAttack()[j]);
+					break;
+				}
+			}
+		}
 
 		effect = _playerIssuingOrder->getPlayerName() + " and " + _ennemyPlayer->getPlayerName() + " cannot attack each other for the remainder of the turn.";
 		Order::execute();
