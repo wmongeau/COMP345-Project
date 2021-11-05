@@ -34,6 +34,8 @@ public:
 	void issueOrder(OrdersEnum orderType);
 	void addOwnedTerritory(Territory* territory);
 	void addCardToHand(Card* card);
+	void setReinforcementPool(int pool);
+	int getReinforcementPool();
 	friend ostream& operator <<(ostream& out, Player& player);
 
 private:
@@ -43,6 +45,7 @@ private:
 	Hand* PlayerHand;
 	OrdersList* Orders;
 	vector<Territory*> OwnedTerritories;
+	int reinforcementPool;
 };
 
 ostream& operator <<(ostream& out, Player& player);
