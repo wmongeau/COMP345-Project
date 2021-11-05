@@ -5,6 +5,8 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
 #include "./Headers/GameEngine.h"
@@ -178,6 +180,7 @@ AssignCountriesTransition::AssignCountriesTransition(const AssignCountriesTransi
 
 //Method that executes the AssignCountriesTransition
 void AssignCountriesTransition::execute(string args, GameEngine* engine) {
+	srand ( unsigned ( time(0) ) );
 	cout << "Executing Assign Countries Transition" << endl;
 
 	engine -> setStarting(false);
