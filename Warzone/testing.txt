@@ -1,0 +1,2 @@
+loadmap asdasdasd.map
+validatemap

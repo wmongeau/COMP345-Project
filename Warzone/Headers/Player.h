@@ -9,7 +9,8 @@ class Territory;
 class Hand;
 class OrdersList;
 class Card;
-enum OrdersEnum;
+enum class OrdersEnum;
+
 //Class declaration for the Player class
 class Player {
 public:
@@ -35,6 +36,8 @@ public:
 	void addOwnedTerritory(Territory* territory);
 	void removeOwnedTerritory(Territory* territory);
 	void addCardToHand(Card* card);
+	void setReinforcementPool(int pool);
+	int getReinforcementPool();
 	friend ostream& operator <<(ostream& out, Player& player);
 
 private:
@@ -44,6 +47,7 @@ private:
 	Hand* PlayerHand;
 	OrdersList* Orders;
 	vector<Territory*> OwnedTerritories;
+	int reinforcementPool;
 };
 
 ostream& operator <<(ostream& out, Player& player);

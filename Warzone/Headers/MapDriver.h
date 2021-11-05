@@ -10,7 +10,7 @@ vector<string> splitString(string stringToSplit);
 
 class MapLoader {
 public:
-	static Map* loadMap();
+	static Map* loadMap(string args);
 
 private:
 	static void loadContinent(string continentStr,int *continentId,Map* map);

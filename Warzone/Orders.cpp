@@ -11,25 +11,25 @@ using namespace std;
 // Stream insertion operator for Enum Order Types
 ostream& operator<<(ostream& out, OrdersEnum orderType) {
 	switch (orderType) {
-	case None:
+	case OrdersEnum::None:
 		out << "None";
 		break;
-	case Deploy:
+	case OrdersEnum::Deploy:
 		out << "Deploy";
 		break;
-	case Advance:
+	case OrdersEnum::Advance:
 		out << "Advance";
 		break;
-	case Bomb:
+	case OrdersEnum::Bomb:
 		out << "Bomb";
 		break;
-	case Blockade:
+	case OrdersEnum::Blockade:
 		out << "Blockade";
 		break;
-	case Airlift:
+	case OrdersEnum::Airlift:
 		out << "Airlift";
 		break;
-	case Negotiate:
+	case OrdersEnum::Negotiate:
 		out << "Negotiate";
 		break;
 	}
@@ -41,7 +41,7 @@ ostream& operator<<(ostream& out, OrdersEnum orderType) {
 
 // Default constructor
 Order::Order() {
-	OrdersType = None;
+	OrdersType = OrdersEnum::None;
 }
 
 // Parameterized constructor
@@ -101,7 +101,7 @@ ostream& operator<<(ostream& out, const Order& orderOutStream) {
 // ---------- DeployOrder class ---------- //
 
 // Default constructor
-DeployOrder::DeployOrder() : Order(Deploy) {
+DeployOrder::DeployOrder() : Order(OrdersEnum::Deploy) {
 
 }
 
@@ -170,7 +170,7 @@ bool DeployOrder::execute() {
 // ---------- AdvanceOrder class ---------- //
 
 // Default constructor
-AdvanceOrder::AdvanceOrder() : Order(Advance) {
+AdvanceOrder::AdvanceOrder() : Order(OrdersEnum::Advance) {
 
 }
 
@@ -309,7 +309,7 @@ bool AdvanceOrder::execute() {
 // ---------- BombOrder class ---------- //
 
 // Default constructor
-BombOrder::BombOrder() : Order(Bomb) {
+BombOrder::BombOrder() : Order(OrdersEnum::Bomb) {
 
 }
 
@@ -398,7 +398,7 @@ bool BombOrder::execute() {
 // ---------- BlockadeOrder class ---------- //
 
 // Default constructor
-BlockadeOrder::BlockadeOrder() : Order(Blockade) {
+BlockadeOrder::BlockadeOrder() : Order(OrdersEnum::Blockade) {
 
 }
 
@@ -478,7 +478,7 @@ bool BlockadeOrder::execute() {
 // ---------- AirliftOrder class ---------- //
 
 // Default constructor
-AirliftOrder::AirliftOrder() : Order(Airlift) {
+AirliftOrder::AirliftOrder() : Order(OrdersEnum::Airlift) {
 
 }
 
@@ -566,7 +566,7 @@ bool AirliftOrder::execute() {
 // ---------- NegotiateOrder class ---------- //
 
 // Default constructor
-NegotiateOrder::NegotiateOrder() : Order(Negotiate) {
+NegotiateOrder::NegotiateOrder() : Order(OrdersEnum::Negotiate) {
 
 }
 
@@ -703,6 +703,31 @@ vector<Order*> OrdersList::getOrdersVector()
 //ILoggable function
 string OrdersList::stringToLog()
 {
-	return "Order Issued:" + to_string(OrdersVector.back()->getOrdersType())+'\n';
+	string orderString;
+	switch(OrdersVector.back()->getOrdersType()){
+		case OrdersEnum::None:
+			orderString = "None";
+			break;
+		case OrdersEnum::Deploy:
+			orderString =  "Deploy";
+			break;
+		case OrdersEnum::Advance:
+			orderString = "Advance";
+			break;
+		case OrdersEnum::Bomb:
+			orderString = "Bomb";
+			break;
+		case OrdersEnum::Blockade:
+			orderString = "Blockade";
+			break;
+		case OrdersEnum::Airlift:
+			orderString = "Airlift";
+			break;
+		case OrdersEnum::Negotiate:
+			orderString = "Negotiate";
+			break;
+	}
+	
+	return "Order Issued: " + orderString +'\n';
 }
 // ---------- End of OrdersList class ---------- //
