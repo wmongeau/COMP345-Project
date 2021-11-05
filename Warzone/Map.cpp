@@ -44,7 +44,7 @@ Map& Map::operator =(Map* map) {
     }
     copyTerritoryBorders(map->Territories);
     return *this;
-};
+}
 //Function to copy the graph layout of a Map object
 void Map::copyTerritoryBorders(std::vector<Territory*> copyTerritories) {
     int copyId = 0;
@@ -159,7 +159,7 @@ bool Map::validate() {
         cout << "All territories belong to a single continent!" << endl;
     }
     else
-        cout << "1 or more territory has more than a single contient!" << endl;
+        cout << "1 or more territory has more than a single continent!" << endl;
     cout << "----------------------------------------------" << endl;
 
     return territoryIsGraph && continentIsGraph && singleContinent;
@@ -208,7 +208,7 @@ Continent* Map::getContinentById(int continentId) {
             return Continents[i];
     return NULL;
 }
-//Function ro get a territory by searching its id
+//Function to get a territory by searching its id
 Territory* Map::getTerritoryById(int territoryId) {
     for (int i = 0; i < Territories.size(); i++)
         if (Territories[i]->getId() == territoryId)
@@ -253,22 +253,22 @@ Continent& Continent::operator =(Continent* continent)
     return *this;
 }
 
-//Funciton to get the continent id
+//Function to get the continent id
 const int Continent::getId()const
 {
     return Id;
 }
-//Funciton to get the continent name
+//Function to get the continent name
 const std::string Continent::getName() const
 {
     return Name;
 }
-//Funciton to get the continent army value
+//Function to get the continent army value
 const int Continent::getArmyValue()const
 {
     return ArmyValue;
 }
-//Funciton to get the continent colour
+//Function to get the continent colour
 const std::string Continent::getColour()const
 {
     return Colour;
@@ -304,6 +304,8 @@ Territory::Territory(int id, string name, int continentId, int x, int y) {
     ContinentId = continentId;
     X = x;
     Y = y;
+    player = NULL;
+    armyValue = 0;
 }
 //Copy constructor
 Territory::Territory(Territory* territory)
@@ -313,7 +315,22 @@ Territory::Territory(Territory* territory)
     ContinentId = territory->getContinentId();
     X = territory->getX();
     Y = territory->getY();
+    player = new Player(*territory->player);
+    armyValue = territory->armyValue;
 }
+
+void Territory::addToArmy(int val)
+{
+    armyValue += val;
+}
+
+void Territory::removeFromArmy(int val)
+{
+	armyValue -= val;
+	if (armyValue < 0)
+		armyValue = 0;
+}
+
 //Assignment operator
 Territory& Territory::operator = (Territory * territory)
 {
@@ -323,6 +340,16 @@ Territory& Territory::operator = (Territory * territory)
     X = territory->getX();
     Y = territory->getY();
     return *this;
+}
+//Function to update who owns this territory
+void Territory::updatePlayer(Player* newPlayer)
+{
+    player = newPlayer;
+}
+//Function to update the army value
+void Territory::updateArmyValue(int newArmyValue)
+{
+    armyValue = newArmyValue;
 }
 //Function to add an adjacent territory
 void Territory::addBorder(Territory* territory) {
@@ -354,13 +381,21 @@ const int Territory::getY()const
 {
     return Y;
 }
+const Player* Territory::getPlayer() const
+{
+    return player;
+}
+const int Territory::getArmyValue() const
+{
+    return armyValue;
+}
 //Function to get the Territory borders
 const std::vector<Territory*> Territory::getBorders() const
 {
     return Borders;
 }
 //Function to return the Territory information
-string Territory::toString()
+const string Territory::toString() const
 {
     string result;
     result.append(to_string(Id) + " ");
@@ -368,6 +403,11 @@ string Territory::toString()
     result.append(to_string(ContinentId) + " ");
     result.append(to_string(X) + " ");
     result.append(to_string(Y) + " ");
+    result.append(to_string(armyValue) + " ");
+    if(player != NULL)
+        result.append(player->getPlayerName() + " ");
+    else
+        result.append("NULL");
     result.append("\n   ");
     result.append(Name+" -->");
     for (Territory* var : Borders) {
@@ -380,12 +420,7 @@ string Territory::toString()
 //Stream insertion operator
 ostream& operator << (ostream& out, const Territory& c)
 {
-    out << c.getId() << " " << c.getName() << " " << c.getContinentId() << " " << c.getX() << " " << c.getY() << " " << endl;
-    out <<"   " << c.getName() << " -->";
-    for (Territory* var : c.getBorders()) {
-        out << " " << var->getName();
-    }
-    out << endl;
+    out << c.toString();
     return out;
 }
 //Destructor

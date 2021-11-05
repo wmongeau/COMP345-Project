@@ -10,44 +10,44 @@
 using namespace std;
 
 //Driver for the map loading
-void mapDriver() {
-	Map* map;
-	bool valid = false;
-	try {
-		while (!valid) {
-			map = MapLoader::loadMap();
-			if (map == NULL) {
-				cout << "----------------------------------------------" << endl;
-				cout << "Error: map was null"<<endl;
-				cout << "----------------------------------------------" << endl;
-				continue;
-			}
-			valid = map->validate();
-			if (valid)
-				cout << "Map is valid and playable!!" << endl;
-			else
-				cout << "Map is invalid!!" << endl;
-			cout << "----------------------------------------------" << endl;
-		}
-	}
-	catch (exception e)
-	{
-		string answer;
-		cout << "----------------------------------------------" << endl;
-		cout << "Unexpected error found!"<<endl
-			<<"Press any key to exit application...";
-		cin >> answer; 
-		return;
-	}
-	cout << "Do you want to see the map's information?(y/n) ";
-	char seeMap;
-	cin >> seeMap;
-	cout << "----------------------------------------------" << endl;
-	seeMap = toupper(seeMap);
-	if (seeMap == 'Y')
-		map->print();
-	delete map;
-};
+/* void mapDriver() { */
+/* 	Map* map; */
+/* 	bool valid = false; */
+/* 	try { */
+/* 		while (!valid) { */
+/* 			map = MapLoader::loadMap(); */
+/* 			if (map == NULL) { */
+/* 				cout << "----------------------------------------------" << endl; */
+/* 				cout << "Error: map was null"<<endl; */
+/* 				cout << "----------------------------------------------" << endl; */
+/* 				continue; */
+/* 			} */
+/* 			valid = map->validate(); */
+/* 			if (valid) */
+/* 				cout << "Map is valid and playable!!" << endl; */
+/* 			else */
+/* 				cout << "Map is invalid!!" << endl; */
+/* 			cout << "----------------------------------------------" << endl; */
+/* 		} */
+/* 	} */
+/* 	catch (exception e) */
+/* 	{ */
+/* 		string answer; */
+/* 		cout << "----------------------------------------------" << endl; */
+/* 		cout << "Unexpected error found!"<<endl */
+/* 			<<"Press any key to exit application..."; */
+/* 		cin >> answer; */ 
+/* 		return; */
+/* 	} */
+/* 	cout << "Do you want to see the map's information?(y/n) "; */
+/* 	char seeMap; */
+/* 	cin >> seeMap; */
+/* 	cout << "----------------------------------------------" << endl; */
+/* 	seeMap = toupper(seeMap); */
+/* 	if (seeMap == 'Y') */
+/* 		map->print(); */
+/* 	delete map; */
+/* }; */
 
 //FUNCTIONS
 //function to split string into an array with a space delimiter
@@ -70,10 +70,11 @@ vector<string> splitString(string stringToSplit) {
 };
 
 //Function to load a map file and return a Map object
-Map* MapLoader::loadMap() {
-	cout << "Enter the file path to the map you wish to play!" << endl;
-	string filePath;
-	getline(cin, filePath);
+Map* MapLoader::loadMap(string args) {
+	string filePath = "../Maps/" + args;
+#ifdef _WIN32
+	filePath = "../../../Maps/" + args;
+#endif
 	ifstream file(filePath);
 	if (!file.is_open())
 	{

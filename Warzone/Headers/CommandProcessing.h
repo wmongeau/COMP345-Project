@@ -4,8 +4,11 @@
 #include <vector>
 #include <string>
 #include "GameEngine.h"
+#include "LoggingObserver.h"
 
 using namespace std;
+
+class State;
 
 enum CommandType
 {
@@ -14,7 +17,7 @@ enum CommandType
 
 ostream& operator<<(ostream& out, CommandType commandType);
 
-class Command {
+class Command:ILoggable, SubJect {
 public:
 	Command();
 	Command(CommandType commandType, string command);
@@ -26,13 +29,14 @@ public:
 	string getEffect();
 	string getCommand();
 	CommandType getCommandType();
+	string stringToLog();
 private:
 	CommandType commandType;
 	string command;
 	string effect;
 };
 
-class CommandProcessor {
+class CommandProcessor:ILoggable, SubJect {
 public:
 	CommandProcessor();
 	~CommandProcessor();
@@ -41,6 +45,7 @@ public:
 	friend ostream& operator<<(ostream& out, const CommandProcessor& c);
 	void getCommand(State* currentState);
 	vector<Command*> getCommandList();
+	string stringToLog();
 private:
 	virtual Command* readCommand();
 	void saveCommand(Command* command);

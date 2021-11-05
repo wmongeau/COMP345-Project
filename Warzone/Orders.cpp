@@ -11,25 +11,25 @@ using namespace std;
 // Stream insertion operator for Enum Order Types
 ostream& operator<<(ostream& out, OrdersEnum orderType) {
 	switch (orderType) {
-	case None:
+	case OrdersEnum::None:
 		out << "None";
 		break;
-	case Deploy:
+	case OrdersEnum::Deploy:
 		out << "Deploy";
 		break;
-	case Advance:
+	case OrdersEnum::Advance:
 		out << "Advance";
 		break;
-	case Bomb:
+	case OrdersEnum::Bomb:
 		out << "Bomb";
 		break;
-	case Blockade:
+	case OrdersEnum::Blockade:
 		out << "Blockade";
 		break;
-	case Airlift:
+	case OrdersEnum::Airlift:
 		out << "Airlift";
 		break;
-	case Negotiate:
+	case OrdersEnum::Negotiate:
 		out << "Negotiate";
 		break;
 	}
@@ -41,7 +41,7 @@ ostream& operator<<(ostream& out, OrdersEnum orderType) {
 
 // Default constructor
 Order::Order() {
-	OrdersType = None;
+	OrdersType = OrdersEnum::None;
 }
 
 // Parameterized constructor
@@ -57,7 +57,6 @@ Order::Order(const Order& c) {
 
 // Destructor
 Order::~Order() {
-	
 }
 
 // Assignment operator
@@ -77,17 +76,17 @@ OrdersEnum Order::getOrdersType()
 	return OrdersType;
 }
 
+//ILoggable function
+string Order::stringToLog()
+{
+	return "Order executed: "+effect + '\n';
+}
+
 // If order is valid, execute order
 bool Order::execute()
 {
-	if (validate()) {
-		effect = "This is the effect of the order.";
+		notify(this);
 		return true;
-	}
-	else {
-		cout << "The order cannot be executed!" << endl;
-		return false;
-	}
 }
 
 // Overloads the stream insertion operator.
@@ -102,7 +101,7 @@ ostream& operator<<(ostream& out, const Order& orderOutStream) {
 // ---------- DeployOrder class ---------- //
 
 // Default constructor
-DeployOrder::DeployOrder() : Order(Deploy) {
+DeployOrder::DeployOrder() : Order(OrdersEnum::Deploy) {
 
 }
 
@@ -140,6 +139,7 @@ bool DeployOrder::execute() {
 	cout << "Executing Deploy order..." << endl;
 	if (validate()) {
 		effect = "This is the effect of the order.";
+		Order::execute();
 		return true;
 	}
 	else {
@@ -155,7 +155,7 @@ bool DeployOrder::execute() {
 // ---------- AdvanceOrder class ---------- //
 
 // Default constructor
-AdvanceOrder::AdvanceOrder() : Order(Advance) {
+AdvanceOrder::AdvanceOrder() : Order(OrdersEnum::Advance) {
 
 }
 
@@ -193,6 +193,7 @@ bool AdvanceOrder::execute() {
 	cout << "Executing Advance order..." << endl;
 	if (validate()) {
 		effect = "This is the effect of the order.";
+		Order::execute();
 		return true;
 	}
 	else {
@@ -208,7 +209,7 @@ bool AdvanceOrder::execute() {
 // ---------- BombOrder class ---------- //
 
 // Default constructor
-BombOrder::BombOrder() : Order(Bomb) {
+BombOrder::BombOrder() : Order(OrdersEnum::Bomb) {
 
 }
 
@@ -246,6 +247,7 @@ bool BombOrder::execute() {
 	cout << "Executing Bomb order..." << endl;
 	if (validate()) {
 		effect = "This is the effect of the order.";
+		Order::execute();
 		return true;
 	}
 	else {
@@ -260,7 +262,7 @@ bool BombOrder::execute() {
 // ---------- BlockadeOrder class ---------- //
 
 // Default constructor
-BlockadeOrder::BlockadeOrder() : Order(Blockade) {
+BlockadeOrder::BlockadeOrder() : Order(OrdersEnum::Blockade) {
 
 }
 
@@ -298,6 +300,7 @@ bool BlockadeOrder::execute() {
 	cout << "Executing Blockade order..." << endl;
 	if (validate()) {
 		effect = "This is the effect of the order.";
+		Order::execute();
 		return true;
 	}
 	else {
@@ -313,7 +316,7 @@ bool BlockadeOrder::execute() {
 // ---------- AirliftOrder class ---------- //
 
 // Default constructor
-AirliftOrder::AirliftOrder() : Order(Airlift) {
+AirliftOrder::AirliftOrder() : Order(OrdersEnum::Airlift) {
 
 }
 
@@ -351,6 +354,7 @@ bool AirliftOrder::execute() {
 	cout << "Executing Airlift order..." << endl;
 	if (validate()) {
 		effect = "This is the effect of the order.";
+		Order::execute();
 		return true;
 	}
 	else {
@@ -366,7 +370,7 @@ bool AirliftOrder::execute() {
 // ---------- NegotiateOrder class ---------- //
 
 // Default constructor
-NegotiateOrder::NegotiateOrder() : Order(Negotiate) {
+NegotiateOrder::NegotiateOrder() : Order(OrdersEnum::Negotiate) {
 
 }
 
@@ -404,6 +408,7 @@ bool NegotiateOrder::execute() {
 	cout << "Executing Negotiate order..." << endl;
 	if (validate()) {
 		effect = "This is the effect of the order.";
+		Order::execute();
 		return true;
 	}
 	else {
@@ -455,6 +460,7 @@ ostream& operator<<(ostream& out, const OrdersList& ol)
 void OrdersList::addOrder(Order* order)
 {
 	OrdersVector.push_back(order);
+	notify(this);
 }
 
 // Displays the orders within the orderslist
@@ -482,5 +488,36 @@ void OrdersList::remove(int index) {
 vector<Order*> OrdersList::getOrdersVector()
 {
 	return OrdersVector;
+}
+
+//ILoggable function
+string OrdersList::stringToLog()
+{
+	string orderString;
+	switch(OrdersVector.back()->getOrdersType()){
+		case OrdersEnum::None:
+			orderString = "None";
+			break;
+		case OrdersEnum::Deploy:
+			orderString =  "Deploy";
+			break;
+		case OrdersEnum::Advance:
+			orderString = "Advance";
+			break;
+		case OrdersEnum::Bomb:
+			orderString = "Bomb";
+			break;
+		case OrdersEnum::Blockade:
+			orderString = "Blockade";
+			break;
+		case OrdersEnum::Airlift:
+			orderString = "Airlift";
+			break;
+		case OrdersEnum::Negotiate:
+			orderString = "Negotiate";
+			break;
+	}
+	
+	return "Order Issued: " + orderString +'\n';
 }
 // ---------- End of OrdersList class ---------- //

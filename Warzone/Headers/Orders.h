@@ -3,24 +3,25 @@
 #include <iostream>
 #include <list>
 #include "Map.h"
+#include "LoggingObserver.h"
 
 using namespace std;
 
 // Enum for Order Type
-enum OrdersEnum
+enum class OrdersEnum
 {
-	None = 0,
-	Deploy = 1,
-	Advance = 2,
-	Bomb = 3,
-	Blockade = 4,
-	Airlift = 5,
-	Negotiate = 6
+	None,
+	Deploy,
+	Advance,
+	Bomb,
+	Blockade,
+	Airlift,
+	Negotiate
 };
 
 ostream& operator<<(ostream& out, OrdersEnum orderType);
 
-class Order {
+class Order:ILoggable,SubJect {
 private:
 	// Enum for Order type
 	OrdersEnum OrdersType;
@@ -49,6 +50,8 @@ public:
 	// Getter for Enum Order Type
 	OrdersEnum getOrdersType();
 
+	//ILoggable function
+	string stringToLog();
 
 	// Verifies if order is valid
 	virtual bool validate();
@@ -204,7 +207,7 @@ public:
 };
 
 
-class OrdersList {
+class OrdersList:ILoggable,SubJect {
 public:
 	// Default Constructor
 	OrdersList();
@@ -235,6 +238,9 @@ public:
 
 	// Getter for the Orders vector
 	vector<Order*> getOrdersVector();
+
+	//ILoggable function
+	string stringToLog();
 
 private:
 	vector<Order*> OrdersVector;

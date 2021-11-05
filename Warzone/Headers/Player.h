@@ -2,13 +2,16 @@
 
 #include <vector>
 #include <string>
-#include "Map.h"
-#include "Cards.h"
-//#include "Orders.h"
 
 using namespace std;
 
-//Class decalaration for the Player class
+class Territory;
+class Hand;
+class OrdersList;
+class Card;
+enum class OrdersEnum;
+
+//Class declaration for the Player class
 class Player {
 public:
 	Player();
@@ -22,11 +25,18 @@ public:
 	string getPlayerName();
 	void setCanDefend(vector<Territory*> territories);
 	void setCanAttack(vector<Territory*> territories);
+	void addTerritoryToDefend(Territory* territory);
+	void addTerritoryToAttack(Territory* territory);
+	void removeTerritoryToDefend(Territory* territory);
+	void removeTerritoryToAttack(Territory* territory);
+	bool playerCanAttack(Territory* territory);
 	vector<Territory*> toDefend();
 	vector<Territory*> toAttack();
 	void issueOrder(OrdersEnum orderType);
 	void addOwnedTerritory(Territory* territory);
 	void addCardToHand(Card* card);
+	void setReinforcementPool(int pool);
+	int getReinforcementPool();
 	friend ostream& operator <<(ostream& out, Player& player);
 
 private:
@@ -36,6 +46,7 @@ private:
 	Hand* PlayerHand;
 	OrdersList* Orders;
 	vector<Territory*> OwnedTerritories;
+	int reinforcementPool;
 };
 
 ostream& operator <<(ostream& out, Player& player);
