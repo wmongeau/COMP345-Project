@@ -529,21 +529,25 @@ void GameEngine::execute(Command* command) {
 		case CommandType::loadMap : {
 			string args = splitString(command -> getCommand()).back();
 			execute(new LoadMapTransition(), args);
+			command -> saveEffect("Loaded map " + args);
 			break;
 	        }
 		case CommandType::validateMap : {
 			string args = "";
 			execute(new ValidateMapTransition(), args);
+			command -> saveEffect("Validate map");
 			break;
 		}
 		case CommandType::addPlayer : {
 			string args = splitString(command -> getCommand()).back();
 			execute(new AddPlayerTransition(), args);
+			command -> saveEffect("Added player " + args);
 			break;
                 }
 		case CommandType::gameStart : {
 			string args = "";
 			execute(new AssignCountriesTransition(), args);
+			command -> saveEffect("Started game: play order determined, territories assigned, reinforcement pools filled up and initial cards drawn");
 			break;
                 }
 		case CommandType::replay : {
