@@ -349,8 +349,8 @@ ostream& operator<<(ostream& out, const BombOrder& bombOrderOutStream) {
 }
 
 // Validate Bomb order
-// --> If the target belongs to the player that issued the order, the order is invalid.
-// --> If the target territory is not adjacent to one of the territory owned by the player issuing the order, then the order is invalid.
+// --> If the target belongs to the player that issued the order, the order is invalid
+// --> If the target territory is not adjacent to one of the territory owned by the player issuing the order, then the order is invalid
 bool BombOrder::validate() {
 	bool isTargetTerritory = false;
 	bool isTargetBorderOwned = false;
