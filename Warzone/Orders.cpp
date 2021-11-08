@@ -11,25 +11,25 @@ using namespace std;
 // Stream insertion operator for Enum Order Types
 ostream& operator<<(ostream& out, OrdersEnum orderType) {
 	switch (orderType) {
-	case None:
+	case OrdersEnum::None:
 		out << "None";
 		break;
-	case Deploy:
+	case OrdersEnum::Deploy:
 		out << "Deploy";
 		break;
-	case Advance:
+	case OrdersEnum::Advance:
 		out << "Advance";
 		break;
-	case Bomb:
+	case OrdersEnum::Bomb:
 		out << "Bomb";
 		break;
-	case Blockade:
+	case OrdersEnum::Blockade:
 		out << "Blockade";
 		break;
-	case Airlift:
+	case OrdersEnum::Airlift:
 		out << "Airlift";
 		break;
-	case Negotiate:
+	case OrdersEnum::Negotiate:
 		out << "Negotiate";
 		break;
 	}
@@ -41,7 +41,7 @@ ostream& operator<<(ostream& out, OrdersEnum orderType) {
 
 // Default constructor
 Order::Order() {
-	OrdersType = None;
+	OrdersType = OrdersEnum::None;
 }
 
 // Parameterized constructor
@@ -101,7 +101,7 @@ ostream& operator<<(ostream& out, const Order& orderOutStream) {
 // ---------- DeployOrder class ---------- //
 
 // Default constructor
-DeployOrder::DeployOrder() : Order(Deploy) {
+DeployOrder::DeployOrder() : Order(OrdersEnum::Deploy) {
 
 }
 
@@ -137,6 +137,7 @@ ostream& operator<<(ostream& out, const DeployOrder& deployOrderOutStream) {
 }
 
 // Validate Deploy order
+// --> If the target territory does not belong to the player that issued the order, the order is invalid
 bool DeployOrder::validate() {
 	for (int i = 0; i < _playerIssuingOrder->getOwnedTerritories().size(); i++) {
 		if (_playerIssuingOrder->getOwnedTerritories()[i]->getId() == _targetedTerritory->getId()) {
@@ -149,6 +150,7 @@ bool DeployOrder::validate() {
 }
 
 // Execute Deploy order if valid
+// --> The selected number of armies is added to the number of armies on that territory
 bool DeployOrder::execute() {
 	cout << "Executing Deploy order..." << endl;
 	if (validate()) {
@@ -170,7 +172,7 @@ bool DeployOrder::execute() {
 // ---------- AdvanceOrder class ---------- //
 
 // Default constructor
-AdvanceOrder::AdvanceOrder() : Order(Advance) {
+AdvanceOrder::AdvanceOrder() : Order(OrdersEnum::Advance) {
 
 }
 
@@ -207,6 +209,8 @@ ostream& operator<<(ostream& out, const AdvanceOrder& advanceOrderOutStream) {
 }
 
 // Validate Advance order
+// --> If the source territory does not belong to the player that issued the order, the order is invalid
+// --> If the target territory is not adjacent to the source territory, the order is invalid
 bool AdvanceOrder::validate() {
 	bool isValidSourceTerritory = false;
 	bool isValidTargetTerritory = false;
@@ -239,12 +243,10 @@ bool AdvanceOrder::validate() {
 		cout << "The Advance order is invalid!" << endl;
 		return false;
 	}
-
-	
-	
 }
 
 // Execute Advance order if valid
+// --> Tells a certain number of army units to move from a source territory to a target adjacent territory
 bool AdvanceOrder::execute() {
 	cout << "Executing Advance order..." << endl;
 	if (validate()) {
@@ -285,12 +287,15 @@ bool AdvanceOrder::execute() {
 			if (_targetedTerritory->getArmyValue() == 0) {
 				_targetedTerritory->removePlayer();
 				_playerIssuingOrder->addOwnedTerritory(_targetedTerritory);
+				_targetedTerritory->updateArmyValue(numOfArmies);
 
+				effect: _playerIssuingOrder->getPlayerName() + "attacked and conquered " + _targetedTerritory->getName();
 			}
-
-			effect = _playerIssuingOrder->getPlayerName() + " advanced and attacked " + _targetedTerritory->getName();
+			else {
+				effect = _playerIssuingOrder->getPlayerName() + " lost " + to_string(attackDeath) + " army units and his ennemy on "
+					+ _targetedTerritory->getName() + " lost " + to_string(defendDeath) + " army units.";
+			}
 		}
-
 
 		Order::execute();
 		return true;
@@ -308,7 +313,7 @@ bool AdvanceOrder::execute() {
 // ---------- BombOrder class ---------- //
 
 // Default constructor
-BombOrder::BombOrder() : Order(Bomb) {
+BombOrder::BombOrder() : Order(OrdersEnum::Bomb) {
 
 }
 
@@ -343,6 +348,8 @@ ostream& operator<<(ostream& out, const BombOrder& bombOrderOutStream) {
 }
 
 // Validate Bomb order
+// --> If the target belongs to the player that issued the order, the order is invalid.
+// --> If the target territory is not adjacent to one of the territory owned by the player issuing the order, then the order is invalid.
 bool BombOrder::validate() {
 	bool isTargetTerritory = false;
 	bool isTargetBorderOwned = false;
@@ -375,6 +382,8 @@ bool BombOrder::validate() {
 }
 
 // Execute Bomb order if valid
+// --> Targets a territory owned by another player than the one issuing the order (removes half of the armies from this territory)
+// --> Created by playing the bomb card
 bool BombOrder::execute() {
 	cout << "Executing Bomb order..." << endl;
 	if (validate()) {
@@ -397,7 +406,7 @@ bool BombOrder::execute() {
 // ---------- BlockadeOrder class ---------- //
 
 // Default constructor
-BlockadeOrder::BlockadeOrder() : Order(Blockade) {
+BlockadeOrder::BlockadeOrder() : Order(OrdersEnum::Blockade) {
 
 }
 
@@ -432,6 +441,7 @@ ostream& operator<<(ostream& out, const BlockadeOrder& blockadeOrderOutStream) {
 }
 
 // Validate Blockade order
+// --> If the target territory belongs to an enemy player, the order is invalid
 bool BlockadeOrder::validate() {
 	bool isOwnedTerritory = false;
 	for (int i = 0; i < _playerIssuingOrder->getOwnedTerritories().size(); i++) {
@@ -452,6 +462,9 @@ bool BlockadeOrder::validate() {
 }
 
 // Execute Blockade order if valid
+// --> Targets  a territory that belongs to the player issuing the order
+// --> Doubles amry units on the territory and transfers ownership of the territory to the Neutral player
+// --> Created by playing the blockade card
 bool BlockadeOrder::execute() {
 	cout << "Executing Blockade order..." << endl;
 	if (validate()) {
@@ -477,7 +490,7 @@ bool BlockadeOrder::execute() {
 // ---------- AirliftOrder class ---------- //
 
 // Default constructor
-AirliftOrder::AirliftOrder() : Order(Airlift) {
+AirliftOrder::AirliftOrder() : Order(OrdersEnum::Airlift) {
 
 }
 
@@ -514,9 +527,10 @@ ostream& operator<<(ostream& out, const AirliftOrder& airliftOrderOutStream) {
 }
 
 // Validate Airlift order
+// --> If the source or target does not belong to the player that issued the order, the order is invalid
 bool AirliftOrder::validate() {
 	bool isValidSource = false;
-	bool isValidTarget = false;
+	bool isValidTarget = false; 
 
 	for (int i = 0; i < _playerIssuingOrder->getOwnedTerritories().size(); i++) {
 		if (_playerIssuingOrder->getOwnedTerritories()[i]->getId() == _sourceTerritory->getId()) {
@@ -543,6 +557,9 @@ bool AirliftOrder::validate() {
 }
 
 // Execute Airlift order if valid
+// --> Tells a certain number of armies taken from a source territory to be moved to a target territory, 
+// --> the source and the target territory being owned by the player issuing the order
+// --> Created by playing the airlift card
 bool AirliftOrder::execute() {
 	cout << "Executing Airlift order..." << endl;
 	if (validate()) {
@@ -565,7 +582,7 @@ bool AirliftOrder::execute() {
 // ---------- NegotiateOrder class ---------- //
 
 // Default constructor
-NegotiateOrder::NegotiateOrder() : Order(Negotiate) {
+NegotiateOrder::NegotiateOrder() : Order(OrdersEnum::Negotiate) {
 
 }
 
@@ -599,6 +616,7 @@ ostream& operator<<(ostream& out, const NegotiateOrder& negotiateOrderOutStream)
 }
 
 // Validate Negotiate order
+// --> If the target is the player issuing the order, then the order is invalid
 bool NegotiateOrder::validate() {
 	if (_playerIssuingOrder == _ennemyPlayer) {
 		cout << "The Negotiate order is invalid!" << endl;
@@ -611,10 +629,29 @@ bool NegotiateOrder::validate() {
 }
 
 // Execute Negotiate order if valid
+// --> Targets an enemy player
+// --> Results in the target player and the player issuing the order to not be able to successfully attack each others’ territories for the remainder of the turn
+// --> Created by playing the diplomacy card
 bool NegotiateOrder::execute() {
 	cout << "Executing Negotiate order..." << endl;
 	if (validate()) {
-		//Wait for code..
+		for (int i = 0; i < _playerIssuingOrder->getOwnedTerritories().size(); i++) {
+			for (int j = 0; j < _ennemyPlayer->toAttack().size(); j++) {
+				if (_playerIssuingOrder->getOwnedTerritories()[i] == _ennemyPlayer->toAttack()[j]) {
+					_ennemyPlayer->removeTerritoryToAttack(_ennemyPlayer->toAttack()[j]);
+					break;
+				}
+			}
+		}
+
+		for (int i = 0; i < _ennemyPlayer->getOwnedTerritories().size(); i++) {
+			for (int j = 0; j < _playerIssuingOrder->toAttack().size(); j++) {
+				if (_ennemyPlayer->getOwnedTerritories()[i] == _playerIssuingOrder->toAttack()[j]) {
+					_playerIssuingOrder->removeTerritoryToAttack(_playerIssuingOrder->toAttack()[j]);
+					break;
+				}
+			}
+		}
 
 		effect = _playerIssuingOrder->getPlayerName() + " and " + _ennemyPlayer->getPlayerName() + " cannot attack each other for the remainder of the turn.";
 		Order::execute();
@@ -702,6 +739,31 @@ vector<Order*> OrdersList::getOrdersVector()
 //ILoggable function
 string OrdersList::stringToLog()
 {
-	return "Order Issued:" + to_string(OrdersVector.back()->getOrdersType())+'\n';
+	string orderString;
+	switch(OrdersVector.back()->getOrdersType()){
+		case OrdersEnum::None:
+			orderString = "None";
+			break;
+		case OrdersEnum::Deploy:
+			orderString =  "Deploy";
+			break;
+		case OrdersEnum::Advance:
+			orderString = "Advance";
+			break;
+		case OrdersEnum::Bomb:
+			orderString = "Bomb";
+			break;
+		case OrdersEnum::Blockade:
+			orderString = "Blockade";
+			break;
+		case OrdersEnum::Airlift:
+			orderString = "Airlift";
+			break;
+		case OrdersEnum::Negotiate:
+			orderString = "Negotiate";
+			break;
+	}
+	
+	return "Order Issued: " + orderString +'\n';
 }
 // ---------- End of OrdersList class ---------- //

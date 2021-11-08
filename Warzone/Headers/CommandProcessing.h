@@ -8,6 +8,8 @@
 
 using namespace std;
 
+class State;
+
 enum CommandType
 {
 	loadMap, validateMap, addPlayer, gameStart, replay, quit, error

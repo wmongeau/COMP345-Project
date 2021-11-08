@@ -14,6 +14,7 @@ Player::Player() {
 	OwnedTerritories = vector<Territory*>();
 	CanAttack = vector<Territory*>();
 	CanDefend = vector<Territory*>();
+	reinforcementPool = 0;
 }
 
 //Copy constructor for the class Player
@@ -24,6 +25,7 @@ Player::Player(const Player& p) {
 	OwnedTerritories = p.OwnedTerritories;
 	CanAttack = p.CanAttack;
 	CanDefend = p.CanDefend;
+	reinforcementPool = p.reinforcementPool;
 }
 
 //Constructor taking a parameter of type string to be set as the name of the player
@@ -34,6 +36,7 @@ Player::Player(string playerName) {
 	OwnedTerritories = vector<Territory*>();
 	CanAttack = vector<Territory*>();
 	CanDefend = vector<Territory*>();
+	reinforcementPool = 0;
 }
 
 //Assignment operator for the class Player
@@ -44,6 +47,7 @@ Player& Player::operator =(const Player& p) {
 	OwnedTerritories = p.OwnedTerritories;
 	CanAttack = p.CanAttack;
 	CanDefend = p.CanDefend;
+	reinforcementPool = p.reinforcementPool;
 
 	return *this;
 }
@@ -98,25 +102,25 @@ void Player::issueOrder(OrdersEnum orderType) {
 	Order* order;
 
 	switch (orderType) {
-		case Deploy:
+		case OrdersEnum::Deploy:
 		 order = new DeployOrder();
 			break;
-		case Advance:
+		case OrdersEnum::Advance:
 			order = new AdvanceOrder();
 			break;
-		case Bomb:
+		case OrdersEnum::Bomb:
 			order = new BombOrder();
 			break;
-		case Blockade:
+		case OrdersEnum::Blockade:
 			order = new BlockadeOrder();
 			break;
-		case Airlift:
+		case OrdersEnum::Airlift:
 			order = new AirliftOrder();
 			break;
-		case Negotiate:
+		case OrdersEnum::Negotiate:
 			order = new NegotiateOrder();
 			break;
-		case None: 
+		case OrdersEnum::None: 
 			order = new Order();
 			break;
 		default:
@@ -212,6 +216,16 @@ void Player::issueOrder(OrdersEnum orderType) {
  void Player::addCardToHand(Card* card) {
 	 PlayerHand->selectCard(card);
  }
+
+//Method to set the size of the reinforcementPool of the player
+void Player::setReinforcementPool(int pool) {
+	reinforcementPool = pool;
+}
+
+//Method to get the size of the reinforcement pool 
+int Player::getReinforcementPool() {
+	return reinforcementPool;
+}
 
 //Stream insertion operator for the Player class. Prints all info relevant to the player.
 ostream& operator <<(ostream& out, Player& player)

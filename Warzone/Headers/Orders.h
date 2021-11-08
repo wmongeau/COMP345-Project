@@ -9,15 +9,15 @@
 using namespace std;
 
 // Enum for Order Type
-enum OrdersEnum
+enum class OrdersEnum
 {
-	None = 0,
-	Deploy = 1,
-	Advance = 2,
-	Bomb = 3,
-	Blockade = 4,
-	Airlift = 5,
-	Negotiate = 6
+	None,
+	Deploy,
+	Advance,
+	Bomb,
+	Blockade,
+	Airlift,
+	Negotiate
 };
 
 ostream& operator<<(ostream& out, OrdersEnum orderType);
