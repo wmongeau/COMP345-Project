@@ -220,18 +220,12 @@ bool AdvanceOrder::validate() {
 			isValidSourceTerritory = true;
 			break;
 		}
-		else {
-			isValidSourceTerritory = false;
-		}
 	}
 
 	for (int i = 0; i < _targetedTerritory->getBorders().size(); i++) {
 		if (_targetedTerritory->getBorders()[i]->getId() == _sourceTerritory->getId()) {
 			isValidTargetTerritory = true;
 			break;
-		}
-		else {
-			isValidTargetTerritory = true;
 		}
 	}
 
@@ -257,8 +251,9 @@ bool AdvanceOrder::execute() {
 				break;
 			}
 		}
-		if (_sourceTerritory->getArmyValue() < numOfArmies);
-			numOfArmies = _sourceTerritory->getArmyValue()-1;
+		if (_sourceTerritory->getArmyValue() < numOfArmies) {
+			numOfArmies = _sourceTerritory->getArmyValue() - 1;
+		}
 		if (isTerritoryOwned) {
 			_sourceTerritory->removeFromArmy(numOfArmies);
 			_targetedTerritory->addToArmy(numOfArmies);
@@ -275,9 +270,9 @@ bool AdvanceOrder::execute() {
 			}
 
 			if (canAttack) {
-				int attackingChance = rand() % 100 + 1;
+				int attackingChance;
 				int attackDeath = 0;
-				int defendingChance = rand() % 100 + 1;
+				int defendingChance;
 				int defendDeath = 0;
 				for (int i = 0; i < numOfArmies; i++) {
 					attackingChance = rand() % 100 + 1;
@@ -299,7 +294,7 @@ bool AdvanceOrder::execute() {
 					_playerIssuingOrder->addOwnedTerritory(_targetedTerritory);
 					_targetedTerritory->updateArmyValue(numOfArmies);
 
-				effect: _playerIssuingOrder->getPlayerName() + "attacked and conquered " + _targetedTerritory->getName();
+				effect = _playerIssuingOrder->getPlayerName() + " attacked and conquered " + _targetedTerritory->getName();
 				}
 				else {
 					effect = _playerIssuingOrder->getPlayerName() + " lost " + to_string(attackDeath) + " army units and his ennemy on "
@@ -391,6 +386,7 @@ bool BombOrder::validate() {
 		return true;
 	}
 	else {
+		cout << "The Bomb order is invalid!" << endl;
 		return false;
 	}
 }

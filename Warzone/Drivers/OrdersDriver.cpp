@@ -55,6 +55,26 @@ void ordersDriver(){
 
 	cout << "-----------------------------------" << endl;
 
+	//Creating territories that players can attack
+	cout << "Assigning the territories that each player can attack to the specific players..." << endl;
+	amadou->addTerritoryToAttack(territory2);
+	amadou->addTerritoryToAttack(territory4);
+	amadou->addTerritoryToAttack(territory6);
+
+	matt->addTerritoryToAttack(territory1);
+	matt->addTerritoryToAttack(territory3);
+	matt->addTerritoryToAttack(territory5);
+	matt->addTerritoryToAttack(territory6);
+
+	samil->addTerritoryToAttack(territory1);
+	samil->addTerritoryToAttack(territory2);
+	samil->addTerritoryToAttack(territory3);
+	samil->addTerritoryToAttack(territory4);
+	samil->addTerritoryToAttack(territory5);
+	cout << "Territories have been successfully assigned!" << endl;
+
+	cout << "-----------------------------------" << endl;
+
 	cout << "Initializing army values for each territory..." << endl;
 	territory1->updateArmyValue(10);
 	territory2->updateArmyValue(10);
@@ -134,15 +154,29 @@ void ordersDriver(){
 	//Testing valid Airlift Order
 	cout << "Creating valid Airlift Order..." << endl;
 	AirliftOrder* airliftOrder;
-	airliftOrder = new AirliftOrder(*amadou, *territory1, *territory4, 10);
+	airliftOrder = new AirliftOrder(*amadou, *territory1, *territory3, 10);
+
+	// ---------- TO FIX FOR CARDS ----------
+	//Card* airliftCard = new airliftCard(airliftOrder);
+	//amadou->playerHand().selectCard(airliftCard);
+	//airliftCard.play();
+	// --------------------------------------
+
 	cout << "--> Airlift Order was created! " << endl;
 	cout << "Preparing execution of Airlift Order..." << endl;
 	airliftOrder->execute();
 	cout << *airliftOrder << endl;
 
-	//Testing valid Advance Order (
+	//Testing valid Airlift Order
 	cout << "Creating invalid Airlift Order..." << endl;
 	airliftOrder = new AirliftOrder(*amadou, *territory2, *territory3, 10);
+
+	// ---------- TO FIX FOR CARDS ----------
+	//Card* airliftCard = new airliftCard(airliftOrder);
+	//amadou->playerHand().selectCard(airliftCard);
+	//airliftCard.play();
+	// --------------------------------------
+
 	cout << "--> Airlift Order was created! " << endl;
 	cout << "Preparing execution of Airlift Order..." << endl;
 	airliftOrder->execute();
@@ -154,6 +188,13 @@ void ordersDriver(){
 	cout << "Creating valid Bomb Order..." << endl;
 	BombOrder* bombOrder;
 	bombOrder = new BombOrder(*amadou, *matt, *territory2);
+
+	// ---------- TO FIX FOR CARDS ----------
+	//Card* bombCard = new bombCard(bombOrder);
+	//amadou->playerHand().selectCard(bombCard);
+	//bombCard.play();
+	// --------------------------------------
+
 	cout << "--> Bomb Order was created! " << endl;
 	cout << "Preparing execution of Bomb Order..." << endl;
 	bombOrder->execute();
@@ -162,6 +203,13 @@ void ordersDriver(){
 	//Testing invalid Bomb Orders
 	cout << "Creating invalid Bomb Order (target territory is owned by issuing player)..." << endl;
 	bombOrder = new BombOrder(*amadou, *matt, *territory1);
+
+	// ---------- TO FIX FOR CARDS ----------
+	//Card* bombCard = new bombCard(bombOrder);
+	//amadou->playerHand().selectCard(bombCard);
+	//bombCard.play();
+	// --------------------------------------
+
 	cout << "--> Bomb Order was created! " << endl;
 	cout << "Preparing execution of Bomb Order..." << endl;
 	bombOrder->execute();
@@ -180,6 +228,13 @@ void ordersDriver(){
 	cout << "Creating valid Blockade Order..." << endl;
 	BlockadeOrder* blockadeOrder;
 	blockadeOrder = new BlockadeOrder(*amadou, *territory1, playerList);
+
+	// ---------- TO FIX FOR CARDS ----------
+	//Card* blockadeCard = new blockadeCard(blockadeOrder);
+	//amadou->playerHand().selectCard(blockadeCard);
+	//blockadeCard.play();
+	// --------------------------------------
+
 	cout << "--> Blockade Order was created! " << endl;
 	cout << "Preparing execution of Blockade Order..." << endl;
 	blockadeOrder->execute();
@@ -188,6 +243,13 @@ void ordersDriver(){
 	//Testing invalid Blockade Order
 	cout << "Creating invalid Blockade Order..." << endl;
 	blockadeOrder = new BlockadeOrder(*amadou, *territory2, playerList);
+
+	// ---------- TO FIX FOR CARDS ----------
+	//Card* blockadeCard = new blockadeCard(blockadeOrder);
+	//amadou->playerHand().selectCard(blockadeCard);
+	//blockadeCard.play();
+	// --------------------------------------
+
 	cout << "--> Blockade Order was created! " << endl;
 	cout << "Preparing execution of Blockade Order..." << endl;
 	blockadeOrder->execute();
@@ -199,6 +261,13 @@ void ordersDriver(){
 	cout << "Creating valid Negotiate Order..." << endl;
 	NegotiateOrder* negotiateOrder;
 	negotiateOrder = new NegotiateOrder(*amadou, *matt);
+
+	// ---------- TO FIX FOR CARDS ----------
+	//Card* negotiateCard = new negotiateCard(negotiateOrder);
+	//amadou->playerHand().selectCard(negotiateCard);
+	//negotiateCard.play();
+	// --------------------------------------
+
 	cout << "--> Negotiate Order was created! " << endl;
 	cout << "Preparing execution of Negotiate Order..." << endl;
 	negotiateOrder->execute();
@@ -207,6 +276,13 @@ void ordersDriver(){
 	//Testing invalid Negotiate Order
 	cout << "Creating invalid Negotiate Order..." << endl;
 	negotiateOrder = new NegotiateOrder(*amadou, *amadou);
+
+	// ---------- TO FIX FOR CARDS ----------
+	//Card* negotiateCard = new negotiateCard(negotiateOrder);
+	//amadou->playerHand().selectCard(negotiateCard);
+	//negotiateCard.play();
+	// --------------------------------------
+
 	cout << "--> Negotiate Order was created! " << endl;
 	cout << "Preparing execution of Negotiate Order..." << endl;
 	negotiateOrder->execute();
@@ -223,11 +299,14 @@ void ordersDriver(){
 		advanceOrder->execute();
 		cout << *advanceOrder << endl;
 	}
+	
 
 	//Adding a card to a player after conquering a territory (following an Advance Order)
 	if (territory6->getPlayer() == amadou)
 	{
 		Deck* newDeck = new Deck();
+		cout << endl;
+
 		amadou->addCardToHand(newDeck->draw());
 		cout << amadou->getPlayerName() + " has drawn a card from the deck after conquering " + territory6->getName() + "!" << endl;
 		amadou->getPlayerHand()->showHand();
