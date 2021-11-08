@@ -43,6 +43,7 @@ private:
 	std::string Name;
 	int ArmyValue;
 	std::string Colour;
+	std::vector<Territory*> territories;
 public:
 	Continent(int id, std::string name, int armyVal, std::string colour);
 	Continent(Continent* continent);
@@ -52,6 +53,7 @@ public:
 	const int getArmyValue() const;
 	const std::string getColour() const;
 	std::string toString();
+	vector<Territory*> getTerritories();
 	~Continent();
 };
 

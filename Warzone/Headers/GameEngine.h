@@ -162,6 +162,7 @@ public:
 	void reinforcementPhase();
 	void issueOrderPhase();
 	void executeOrderPhase();
+	bool checkIfContinentOwned(Player* player, Continent* continent);
 private:
 	State* currentState;
 	Map* map;
@@ -171,4 +172,6 @@ private:
 	Deck* deck;
 	std::vector<Transition*> availableTransitions;
 	void updateAvailableTransitions();
+	bool winner;
+	bool playersFinishedOrders;
 };
