@@ -137,6 +137,7 @@ ostream& operator<<(ostream& out, const DeployOrder& deployOrderOutStream) {
 }
 
 // Validate Deploy order
+// --> If the target territory does not belong to the player that issued the order, the order is invalid
 bool DeployOrder::validate() {
 	for (int i = 0; i < _playerIssuingOrder->getOwnedTerritories().size(); i++) {
 		if (_playerIssuingOrder->getOwnedTerritories()[i]->getId() == _targetedTerritory->getId()) {
@@ -149,6 +150,7 @@ bool DeployOrder::validate() {
 }
 
 // Execute Deploy order if valid
+// --> The selected number of armies is added to the number of armies on that territory
 bool DeployOrder::execute() {
 	cout << "Executing Deploy order..." << endl;
 	if (validate()) {
@@ -207,6 +209,8 @@ ostream& operator<<(ostream& out, const AdvanceOrder& advanceOrderOutStream) {
 }
 
 // Validate Advance order
+// --> If the source territory does not belong to the player that issued the order, the order is invalid
+// --> If the target territory is not adjacent to the source territory, the order is invalid
 bool AdvanceOrder::validate() {
 	bool isValidSourceTerritory = false;
 	bool isValidTargetTerritory = false;
@@ -239,12 +243,10 @@ bool AdvanceOrder::validate() {
 		cout << "The Advance order is invalid!" << endl;
 		return false;
 	}
-
-	
-	
 }
 
 // Execute Advance order if valid
+// --> Tells a certain number of army units to move from a source territory to a target adjacent territory
 bool AdvanceOrder::execute() {
 	cout << "Executing Advance order..." << endl;
 	if (validate()) {
@@ -347,6 +349,8 @@ ostream& operator<<(ostream& out, const BombOrder& bombOrderOutStream) {
 }
 
 // Validate Bomb order
+// --> If the target belongs to the player that issued the order, the order is invalid.
+// --> If the target territory is not adjacent to one of the territory owned by the player issuing the order, then the order is invalid.
 bool BombOrder::validate() {
 	bool isTargetTerritory = false;
 	bool isTargetBorderOwned = false;
@@ -379,6 +383,8 @@ bool BombOrder::validate() {
 }
 
 // Execute Bomb order if valid
+// --> Targets a territory owned by another player than the one issuing the order (removes half of the armies from this territory)
+// --> Created by playing the bomb card
 bool BombOrder::execute() {
 	cout << "Executing Bomb order..." << endl;
 	if (validate()) {
@@ -436,6 +442,7 @@ ostream& operator<<(ostream& out, const BlockadeOrder& blockadeOrderOutStream) {
 }
 
 // Validate Blockade order
+// --> If the target territory belongs to an enemy player, the order is invalid
 bool BlockadeOrder::validate() {
 	bool isOwnedTerritory = false;
 	for (int i = 0; i < _playerIssuingOrder->getOwnedTerritories().size(); i++) {
@@ -456,6 +463,9 @@ bool BlockadeOrder::validate() {
 }
 
 // Execute Blockade order if valid
+// --> Targets  a territory that belongs to the player issuing the order
+// --> Doubles amry units on the territory and transfers ownership of the territory to the Neutral player
+// --> Created by playing the blockade card
 bool BlockadeOrder::execute() {
 	cout << "Executing Blockade order..." << endl;
 	if (validate()) {
@@ -518,9 +528,10 @@ ostream& operator<<(ostream& out, const AirliftOrder& airliftOrderOutStream) {
 }
 
 // Validate Airlift order
+// --> If the source or target does not belong to the player that issued the order, the order is invalid
 bool AirliftOrder::validate() {
 	bool isValidSource = false;
-	bool isValidTarget = false;
+	bool isValidTarget = false; 
 
 	for (int i = 0; i < _playerIssuingOrder->getOwnedTerritories().size(); i++) {
 		if (_playerIssuingOrder->getOwnedTerritories()[i]->getId() == _sourceTerritory->getId()) {
@@ -547,6 +558,9 @@ bool AirliftOrder::validate() {
 }
 
 // Execute Airlift order if valid
+// --> Tells a certain number of armies taken from a source territory to be moved to a target territory, 
+// --> the source and the target territory being owned by the player issuing the order
+// --> Created by playing the airlift card
 bool AirliftOrder::execute() {
 	cout << "Executing Airlift order..." << endl;
 	if (validate()) {
@@ -603,6 +617,7 @@ ostream& operator<<(ostream& out, const NegotiateOrder& negotiateOrderOutStream)
 }
 
 // Validate Negotiate order
+// --> If the target is the player issuing the order, then the order is invalid
 bool NegotiateOrder::validate() {
 	if (_playerIssuingOrder == _ennemyPlayer) {
 		cout << "The Negotiate order is invalid!" << endl;
@@ -615,6 +630,9 @@ bool NegotiateOrder::validate() {
 }
 
 // Execute Negotiate order if valid
+// --> Targets an enemy player
+// --> Results in the target player and the player issuing the order to not be able to successfully attack each others’ territories for the remainder of the turn
+// --> Created by playing the diplomacy card
 bool NegotiateOrder::execute() {
 	cout << "Executing Negotiate order..." << endl;
 	if (validate()) {
