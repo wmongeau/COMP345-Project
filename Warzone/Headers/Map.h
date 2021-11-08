@@ -23,6 +23,7 @@ public:
 	void addToArmy(int val);
 	void removeFromArmy(int val);
 	void updatePlayer(Player* newPlayer);
+	void removePlayer();
 	void updateArmyValue(int newArmyValue);
 	void addBorder(Territory* territory);
 	const int getId() const;
