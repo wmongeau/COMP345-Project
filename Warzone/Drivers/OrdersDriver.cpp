@@ -81,7 +81,8 @@ void ordersDriver(){
 
 	//Testing valid Deploy Order
 	cout << "Creating valid Deploy Order..." << endl;
-	DeployOrder* deployOrder = new DeployOrder(*amadou, *territory1, 50);
+	DeployOrder* deployOrder;
+	deployOrder = new DeployOrder(*amadou, *territory1, 50);
 	cout << "--> Deploy Order was created! " << endl;
 	cout << "Preparing execution of Deploy Order..." << endl;
 	deployOrder->execute();
@@ -89,7 +90,7 @@ void ordersDriver(){
 
 	//Testing invalid Deploy Order
 	cout << "Creating invalid Deploy Order..." << endl;
-	DeployOrder* deployOrder = new DeployOrder(*amadou, *territory2, 50);
+	deployOrder = new DeployOrder(*amadou, *territory2, 50);
 	cout << "--> Deploy Order was created! " << endl;
 	cout << "Preparing execution of Deploy Order..." << endl;
 	deployOrder->execute();
@@ -99,14 +100,15 @@ void ordersDriver(){
 
 	//Testing valid Advance Orders
 	cout << "Creating valid Advance Order (advancing on owned territory)..." << endl;
-	AdvanceOrder* advanceOrder = new AdvanceOrder(*amadou, *territory1, *territory3, 10);
+	AdvanceOrder* advanceOrder;
+	advanceOrder = new AdvanceOrder(*amadou, *territory1, *territory3, 10);
 	cout << "--> Advance Order was created! " << endl;
 	cout << "Preparing execution of Advance Order..." << endl;
 	advanceOrder->execute();
 	cout << *advanceOrder << endl;
 
 	cout << "Creating valid Advance Order (advancing on ennemy territory)..." << endl;
-	AdvanceOrder* advanceOrder = new AdvanceOrder(*amadou, *territory1, *territory2, 10);
+	advanceOrder = new AdvanceOrder(*amadou, *territory1, *territory2, 10);
 	cout << "--> Advance Order was created! " << endl;
 	cout << "Preparing execution of Advance Order..." << endl;
 	advanceOrder->execute();
@@ -114,14 +116,14 @@ void ordersDriver(){
 
 	//Testing invalid Advance Orders
 	cout << "Creating invalid Advance Order (source territory does not belong to the player that issued the order)..." << endl;
-	AdvanceOrder* advanceOrder = new AdvanceOrder(*amadou, *territory2, *territory1, 10);
+	advanceOrder = new AdvanceOrder(*amadou, *territory2, *territory1, 10);
 	cout << "--> Advance Order was created! " << endl;
 	cout << "Preparing execution of Advance Order..." << endl;
 	advanceOrder->execute();
 	cout << *advanceOrder << endl;
 
 	cout << "Creating invalid Advance Order (source territory is not adjacent to target territory)..." << endl;
-	AdvanceOrder* advanceOrder = new AdvanceOrder(*amadou, *territory1, *territory4, 10);
+	advanceOrder = new AdvanceOrder(*amadou, *territory1, *territory4, 10);
 	cout << "--> Advance Order was created! " << endl;
 	cout << "Preparing execution of Advance Order..." << endl;
 	advanceOrder->execute();
@@ -131,7 +133,8 @@ void ordersDriver(){
 
 	//Testing valid Airlift Order
 	cout << "Creating valid Airlift Order..." << endl;
-	AirliftOrder* airliftOrder = new AirliftOrder(*amadou, *territory1, *territory4, 10);
+	AirliftOrder* airliftOrder;
+	airliftOrder = new AirliftOrder(*amadou, *territory1, *territory4, 10);
 	cout << "--> Airlift Order was created! " << endl;
 	cout << "Preparing execution of Airlift Order..." << endl;
 	airliftOrder->execute();
@@ -139,7 +142,7 @@ void ordersDriver(){
 
 	//Testing valid Advance Order (
 	cout << "Creating invalid Airlift Order..." << endl;
-	AirliftOrder* airliftOrder = new AirliftOrder(*amadou, *territory2, *territory3, 10);
+	airliftOrder = new AirliftOrder(*amadou, *territory2, *territory3, 10);
 	cout << "--> Airlift Order was created! " << endl;
 	cout << "Preparing execution of Airlift Order..." << endl;
 	airliftOrder->execute();
@@ -149,7 +152,8 @@ void ordersDriver(){
 
 	//Testing valid Bomb Order
 	cout << "Creating valid Bomb Order..." << endl;
-	BombOrder* bombOrder = new BombOrder(*amadou, *matt, *territory2);
+	BombOrder* bombOrder;
+	bombOrder = new BombOrder(*amadou, *matt, *territory2);
 	cout << "--> Bomb Order was created! " << endl;
 	cout << "Preparing execution of Bomb Order..." << endl;
 	bombOrder->execute();
@@ -157,14 +161,14 @@ void ordersDriver(){
 	
 	//Testing invalid Bomb Orders
 	cout << "Creating invalid Bomb Order (target territory is owned by issuing player)..." << endl;
-	BombOrder* bombOrder = new BombOrder(*amadou, *matt, *territory1);
+	bombOrder = new BombOrder(*amadou, *matt, *territory1);
 	cout << "--> Bomb Order was created! " << endl;
 	cout << "Preparing execution of Bomb Order..." << endl;
 	bombOrder->execute();
 	cout << *bombOrder << endl;
 
 	cout << "Creating invalid Bomb Order (target territory is not adjacent to a territory owned by the issuing player)..." << endl;
-	BombOrder* bombOrder = new BombOrder(*amadou, *matt, *territory4);
+	bombOrder = new BombOrder(*amadou, *matt, *territory4);
 	cout << "--> Bomb Order was created! " << endl;
 	cout << "Preparing execution of Bomb Order..." << endl;
 	bombOrder->execute();
@@ -174,7 +178,8 @@ void ordersDriver(){
 
 	//Testing valid Blockade Order
 	cout << "Creating valid Blockade Order..." << endl;
-	BlockadeOrder* blockadeOrder = new BlockadeOrder(*amadou, *territory1, playerList);
+	BlockadeOrder* blockadeOrder;
+	blockadeOrder = new BlockadeOrder(*amadou, *territory1, playerList);
 	cout << "--> Blockade Order was created! " << endl;
 	cout << "Preparing execution of Blockade Order..." << endl;
 	blockadeOrder->execute();
@@ -182,7 +187,7 @@ void ordersDriver(){
 
 	//Testing invalid Blockade Order
 	cout << "Creating invalid Blockade Order..." << endl;
-	BlockadeOrder* blockadeOrder = new BlockadeOrder(*amadou, *territory2, playerList);
+	blockadeOrder = new BlockadeOrder(*amadou, *territory2, playerList);
 	cout << "--> Blockade Order was created! " << endl;
 	cout << "Preparing execution of Blockade Order..." << endl;
 	blockadeOrder->execute();
@@ -192,7 +197,8 @@ void ordersDriver(){
 
 	//Testing valid Negotiate Order
 	cout << "Creating valid Negotiate Order..." << endl;
-	NegotiateOrder* negotiateOrder = new NegotiateOrder(*amadou, *matt);
+	NegotiateOrder* negotiateOrder;
+	negotiateOrder = new NegotiateOrder(*amadou, *matt);
 	cout << "--> Negotiate Order was created! " << endl;
 	cout << "Preparing execution of Negotiate Order..." << endl;
 	negotiateOrder->execute();
@@ -200,7 +206,7 @@ void ordersDriver(){
 
 	//Testing invalid Negotiate Order
 	cout << "Creating invalid Negotiate Order..." << endl;
-	NegotiateOrder* negotiateOrder = new NegotiateOrder(*amadou, *amadou);
+	negotiateOrder = new NegotiateOrder(*amadou, *amadou);
 	cout << "--> Negotiate Order was created! " << endl;
 	cout << "Preparing execution of Negotiate Order..." << endl;
 	negotiateOrder->execute();
@@ -210,7 +216,6 @@ void ordersDriver(){
 
 	//Testing conquering territory after Advance Order
 	cout << "Creating valid Advance Order to test the conquering of a territory..." << endl;
-	AdvanceOrder* advanceOrder;
 	cout << "--> Advance Order was created! " << endl;
 	cout << "Preparing execution of Advance Order..." << endl;
 	while (amadou != territory6->getPlayer()) {
@@ -232,7 +237,7 @@ void ordersDriver(){
 
 	//Testing Advance Order on a territory that belongs to a player we cannot attack (because of Negotiate Order)
 	cout << "Creating an Advance Order to test the Negotiate functionality..." << endl;
-	AdvanceOrder* advanceOrder = new AdvanceOrder(*amadou, *territory1, *territory2, 10);
+	advanceOrder = new AdvanceOrder(*amadou, *territory1, *territory2, 10);
 	cout << "--> Advance Order was created! " << endl;
 	cout << "Preparing execution of Advance Order..." << endl;
 	advanceOrder->execute();
