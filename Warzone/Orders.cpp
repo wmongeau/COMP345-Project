@@ -283,8 +283,7 @@ bool AdvanceOrder::execute() {
 			_sourceTerritory->removeFromArmy(attackDeath);
 			_targetedTerritory->removeFromArmy(defendDeath);
 			if (_targetedTerritory->getArmyValue() == 0) {
-				//Fix remove for target player
-				//_targetedTerritory->getPlayer()->removeOwnedTerritory(_targetedTerritory);
+				_targetedTerritory->removePlayer();
 				_playerIssuingOrder->addOwnedTerritory(_targetedTerritory);
 
 			}
