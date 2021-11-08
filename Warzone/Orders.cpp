@@ -258,42 +258,56 @@ bool AdvanceOrder::execute() {
 			}
 		}
 		if (_sourceTerritory->getArmyValue() < numOfArmies);
-			numOfArmies = _sourceTerritory->getArmyValue();
+			numOfArmies = _sourceTerritory->getArmyValue()-1;
 		if (isTerritoryOwned) {
 			_sourceTerritory->removeFromArmy(numOfArmies);
 			_targetedTerritory->addToArmy(numOfArmies);
 			effect = _playerIssuingOrder->getPlayerName() + " has moved " + to_string(numOfArmies) + " army unit(s) from " + _sourceTerritory->getName() + " to " + _targetedTerritory->getName();
 		}
 		else {
-			int attackingChance = rand() % 100 + 1;
-			int attackDeath = 0;
-			int defendingChance = rand() % 100 + 1;
-			int defendDeath = 0;
-			for (int i = 0; i < numOfArmies; i++) {
-				attackingChance = rand() % 100 + 1;
-				if (attackingChance <= 60) {
-					attackDeath++;
+			bool canAttack = false;
+
+			for (int i = 0; i < _playerIssuingOrder->toAttack().size(); i++) {
+				if (_targetedTerritory->getId() == _playerIssuingOrder->toAttack()[i]->getId()) {
+					canAttack = true;
+					break;
 				}
 			}
 
-			for (int i = 0; i < _targetedTerritory->getArmyValue(); i++) {
-				defendingChance = rand() % 100 + 1;
-				if (defendingChance <= 70) {
-					defendDeath++;
+			if (canAttack) {
+				int attackingChance = rand() % 100 + 1;
+				int attackDeath = 0;
+				int defendingChance = rand() % 100 + 1;
+				int defendDeath = 0;
+				for (int i = 0; i < numOfArmies; i++) {
+					attackingChance = rand() % 100 + 1;
+					if (attackingChance <= 60) {
+						attackDeath++;
+					}
 				}
-			}
-			_sourceTerritory->removeFromArmy(attackDeath);
-			_targetedTerritory->removeFromArmy(defendDeath);
-			if (_targetedTerritory->getArmyValue() == 0) {
-				_targetedTerritory->removePlayer();
-				_playerIssuingOrder->addOwnedTerritory(_targetedTerritory);
-				_targetedTerritory->updateArmyValue(numOfArmies);
+
+				for (int i = 0; i < _targetedTerritory->getArmyValue(); i++) {
+					defendingChance = rand() % 100 + 1;
+					if (defendingChance <= 70) {
+						defendDeath++;
+					}
+				}
+				_sourceTerritory->removeFromArmy(attackDeath);
+				_targetedTerritory->removeFromArmy(defendDeath);
+				if (_targetedTerritory->getArmyValue() == 0) {
+					_targetedTerritory->removePlayer();
+					_playerIssuingOrder->addOwnedTerritory(_targetedTerritory);
+					_targetedTerritory->updateArmyValue(numOfArmies);
 
 				effect: _playerIssuingOrder->getPlayerName() + "attacked and conquered " + _targetedTerritory->getName();
+				}
+				else {
+					effect = _playerIssuingOrder->getPlayerName() + " lost " + to_string(attackDeath) + " army units and his ennemy on "
+						+ _targetedTerritory->getName() + " lost " + to_string(defendDeath) + " army units.";
+				}
 			}
 			else {
-				effect = _playerIssuingOrder->getPlayerName() + " lost " + to_string(attackDeath) + " army units and his ennemy on "
-					+ _targetedTerritory->getName() + " lost " + to_string(defendDeath) + " army units.";
+				cout << _playerIssuingOrder->getPlayerName() + " cannot attack " + _targetedTerritory->getName() << endl;
 			}
 		}
 
@@ -387,10 +401,26 @@ bool BombOrder::validate() {
 bool BombOrder::execute() {
 	cout << "Executing Bomb order..." << endl;
 	if (validate()) {
-		_targetedTerritory->updateArmyValue((_targetedTerritory->getArmyValue()) / 2);
-		int newArmyValue = _targetedTerritory->getArmyValue();
 
-		effect = "The number of army units has been cut by half, and is now at " + to_string(newArmyValue);
+		bool canAttack = false;
+
+		for (int i = 0; i < _playerIssuingOrder->toAttack().size(); i++) {
+			if (_targetedTerritory->getId() == _playerIssuingOrder->toAttack()[i]->getId()) {
+				canAttack = true;
+				break;
+			}
+		}
+
+		if (canAttack) {
+			_targetedTerritory->updateArmyValue((_targetedTerritory->getArmyValue()) / 2);
+			int newArmyValue = _targetedTerritory->getArmyValue();
+
+			effect = "The number of army units has been cut by half, and is now at " + to_string(newArmyValue);
+		}
+		else {
+			cout << _playerIssuingOrder->getPlayerName() + " cannot attack " + _targetedTerritory->getName() << endl;
+		}
+	
 		Order::execute();
 		return true;
 	}
@@ -416,10 +446,11 @@ BlockadeOrder::BlockadeOrder(const BlockadeOrder& bl) : Order(bl) {
 }
 
 //Parameterized constructor
-BlockadeOrder::BlockadeOrder(Player& playerIssuingOrder, Territory& targetedTerritory)
+BlockadeOrder::BlockadeOrder(Player& playerIssuingOrder, Territory& targetedTerritory, vector<Player*> playerList)
 {
 	this->_playerIssuingOrder = &playerIssuingOrder;
 	this->_targetedTerritory = &targetedTerritory;
+	this->_playerList = playerList;
 }
 
 // Destructor
@@ -458,7 +489,6 @@ bool BlockadeOrder::validate() {
 		cout << "The Blockade order is invalid!" << endl;
 		return false;
 	}
-	
 }
 
 // Execute Blockade order if valid
@@ -470,10 +500,31 @@ bool BlockadeOrder::execute() {
 	if (validate()) {
 		_targetedTerritory->updateArmyValue((_targetedTerritory->getArmyValue()) * 2);
 		int newArmyValue = _targetedTerritory->getArmyValue();
-		//_targetedTerritory->setPlayer(new Player("Neutral"));
+
+		bool neutralPlayerExists = false;
 		//check if Neutral player already exists
+		for (int i = 0; i < _playerList.size(); i++) {
+			if (_playerList[i]->getPlayerName() == "Neutral") {
+				neutralPlayerExists = true;
+				break;
+			}
+		}
 		
-		effect = "The number of army units on the targeted territory has been double, and is now at " + to_string(newArmyValue);
+		if (!neutralPlayerExists) {
+			_playerList.push_back(new Player("Neutral"));
+		}
+
+		// Transferring ownership of territory from playerIssuingOrder to Neutral Player
+		_playerIssuingOrder->removeOwnedTerritory(_targetedTerritory);
+		for (int i = 0; i < _playerList.size(); i++) {
+			if (_playerList[i]->getPlayerName() == "Neutral") {
+				_playerList[i]->addOwnedTerritory(_targetedTerritory);
+				break;
+			}
+		}
+		
+		effect = "The number of army units on the targeted territory has been double, and is now at " + to_string(newArmyValue) + 
+			" and the ownership of the territory has been transferred to the Neutral player.";
 		Order::execute();
 		return true;
 	}

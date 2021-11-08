@@ -170,7 +170,7 @@ public:
 	BlockadeOrder(const BlockadeOrder& bl);
 
 	//Parameterized Constructor
-	BlockadeOrder(Player& playerIssuingOrder, Territory& targetedTerritory);
+	BlockadeOrder(Player& playerIssuingOrder, Territory& targetedTerritory, vector<Player*> playerList);
 
 	// Destructor
 	~BlockadeOrder();
@@ -190,6 +190,7 @@ public:
 private:
 	//Data members
 	Territory* _targetedTerritory{ nullptr };
+	vector<Player*> _playerList;
 };
 
 class AirliftOrder : public Order {

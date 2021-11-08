@@ -8,116 +8,233 @@
 
 using namespace std;
 #include "../Headers/Orders.h"
+#include "../Headers/Cards.h"
 
 void ordersDriver(){
-	// Creating an OrdersList object
-	OrdersList* ordersListDriver = new OrdersList();
+	//Creating a player list
+	cout << "Creating player list..." << endl;
+	vector<Player*> playerList = *new vector<Player*>();
+	cout << "Player list successfully created!" << endl;
+
+	cout << "-----------------------------------" << endl;
 
 	//Creating our players for testing
+	cout << "Creating players and adding them to the player list..." << endl;
+	Player* amadou = new Player("Amadou");
+	playerList.push_back(amadou);
 
-	Player* amadou = new Player();
-	Territory* territory1 = new Territory(1, "Amadou", 1, 0, 0);
+	cout << "--> Player 1 successfully created: " + amadou->getPlayerName() << endl;
+
+	Player* matt = new Player("Matt");
+	playerList.push_back(matt);
+	cout << "--> Player 2 successfully created: " + matt->getPlayerName() << endl;
+
+	Player* samil = new Player("Samil");
+	playerList.push_back(samil);
+	cout << "--> Player 3 successfully created: " + samil->getPlayerName() << endl;
+
+	cout << "-----------------------------------" << endl;
+
+	//Creating territories
+	cout << "Creating territories and assigning them to specific players..." << endl;
+	Territory* territory1 = new Territory(1, "Territory 1", 1, 0, 0);
+	Territory* territory3 = new Territory(3, "Territory 3", 1, 0, 0);
+	Territory* territory5 = new Territory(5, "Territory 5", 2, 0, 0);
 	amadou->addOwnedTerritory(territory1);
-	cout << "Player 1 succesfully created: " + amadou->getPlayerName() << endl;
+	amadou->addOwnedTerritory(territory3);
+	amadou->addOwnedTerritory(territory5);
 
-	Player* matt = new Player();
-	Territory* territory2 = new Territory(2, "Matt", 1, 0, 0);
+	Territory* territory2 = new Territory(2, "Territory 2", 1, 0, 0);
+	Territory* territory4 = new Territory(4, "Territory 4", 1, 0, 0);
 	matt->addOwnedTerritory(territory2);
-	cout << "Player 2 succesfully created: " + matt->getPlayerName() << endl;
+	matt->addOwnedTerritory(territory4);
 
+	Territory* territory6 = new Territory(6, "Territory 6", 2, 0, 0);
+	samil->addOwnedTerritory(territory6);
+	cout << "Territories have been successfully created and assigned!" << endl;
 
-	//Testing Deploy Order
+	cout << "-----------------------------------" << endl;
+
+	cout << "Initializing army values for each territory..." << endl;
+	territory1->updateArmyValue(10);
+	territory2->updateArmyValue(10);
+	territory3->updateArmyValue(10);
+	territory4->updateArmyValue(10);
+	territory5->updateArmyValue(25);
+	territory6->updateArmyValue(10);
+	cout << "Army values successfully initialized!" << endl;
+
+	cout << "-----------------------------------" << endl;
+
+	cout << "Initializing borders for each territory..." << endl;
+	territory1->addBorder(territory2);
+	territory1->addBorder(territory3);
+	territory2->addBorder(territory1);
+	territory2->addBorder(territory4);
+	territory3->addBorder(territory1);
+	territory4->addBorder(territory2);
+	territory5->addBorder(territory6);
+	territory6->addBorder(territory5);
+	cout << "Borders successfully initialized!" << endl;
+
+	cout << "-----------------------------------" << endl;
+
+	//Testing valid Deploy Order
+	cout << "Creating valid Deploy Order..." << endl;
 	DeployOrder* deployOrder = new DeployOrder(*amadou, *territory1, 50);
-	cout << "- Deploy order works!" << endl;
-
-	ordersListDriver->addOrder(deployOrder);
-	cout << "- Deploy order added to order list!" << endl;
-
-
-
-
-
-
-
-	
-	
-
-	cout << "Creating our Orders using the subclasses:" << endl;
-
-	// Creating an order of every type (each being a subclass of Order).
-	DeployOrder* deployOrder = new DeployOrder(*amadou,*territory1, 50);
-	cout << "- Deploy order works!" << endl;
-
-	AdvanceOrder* advanceOrder = new AdvanceOrder();
-	cout << "- Advance order works!" << endl;
-
-	BombOrder* bombOrder = new BombOrder();
-	cout << "- Bomb order works!" << endl;
-
-	AirliftOrder* airliftOrder = new AirliftOrder();
-	cout << "- Airlift order works!" << endl;
-
-	BlockadeOrder* blockadeOrder = new BlockadeOrder();
-	cout << "- Blockade order works!" << endl;
-
-	NegotiateOrder* negotiateOrder = new NegotiateOrder();
-	cout << "- Negotiate order works!" << endl;
-
-	// Using the addOrder function to fill our OrdersList object.
-	ordersListDriver->addOrder(deployOrder);
-	ordersListDriver->addOrder(advanceOrder);
-	ordersListDriver->addOrder(bombOrder);
-	ordersListDriver->addOrder(airliftOrder);
-	ordersListDriver->addOrder(blockadeOrder);
-	ordersListDriver->addOrder(negotiateOrder);
-	
-	cout << "----------" << endl;
-
-	cout << "Outputting the content of the OrdersList object using the stream insertion operator:" << endl;
-	cout << *ordersListDriver;
-
-	cout << "----------" << endl;
-
-	cout << "Testing our validate() method for every Order type:" << endl;
-	//testing the validate method
-	deployOrder->validate();
-	advanceOrder->validate();
-	bombOrder->validate();
-	blockadeOrder->validate();
-	airliftOrder->validate();
-	negotiateOrder->validate();
-
-	cout << "----------" << endl;
-
-	cout << "Testing our execute() method for every Order type:" << endl;
-	//testing the execute method
+	cout << "--> Deploy Order was created! " << endl;
+	cout << "Preparing execution of Deploy Order..." << endl;
 	deployOrder->execute();
-	cout << *deployOrder;
+	cout << *deployOrder << endl;
+
+	//Testing invalid Deploy Order
+	cout << "Creating invalid Deploy Order..." << endl;
+	DeployOrder* deployOrder = new DeployOrder(*amadou, *territory2, 50);
+	cout << "--> Deploy Order was created! " << endl;
+	cout << "Preparing execution of Deploy Order..." << endl;
+	deployOrder->execute();
+	cout << *deployOrder << endl;
+
+	cout << "-----------------------------------" << endl;
+
+	//Testing valid Advance Orders
+	cout << "Creating valid Advance Order (advancing on owned territory)..." << endl;
+	AdvanceOrder* advanceOrder = new AdvanceOrder(*amadou, *territory1, *territory3, 10);
+	cout << "--> Advance Order was created! " << endl;
+	cout << "Preparing execution of Advance Order..." << endl;
 	advanceOrder->execute();
-	cout << *advanceOrder;
-	bombOrder->execute();
-	cout << *bombOrder;
-	blockadeOrder->execute();
-	cout << *blockadeOrder;
+	cout << *advanceOrder << endl;
+
+	cout << "Creating valid Advance Order (advancing on ennemy territory)..." << endl;
+	AdvanceOrder* advanceOrder = new AdvanceOrder(*amadou, *territory1, *territory2, 10);
+	cout << "--> Advance Order was created! " << endl;
+	cout << "Preparing execution of Advance Order..." << endl;
+	advanceOrder->execute();
+	cout << *advanceOrder << endl;
+
+	//Testing invalid Advance Orders
+	cout << "Creating invalid Advance Order (source territory does not belong to the player that issued the order)..." << endl;
+	AdvanceOrder* advanceOrder = new AdvanceOrder(*amadou, *territory2, *territory1, 10);
+	cout << "--> Advance Order was created! " << endl;
+	cout << "Preparing execution of Advance Order..." << endl;
+	advanceOrder->execute();
+	cout << *advanceOrder << endl;
+
+	cout << "Creating invalid Advance Order (source territory is not adjacent to target territory)..." << endl;
+	AdvanceOrder* advanceOrder = new AdvanceOrder(*amadou, *territory1, *territory4, 10);
+	cout << "--> Advance Order was created! " << endl;
+	cout << "Preparing execution of Advance Order..." << endl;
+	advanceOrder->execute();
+	cout << *advanceOrder << endl;
+
+	cout << "-----------------------------------" << endl;
+
+	//Testing valid Airlift Order
+	cout << "Creating valid Airlift Order..." << endl;
+	AirliftOrder* airliftOrder = new AirliftOrder(*amadou, *territory1, *territory4, 10);
+	cout << "--> Airlift Order was created! " << endl;
+	cout << "Preparing execution of Airlift Order..." << endl;
 	airliftOrder->execute();
-	cout << *airliftOrder;
-	negotiateOrder->execute();
-	cout << *negotiateOrder;
+	cout << *airliftOrder << endl;
 
-	cout << "----------" << endl;
+	//Testing valid Advance Order (
+	cout << "Creating invalid Airlift Order..." << endl;
+	AirliftOrder* airliftOrder = new AirliftOrder(*amadou, *territory2, *territory3, 10);
+	cout << "--> Airlift Order was created! " << endl;
+	cout << "Preparing execution of Airlift Order..." << endl;
+	airliftOrder->execute();
+	cout << *airliftOrder << endl;
 
-	cout << "Testing our move() method:" << endl;
-	//testing the move function
-	ordersListDriver->move(1, 3);
-	cout << *ordersListDriver;
+	cout << "-----------------------------------" << endl;
 
-	cout << "----------" << endl;
-
-	cout << "Testing our remove() method:" << endl;
-	//testing the remove function
-	ordersListDriver->remove(1);
-	cout << *ordersListDriver;
+	//Testing valid Bomb Order
+	cout << "Creating valid Bomb Order..." << endl;
+	BombOrder* bombOrder = new BombOrder(*amadou, *matt, *territory2);
+	cout << "--> Bomb Order was created! " << endl;
+	cout << "Preparing execution of Bomb Order..." << endl;
+	bombOrder->execute();
+	cout << *bombOrder << endl;
 	
-	delete ordersListDriver;
-	ordersListDriver = NULL;
+	//Testing invalid Bomb Orders
+	cout << "Creating invalid Bomb Order (target territory is owned by issuing player)..." << endl;
+	BombOrder* bombOrder = new BombOrder(*amadou, *matt, *territory1);
+	cout << "--> Bomb Order was created! " << endl;
+	cout << "Preparing execution of Bomb Order..." << endl;
+	bombOrder->execute();
+	cout << *bombOrder << endl;
+
+	cout << "Creating invalid Bomb Order (target territory is not adjacent to a territory owned by the issuing player)..." << endl;
+	BombOrder* bombOrder = new BombOrder(*amadou, *matt, *territory4);
+	cout << "--> Bomb Order was created! " << endl;
+	cout << "Preparing execution of Bomb Order..." << endl;
+	bombOrder->execute();
+	cout << *bombOrder << endl;
+
+	cout << "-----------------------------------" << endl;
+
+	//Testing valid Blockade Order
+	cout << "Creating valid Blockade Order..." << endl;
+	BlockadeOrder* blockadeOrder = new BlockadeOrder(*amadou, *territory1, playerList);
+	cout << "--> Blockade Order was created! " << endl;
+	cout << "Preparing execution of Blockade Order..." << endl;
+	blockadeOrder->execute();
+	cout << *blockadeOrder << endl;
+
+	//Testing invalid Blockade Order
+	cout << "Creating invalid Blockade Order..." << endl;
+	BlockadeOrder* blockadeOrder = new BlockadeOrder(*amadou, *territory2, playerList);
+	cout << "--> Blockade Order was created! " << endl;
+	cout << "Preparing execution of Blockade Order..." << endl;
+	blockadeOrder->execute();
+	cout << *blockadeOrder << endl;
+
+	cout << "-----------------------------------" << endl;
+
+	//Testing valid Negotiate Order
+	cout << "Creating valid Negotiate Order..." << endl;
+	NegotiateOrder* negotiateOrder = new NegotiateOrder(*amadou, *matt);
+	cout << "--> Negotiate Order was created! " << endl;
+	cout << "Preparing execution of Negotiate Order..." << endl;
+	negotiateOrder->execute();
+	cout << *negotiateOrder << endl;
+
+	//Testing invalid Negotiate Order
+	cout << "Creating invalid Negotiate Order..." << endl;
+	NegotiateOrder* negotiateOrder = new NegotiateOrder(*amadou, *amadou);
+	cout << "--> Negotiate Order was created! " << endl;
+	cout << "Preparing execution of Negotiate Order..." << endl;
+	negotiateOrder->execute();
+	cout << *negotiateOrder << endl;
+
+	cout << "-----------------------------------" << endl;
+
+	//Testing conquering territory after Advance Order
+	cout << "Creating valid Advance Order to test the conquering of a territory..." << endl;
+	AdvanceOrder* advanceOrder;
+	cout << "--> Advance Order was created! " << endl;
+	cout << "Preparing execution of Advance Order..." << endl;
+	while (amadou != territory6->getPlayer()) {
+		advanceOrder = new AdvanceOrder(*amadou, *territory5, *territory6, territory5->getArmyValue() - 1);
+		advanceOrder->execute();
+		cout << *advanceOrder << endl;
+	}
+
+	//Adding a card to a player after conquering a territory (following an Advance Order)
+	if (territory6->getPlayer() == amadou)
+	{
+		Deck* newDeck = new Deck();
+		amadou->addCardToHand(newDeck->draw());
+		cout << amadou->getPlayerName() + " has drawn a card from the deck after conquering " + territory6->getName() + "!" << endl;
+		amadou->getPlayerHand()->showHand();
+	}
+	
+	cout << "-----------------------------------" << endl;
+
+	//Testing Advance Order on a territory that belongs to a player we cannot attack (because of Negotiate Order)
+	cout << "Creating an Advance Order to test the Negotiate functionality..." << endl;
+	AdvanceOrder* advanceOrder = new AdvanceOrder(*amadou, *territory1, *territory2, 10);
+	cout << "--> Advance Order was created! " << endl;
+	cout << "Preparing execution of Advance Order..." << endl;
+	advanceOrder->execute();
+	cout << *advanceOrder << endl;
 }
