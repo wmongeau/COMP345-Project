@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <cstdlib>
 #include <ctime>
+#include <math.h>
 
 using namespace std;
 #include "./Headers/GameEngine.h"
@@ -950,16 +951,20 @@ void GameEngine::reinforcementPhase()
 			if (checkIfContinentOwned(players[i], cont))
 				numArmies = numArmies + cont->getArmyValue();
 		}
+		players[i]->setReinforcementPool(numArmies);
+		cout << players[i]->getPlayerName() << " reinforcement pool has " << players[i]->getReinforcementPool() << " armies." << endl;
+		cout << players[i]->getPlayerName() << " currently has " << numTerritories << " territories. \n"
+			 << endl;
 	}
-
-	// Reinforcement Pool stuff
 }
 
 bool GameEngine::checkIfContinentOwned(Player *player, Continent *continent)
 {
+	Player currentPlayer;
 	for (Territory *territory : continent->getTerritories())
 	{
-		if (territory->getPlayer() == NULL || territory->getPlayer()->getPlayerName() != player->getPlayerName())
+		currentPlayer = *territory->getPlayer();
+		if (territory->getPlayer() == NULL || currentPlayer.getPlayerName() != player->getPlayerName())
 		{
 			return false;
 		}
@@ -969,8 +974,7 @@ bool GameEngine::checkIfContinentOwned(Player *player, Continent *continent)
 
 void GameEngine::issueOrderPhase()
 {
-	cout << "Issue Orders Phase" << endl;
-	cout << "-------------------------------------------------------------" << endl;
+	
 }
 
 void GameEngine::executeOrderPhase()
