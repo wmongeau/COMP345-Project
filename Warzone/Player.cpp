@@ -86,25 +86,25 @@ void Player::issueOrder(OrdersEnum orderType) {
 	Order* order;
 
 	switch (orderType) {
-		case Deploy:
+		case OrdersEnum::Deploy:
 		 order = new DeployOrder();
 			break;
-		case Advance:
+		case OrdersEnum::Advance:
 			order = new AdvanceOrder();
 			break;
-		case Bomb:
+		case OrdersEnum::Bomb:
 			order = new BombOrder();
 			break;
-		case Blockade:
+		case OrdersEnum::Blockade:
 			order = new BlockadeOrder();
 			break;
-		case Airlift:
+		case OrdersEnum::Airlift:
 			order = new AirliftOrder();
 			break;
-		case Negotiate:
+		case OrdersEnum::Negotiate:
 			order = new NegotiateOrder();
 			break;
-		case None: 
+		case OrdersEnum::None: 
 			order = new Order();
 			break;
 		default:

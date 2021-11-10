@@ -156,31 +156,24 @@ void CommandProcessor::saveCommand(Command* command)
 bool CommandProcessor::validate(State* currentState, Command* command)
 {
 	if (command->getCommandType() == CommandType::error) {
-		command->saveEffect("effect: The command: " + command->getCommand() + " was invalid, therefore nothing happened.");
 		return false;
 	}
 	else if (command->getCommandType() == CommandType::addPlayer && (currentState->getStateName() == Enums::states::mapValidated || currentState->getStateName() == Enums::states::playersAdded)) {
-		command->saveEffect("effect: The player: " + extractPlayerName(command) + " is being added to the game.");
 		return true;
 	}
 	else if (command->getCommandType() == CommandType::gameStart && currentState->getStateName() == Enums::states::playersAdded) {
-		command->saveEffect("effects: The game is starting.");
 		return true;
 	}
 	else if (command->getCommandType() == CommandType::replay && currentState->getStateName() == Enums::states::winState) {
-		command->saveEffect("effect: The game is being replayed.");
 		return true;
 	}
 	else if (command->getCommandType() == CommandType::quit && currentState->getStateName() == Enums::states::winState) {
-		command->saveEffect("effect: Quitting out of the game.");
 		return true;
 	}
 	else if (command->getCommandType() == CommandType::validateMap && currentState->getStateName() == Enums::states::mapLoaded) {
-		command->saveEffect("effect: The map: " + extractMapFile(command) + " is being validated");
 		return true;
 	}
 	else if (command->getCommandType() == CommandType::loadMap && (currentState->getStateName() == Enums::states::start || currentState->getStateName() == Enums::states::mapLoaded)) {
-		command->saveEffect("effect: The game is starting.");
 		return true;
 	}
 

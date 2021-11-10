@@ -9,7 +9,8 @@ class Territory;
 class Hand;
 class OrdersList;
 class Card;
-enum OrdersEnum;
+enum class OrdersEnum;
+
 //Class declaration for the Player class
 class Player {
 public:
