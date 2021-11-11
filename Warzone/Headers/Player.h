@@ -33,6 +33,7 @@ public:
 	vector<Territory*> toDefend();
 	vector<Territory*> toAttack();
 	void issueOrder(OrdersEnum orderType);
+	void issueOrder();
 	void addOwnedTerritory(Territory* territory);
 	void addCardToHand(Card* card);
 	void setReinforcementPool(int pool);

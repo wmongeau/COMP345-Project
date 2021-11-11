@@ -8,18 +8,20 @@
 using namespace std;
 
 //Default constructor for class Player
-Player::Player() {
+Player::Player()
+{
 	PlayerName = "";
 	PlayerHand = new Hand();
 	Orders = new OrdersList();
-	OwnedTerritories = vector<Territory*>();
-	CanAttack = vector<Territory*>();
-	CanDefend = vector<Territory*>();
+	OwnedTerritories = vector<Territory *>();
+	CanAttack = vector<Territory *>();
+	CanDefend = vector<Territory *>();
 	reinforcementPool = 0;
 }
 
 //Copy constructor for the class Player
-Player::Player(const Player& p) {
+Player::Player(const Player &p)
+{
 	PlayerName = p.PlayerName;
 	PlayerHand = p.PlayerHand;
 	Orders = p.Orders;
@@ -30,18 +32,20 @@ Player::Player(const Player& p) {
 }
 
 //Constructor taking a parameter of type string to be set as the name of the player
-Player::Player(string playerName) {
+Player::Player(string playerName)
+{
 	PlayerName = playerName;
 	PlayerHand = new Hand();
 	Orders = new OrdersList();
-	OwnedTerritories = vector<Territory*>();
-	CanAttack = vector<Territory*>();
-	CanDefend = vector<Territory*>();
+	OwnedTerritories = vector<Territory *>();
+	CanAttack = vector<Territory *>();
+	CanDefend = vector<Territory *>();
 	reinforcementPool = 0;
 }
 
 //Assignment operator for the class Player
-Player& Player::operator =(const Player& p) {
+Player &Player::operator=(const Player &p)
+{
 	PlayerName = p.PlayerName;
 	PlayerHand = p.PlayerHand;
 	Orders = p.Orders;
@@ -54,7 +58,8 @@ Player& Player::operator =(const Player& p) {
 }
 
 //Destructor for the class Player
-Player::~Player() {
+Player::~Player()
+{
 	delete PlayerHand;
 	PlayerHand = NULL;
 
@@ -63,180 +68,289 @@ Player::~Player() {
 }
 
 //Method returning all the territories a player can attack
-vector<Territory*> Player::toAttack() {
+vector<Territory *> Player::toAttack()
+{
 
 	return CanAttack;
 }
 
 //Method returning all the territories a player can defend
-vector<Territory*> Player::toDefend() {
+vector<Territory *> Player::toDefend()
+{
 	return CanDefend;
 }
 
 //Method used to add a new owned territory to the players list of owned territories
-void Player::addOwnedTerritory(Territory* territory) {
+void Player::addOwnedTerritory(Territory *territory)
+{
 	OwnedTerritories.push_back(territory);
 	territory->updatePlayer(this);
 }
 
-//Method used to create an order and add it to the players order list
-void Player::issueOrder(OrdersEnum orderType) {
-	//create order and issue order here
-	//update CanAttack and OwnedTerritories
-	Order* order;
-
-	switch (orderType) {
-		case OrdersEnum::Deploy:
-		 order = new DeployOrder();
-			break;
-		case OrdersEnum::Advance:
-			order = new AdvanceOrder();
-			break;
-		case OrdersEnum::Bomb:
-			order = new BombOrder();
-			break;
-		case OrdersEnum::Blockade:
-			order = new BlockadeOrder();
-			break;
-		case OrdersEnum::Airlift:
-			order = new AirliftOrder();
-			break;
-		case OrdersEnum::Negotiate:
-			order = new NegotiateOrder();
-			break;
-		case OrdersEnum::None: 
-			order = new Order();
-			break;
-		default:
-			order = NULL;
-			break;
+void Player::issueOrder()
+{
+	int territoryChoice, territoryChoice2;
+	int armyChoice;
+	int playerInput = 0;
+	int advanceChoice;
+	Hand *currentHand;
+	vector<Cards> cards;
+	while (reinforcementPool != 0)
+	{
+		cout << "These are the territories that you can deploy armies in" << endl;
+		for (int i = 0; i < OwnedTerritories.size(); i++)
+		{
+			cout << i << " " << OwnedTerritories[i]->getName() << " " << OwnedTerritories[i]->getArmyValue() << endl;
+		}
+		cout << "Which territory do you want to deploy armies to?" << endl;
+		cin >> territoryChoice;
+		cout << "How many armies would you like to deploy of " << reinforcementPool << " armies ?";
+		cin >> armyChoice;
+		//Add deploy orders to orders list new DeployOrders(this,OwnedTerritories[i],armyChoice);
+		Orders->addOrder(new DeployOrder());
 	}
-	
-	 if (order == NULL)
-		 return;
-
-	 Orders->addOrder(order);
+	while (playerInput != 2)
+	{
+		cout << "Which action would you like to do?" << endl;
+		cout << "[0] Advance [1]Play a card [2]End turn" << endl ;
+		cin >> playerInput;
+		if (playerInput == 0)
+		{
+			cout << "Would you like your advance order to Attack[0] or Defend[1]?";
+			cin >> advanceChoice;
+			if (advanceChoice == 0)
+			{
+				cout << "These are the territories that you can advance to attack" << endl;
+				for (int i = 0; i < toAttack().size(); i++)
+				{
+					cout << i << " " << toAttack()[i]->getName() << " " << toAttack()[i]->getArmyValue() << endl;
+				}
+				cout << "Which territory do you want to advance armies to attack? " << endl;
+				cin >> territoryChoice;
+			}
+			if (advanceChoice == 1)
+			{
+				cout << "These are the territories that you can advance to defend" << endl;
+				for (int i = 0; i < toDefend().size(); i++)
+				{
+					cout << i << " " << toDefend()[i]->getName() << " " << toDefend()[i]->getArmyValue() << endl;
+				}
+				cout << "Which territory do you want to advance armies to?" << endl;
+				cin >> territoryChoice;
+			}
+			cout << "These are the territories that you can take armies from" << endl;
+			for (int i = 0; i < OwnedTerritories.size(); i++)
+			{
+				cout << i << " " << OwnedTerritories[i]->getName() << " " << OwnedTerritories[i]->getArmyValue() << endl;
+			}
+			cout << "Which territory do you want to take armies from?" << endl;
+			cin >> territoryChoice2;
+			cout << "How many armies would you like to advance of " << OwnedTerritories[territoryChoice2]->getArmyValue() << " armies ?";
+			cin >> armyChoice;
+			if (advanceChoice == 0)
+			{
+				// new AdvacneOrder(this,OwnedTerritories[territoryChoice2],toAttack()[territoryChoice],armyChoice)
+				Orders->addOrder(new AdvanceOrder());
+			}
+			else if (advanceChoice == 1)
+			{
+				// new AdvacneOrder(this,OwnedTerritories[territoryChoice2],toDefend()[territoryChoice],armyChoice)
+				Orders->addOrder(new AdvanceOrder());
+			}
+		}
+		else if (playerInput == 1)
+		{
+			cout << "Here's the cards in hand:" << endl;
+			currentHand = PlayerHand->getPlayerHand();
+			cards = currentHand->getPlayerHand();
+			for (int i = 0; i < cards.size(); i++)
+			{
+				cout << i << ' ' << cards[i]->getCardType();
+			}
+			cout << "Which card do you want to play?" << endl;
+			cin >> territoryChoice2;
+			//Ask target for card
+			//setTarget for card
+			Orders->addOrder(cards[territoryChoice2]->play());
+		}
+	}
 }
 
- //Getter method for owned territories
- std::vector<Territory*> Player::getOwnedTerritories() {
-	 return OwnedTerritories;
- }
+//Method used to create an order and add it to the players order list
+void Player::issueOrder(OrdersEnum orderType)
+{
+	//create order and issue order here
+	//update CanAttack and OwnedTerritories
+	Order *order;
 
- //Getter method for the players hand of cards
- Hand* Player::getPlayerHand() {
-	 return PlayerHand;
- }
+	switch (orderType)
+	{
+	case OrdersEnum::Deploy:
+		order = new DeployOrder();
+		break;
+	case OrdersEnum::Advance:
+		order = new AdvanceOrder();
+		break;
+	case OrdersEnum::Bomb:
+		order = new BombOrder();
+		break;
+	case OrdersEnum::Blockade:
+		order = new BlockadeOrder();
+		break;
+	case OrdersEnum::Airlift:
+		order = new AirliftOrder();
+		break;
+	case OrdersEnum::Negotiate:
+		order = new NegotiateOrder();
+		break;
+	case OrdersEnum::None:
+		order = new Order();
+		break;
+	default:
+		order = NULL;
+		break;
+	}
 
- //Getter method for the players list of orders
- OrdersList* Player::getOrders() {
-	 return Orders;
- }
+	if (order == NULL)
+		return;
 
- //Getter method for the players name
- std::string Player::getPlayerName() {
-	 return PlayerName;
- }
+	Orders->addOrder(order);
+}
 
- //Temporary setter method for the territories that a player can defend
- void Player::setCanDefend(std::vector<Territory*> territories) {
-	 CanDefend = territories;
- }
+//Getter method for owned territories
+std::vector<Territory *> Player::getOwnedTerritories()
+{
+	return OwnedTerritories;
+}
 
- //Temporary setter method for the territories that a player can attack
- void Player::setCanAttack(std::vector<Territory*> territories) {
-	 CanAttack = territories;
- }
+//Getter method for the players hand of cards
+Hand *Player::getPlayerHand()
+{
+	return PlayerHand;
+}
 
- void Player::addTerritoryToDefend(Territory* territory)
- {
-	 CanDefend.push_back(territory);
- }
+//Getter method for the players list of orders
+OrdersList *Player::getOrders()
+{
+	return Orders;
+}
 
- void Player::addTerritoryToAttack(Territory* territory)
- {
-	 CanAttack.push_back(territory);
- }
+//Getter method for the players name
+std::string Player::getPlayerName()
+{
+	return PlayerName;
+}
 
- void Player::removeTerritoryToDefend(Territory* territory)
- {
-	 int index = 0;
-	 for (vector<Territory*>::iterator it = CanDefend.begin(); it != CanDefend.end(); ++it)
-	 {
-		 if (CanDefend[index]->getId() == territory->getId()) {
-			 CanDefend.erase(it);
-			 break;
-		 }
-		 index++;
-	 }
- }
+//Temporary setter method for the territories that a player can defend
+void Player::setCanDefend(std::vector<Territory *> territories)
+{
+	CanDefend = territories;
+}
 
- void Player::removeTerritoryToAttack(Territory* territory)
- {
-	 int index = 0;
-	 for (vector<Territory*>::iterator it = CanAttack.begin(); it != CanAttack.end(); ++it)
-	 {
-		 if (CanAttack[index]->getId() == territory->getId()) {
-			 CanAttack.erase(it);
-			 break;
-		 }
-		 index++;
-	 }
- }
+//Temporary setter method for the territories that a player can attack
+void Player::setCanAttack(std::vector<Territory *> territories)
+{
+	CanAttack = territories;
+}
 
- bool Player::playerCanAttack(Territory* territory)
- {
-	 int index = 0;
-	 for (vector<Territory*>::iterator it = CanAttack.begin(); it != CanAttack.end(); ++it)
-	 {
-		 if (CanAttack[index]->getId() == territory->getId())
-			 return true;
-		 index++;
-	 }
-	 return false;
- }
+void Player::addTerritoryToDefend(Territory *territory)
+{
+	CanDefend.push_back(territory);
+}
 
- //Temporary method to add cards to the players' hand
- void Player::addCardToHand(Card* card) {
-	 PlayerHand->selectCard(card);
- }
+void Player::addTerritoryToAttack(Territory *territory)
+{
+	CanAttack.push_back(territory);
+}
+
+void Player::removeTerritoryToDefend(Territory *territory)
+{
+	int index = 0;
+	for (vector<Territory *>::iterator it = CanDefend.begin(); it != CanDefend.end(); ++it)
+	{
+		if (CanDefend[index]->getId() == territory->getId())
+		{
+			CanDefend.erase(it);
+			break;
+		}
+		index++;
+	}
+}
+
+void Player::removeTerritoryToAttack(Territory *territory)
+{
+	int index = 0;
+	for (vector<Territory *>::iterator it = CanAttack.begin(); it != CanAttack.end(); ++it)
+	{
+		if (CanAttack[index]->getId() == territory->getId())
+		{
+			CanAttack.erase(it);
+			break;
+		}
+		index++;
+	}
+}
+
+bool Player::playerCanAttack(Territory *territory)
+{
+	int index = 0;
+	for (vector<Territory *>::iterator it = CanAttack.begin(); it != CanAttack.end(); ++it)
+	{
+		if (CanAttack[index]->getId() == territory->getId())
+			return true;
+		index++;
+	}
+	return false;
+}
+
+//Temporary method to add cards to the players' hand
+void Player::addCardToHand(Card *card)
+{
+	PlayerHand->selectCard(card);
+}
 
 //Method to set the size of the reinforcementPool of the player
-void Player::setReinforcementPool(int pool) {
+void Player::setReinforcementPool(int pool)
+{
 	reinforcementPool = pool;
 }
 
-//Method to get the size of the reinforcement pool 
-int Player::getReinforcementPool() {
+//Method to get the size of the reinforcement pool
+int Player::getReinforcementPool()
+{
 	return reinforcementPool;
 }
 
 //Stream insertion operator for the Player class. Prints all info relevant to the player.
-ostream& operator <<(ostream& out, Player& player)
+ostream &operator<<(ostream &out, Player &player)
 {
 	out << "Name: " << player.getPlayerName() << endl;
 	out << "Owned Territories count: " << player.getOwnedTerritories().size() << endl;
 	out << "Return of toAttack(): " << endl;
 
-	for (Territory* t : player.toAttack()) {
+	for (Territory *t : player.toAttack())
+	{
 		out << "    " << t->getId() << " " << t->getName() << endl;
 	}
 
 	out << "Return of toDefend(): " << endl;
 
-	for (Territory* t : player.toDefend()) {
+	for (Territory *t : player.toDefend())
+	{
 		out << "    " << t->getId() << " " << t->getName() << endl;
 	}
 
 	out << "Hand contains these cards: " << endl;
 
-	for (Card* c : player.getPlayerHand()->getPlayerHand()) {
+	for (Card *c : player.getPlayerHand()->getPlayerHand())
+	{
 		out << "    " << c->getCardType() << endl;
 	}
 
 	out << "Orders list contains these orders: " << endl;
 
-	for (Order* o : player.getOrders()->getOrdersVector()) {
+	for (Order *o : player.getOrders()->getOrdersVector())
+	{
 		out << "    " << o->getOrdersType() << endl;
 	}
 
