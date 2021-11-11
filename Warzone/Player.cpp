@@ -89,12 +89,13 @@ void Player::addOwnedTerritory(Territory *territory)
 
 void Player::issueOrder()
 {
-	int territoryChoice, territoryChoice2;
+	int territoryChoice, territoryChoice2,cardChoice;
 	int armyChoice;
 	int playerInput = 0;
 	int advanceChoice;
 	vector<Card*> cards;
-	while (reinforcementPool != 0)
+	//Deploying phase
+	if (reinforcementPool != 0)
 	{
 		cout << "These are the territories that you can deploy armies in" << endl;
 		for (int i = 0; i < OwnedTerritories.size(); i++)
@@ -107,9 +108,9 @@ void Player::issueOrder()
 		cin >> armyChoice;
 		//Add deploy orders to orders list new DeployOrders(this,OwnedTerritories[i],armyChoice);
 		Orders->addOrder(new DeployOrder());
+		return;
 	}
-	while (playerInput != 2)
-	{
+	//Order issuing phase (Advance and Cards)
 		cout << "Which action would you like to do?" << endl;
 		cout << "[0] Advance [1]Play a card [2]End turn" << endl ;
 		cin >> playerInput;
@@ -148,12 +149,12 @@ void Player::issueOrder()
 			cin >> armyChoice;
 			if (advanceChoice == 0)
 			{
-				// new AdvacneOrder(this,OwnedTerritories[territoryChoice2],toAttack()[territoryChoice],armyChoice)
+				// new AdvanceOrder(this,OwnedTerritories[territoryChoice2],toAttack()[territoryChoice],armyChoice)
 				Orders->addOrder(new AdvanceOrder());
 			}
 			else if (advanceChoice == 1)
 			{
-				// new AdvacneOrder(this,OwnedTerritories[territoryChoice2],toDefend()[territoryChoice],armyChoice)
+				// new AdvanceOrder(this,OwnedTerritories[territoryChoice2],toDefend()[territoryChoice],armyChoice)
 				Orders->addOrder(new AdvanceOrder());
 			}
 		}
@@ -166,12 +167,12 @@ void Player::issueOrder()
 				cout << i << ' ' << cards[i]->getCardType();
 			}
 			cout << "Which card do you want to play?" << endl;
-			cin >> territoryChoice2;
-			//Ask target for card
-			//setTarget for card
-			Orders->addOrder(cards[territoryChoice2]->play());
+			cin >> cardChoice;
+			cards[cardChoice]->setCardParameter(this);
+			Orders->addOrder(cards[cardChoice]->play());
 		}
-	}
+		else if (playerInput == 2)
+			isTurnFinish = true;
 }
 
 //Method used to create an order and add it to the players order list
@@ -237,6 +238,16 @@ OrdersList *Player::getOrders()
 std::string Player::getPlayerName()
 {
 	return PlayerName;
+}
+
+std::vector<Player*> Player::getEnemies()
+{
+	return enemies;
+}
+
+void Player::setEnemies(vector<Player*> enemies)
+{
+	this->enemies = enemies;
 }
 
 //Temporary setter method for the territories that a player can defend
@@ -317,6 +328,16 @@ void Player::setReinforcementPool(int pool)
 int Player::getReinforcementPool()
 {
 	return reinforcementPool;
+}
+
+bool Player::getIsTurnFinish()
+{
+	return isTurnFinish;
+}
+
+void Player::setIsTurnFinish(bool val)
+{
+	isTurnFinish = val;
 }
 
 //Stream insertion operator for the Player class. Prints all info relevant to the player.

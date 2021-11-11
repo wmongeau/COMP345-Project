@@ -23,6 +23,8 @@ public:
 	Hand* getPlayerHand();
 	OrdersList* getOrders();
 	string getPlayerName();
+	vector<Player*> getEnemies();
+	void setEnemies(vector<Player*> enemies);
 	void setCanDefend(vector<Territory*> territories);
 	void setCanAttack(vector<Territory*> territories);
 	void addTerritoryToDefend(Territory* territory);
@@ -39,8 +41,11 @@ public:
 	void setReinforcementPool(int pool);
 	int getReinforcementPool();
 	friend ostream& operator <<(ostream& out, Player& player);
-
+	bool getIsTurnFinish();
+	void setIsTurnFinish(bool val);
 private:
+	bool isTurnFinish;
+	vector<Player*> enemies;
 	vector<Territory*> CanDefend;
 	vector<Territory*> CanAttack;
 	string PlayerName;

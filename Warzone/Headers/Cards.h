@@ -28,11 +28,18 @@ public:
     Card(CardTypeEnums::cardType);
     //plays the card
     Order* play();
+    //Setup parameter for card
+    void setCardParameter(Player* player);
     //returns the card type
     string getCardType();
 private:
     //card type
     CardTypeEnums::cardType type;
+    Territory* targetTerritory;
+    Territory* sourceTerritory;
+    vector<Player*> playerList;
+    Player* targetPlayer;
+    int amount;
 };
 class Deck
 {

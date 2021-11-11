@@ -974,11 +974,52 @@ bool GameEngine::checkIfContinentOwned(Player *player, Continent *continent)
 
 void GameEngine::issueOrderPhase()
 {
-	
+	bool allFinish=false;
+	int counter=0;
+	cout << "Issue Order Phase" << endl;
+	cout << "-------------------------------------------------------------" << endl;
+	while (!allFinish) {
+		for (int i = 0; i < players.size(); i++) {
+			if (!players[i]->getIsTurnFinish())
+				players[i]->issueOrder();
+			else
+				counter++;
+		}
+		if (counter == players.size())
+		{
+			allFinish = true;
+			for (int i = 0; i < players.size(); i++) {
+				players[i]->setIsTurnFinish(false);
+			}
+		}
+		else
+			counter = 0;
+	}
 }
 
 void GameEngine::executeOrderPhase()
 {
+	bool isAllExecuted = false;
+	int counter = 0;
 	cout << "Orders Execution Phase" << endl;
 	cout << "-------------------------------------------------------------" << endl;
+	vector<Order*> orderList;
+	while (!isAllExecuted){
+		for (int i = 0; i < players.size(); i++) {
+			if (players[i]->getOrders()->getOrdersVector().size() != 0) {
+				players[i]->getOrders()->getOrdersVector()[0]->execute();
+				players[i]->getOrders()->remove(0);
+			}
+			else
+				counter++;
+		}
+		if (counter == players.size())
+		{
+			isAllExecuted = true;
+		}
+		else {
+			counter = 0;
+		}
+	}
+	
 }
