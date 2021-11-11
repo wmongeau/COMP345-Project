@@ -93,8 +93,7 @@ void Player::issueOrder()
 	int armyChoice;
 	int playerInput = 0;
 	int advanceChoice;
-	Hand *currentHand;
-	vector<Cards> cards;
+	vector<Card*> cards;
 	while (reinforcementPool != 0)
 	{
 		cout << "These are the territories that you can deploy armies in" << endl;
@@ -161,8 +160,7 @@ void Player::issueOrder()
 		else if (playerInput == 1)
 		{
 			cout << "Here's the cards in hand:" << endl;
-			currentHand = PlayerHand->getPlayerHand();
-			cards = currentHand->getPlayerHand();
+			cards = PlayerHand->getPlayerHand();
 			for (int i = 0; i < cards.size(); i++)
 			{
 				cout << i << ' ' << cards[i]->getCardType();
