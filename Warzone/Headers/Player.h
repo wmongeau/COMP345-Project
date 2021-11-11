@@ -34,6 +34,7 @@ public:
 	vector<Territory*> toAttack();
 	void issueOrder(OrdersEnum orderType);
 	void addOwnedTerritory(Territory* territory);
+	void removeOwnedTerritory(Territory* territory);
 	void addCardToHand(Card* card);
 	void setReinforcementPool(int pool);
 	int getReinforcementPool();

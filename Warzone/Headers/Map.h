@@ -14,7 +14,7 @@ private:
 	int X;
 	int Y;
 	std::vector<Territory*> Borders;
-	Player* player{nullptr};
+	Player* player;
 	int armyValue;
 public:
 	Territory(int id, std::string name, int continentId, int x, int y);
@@ -23,6 +23,7 @@ public:
 	void addToArmy(int val);
 	void removeFromArmy(int val);
 	void updatePlayer(Player* newPlayer);
+	void removePlayer();
 	void updateArmyValue(int newArmyValue);
 	void addBorder(Territory* territory);
 	const int getId() const;

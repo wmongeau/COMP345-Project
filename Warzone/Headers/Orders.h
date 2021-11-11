@@ -2,8 +2,9 @@
 
 #include <iostream>
 #include <list>
-#include "Map.h"
 #include "LoggingObserver.h"
+#include "Player.h"
+#include "Map.h"
 
 using namespace std;
 
@@ -29,10 +30,11 @@ protected:
 	// Effect of order
 	string effect = "Order has not yet been executed.";
 public:
+	Player* _playerIssuingOrder{ nullptr };
 	// Default Constructor
 	Order();
-
-	//Parameterized constructor
+	 
+	//Parameterized constructors
 	Order(OrdersEnum value);
 
 	// Copy Constructor
@@ -70,6 +72,9 @@ public:
 	// Copy Constructor
 	DeployOrder(const DeployOrder& d);
 
+	// Parameterized Constructor
+	DeployOrder(Player& playerIssuingOrder, Territory& targetedTerritory, int _numOfArmies);
+
 	// Destructor
 	~DeployOrder();
 
@@ -84,6 +89,11 @@ public:
 
 	// If Deploy order is valid, executes order
 	bool execute() override;
+
+private:
+	//Data members
+	Territory* _targetedTerritory{ nullptr };
+	int numOfArmies;
 };
 
 class AdvanceOrder : public Order {
@@ -93,6 +103,9 @@ public:
 
 	// Copy Constructor
 	AdvanceOrder(const AdvanceOrder& a);
+
+	// Parameterized Constructor
+	AdvanceOrder(Player& playerIssuingOrder, Territory& sourceTerritory, Territory& targetedTerritory, int _numOfArmies);
 
 	// Destructor
 	~AdvanceOrder();
@@ -108,6 +121,12 @@ public:
 
 	// If Advance order is valid, executes order
 	bool execute() override;
+
+private:
+	//Data members
+	Territory* _sourceTerritory{ nullptr };
+	Territory* _targetedTerritory{ nullptr };
+	int numOfArmies;
 };
 
 class BombOrder : public Order {
@@ -117,6 +136,9 @@ public:
 
 	// Copy Constructor
 	BombOrder(const BombOrder& b);
+
+	// Parameterized Constructor
+	BombOrder(Player& playerIssuingOrder, Player& targetedPlayer, Territory& targetedTerritory);
 
 	// Destructor
 	~BombOrder();
@@ -132,6 +154,11 @@ public:
 
 	// If Bomb order is valid, execute order
 	bool execute() override;
+
+private:
+	//Data members
+	Player* _targetedPlayer{ nullptr };
+	Territory* _targetedTerritory{ nullptr };
 };
 
 class BlockadeOrder : public Order {
@@ -141,6 +168,9 @@ public:
 
 	// Copy Constructor
 	BlockadeOrder(const BlockadeOrder& bl);
+
+	//Parameterized Constructor
+	BlockadeOrder(Player& playerIssuingOrder, Territory& targetedTerritory, vector<Player*> playerList);
 
 	// Destructor
 	~BlockadeOrder();
@@ -156,6 +186,11 @@ public:
 
 	// If Blockade order is valid, execute order
 	bool execute() override;
+
+private:
+	//Data members
+	Territory* _targetedTerritory{ nullptr };
+	vector<Player*> _playerList;
 };
 
 class AirliftOrder : public Order {
@@ -165,6 +200,9 @@ public:
 
 	// Copy Constructor
 	AirliftOrder(const AirliftOrder& air);
+
+	// Parameterized Constructor
+	AirliftOrder(Player& playerIssuingOrder, Territory& sourceTerritory, Territory& targetedTerritory, int _numOfArmies);
 
 	// Destructor
 	~AirliftOrder();
@@ -180,6 +218,12 @@ public:
 
 	// If Airlift order is valid, execute order
 	bool execute() override;
+
+private:
+	//Data members
+	Territory* _targetedTerritory{ nullptr };
+	Territory* _sourceTerritory{ nullptr };
+	int numOfArmies;
 };
 
 class NegotiateOrder : public Order {
@@ -189,6 +233,9 @@ public:
 
 	// Copy Constructor
 	NegotiateOrder(const NegotiateOrder& n);
+
+	// Parameterized Constructor
+	NegotiateOrder(Player& playerIssuingOrder, Player& ennemyPlayer);
 
 	// Destructor
 	~NegotiateOrder();
@@ -204,6 +251,10 @@ public:
 
 	// If Negotiate order is valid, executed order
 	bool execute() override;
+
+private:
+	//Data members
+	Player* _ennemyPlayer{nullptr};
 };
 
 
