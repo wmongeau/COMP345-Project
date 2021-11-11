@@ -42,7 +42,13 @@ Card::Card(CardTypeEnums::cardType c){
 //method to play a card
 Order* Card::play()
 {
+    Hand* hand = sourcePlayer->getPlayerHand();
+    Deck* deck = sourcePlayer->deck;
     cout << CardTypeEnums::cardTypeEnumToString(type) << " card is being played" << endl;
+    for (int i=0;i< sourcePlayer->getPlayerHand()->getPlayerHand().size();i++)
+        if(hand->getPlayerHand()[i]==this)
+            hand->removeCardFromHand(i);
+    deck->returnCardToDeck(this);
     switch (type)
     {
     case CardTypeEnums::Bomb:

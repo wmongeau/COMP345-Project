@@ -95,6 +95,7 @@ void Player::issueOrder()
 	int playerInput = 0;
 	int advanceChoice;
 	vector<Card*> cards;
+	cout << "\nPlayer " << PlayerName << "'s turn" << endl;
 	//Deploying phase
 	if (reinforcementPool != 0)
 	{
@@ -152,12 +153,10 @@ void Player::issueOrder()
 			cin >> armyChoice;
 			if (advanceChoice == 0)
 			{
-				// new AdvanceOrder(this,OwnedTerritories[territoryChoice2],toAttack()[territoryChoice],armyChoice)
 				Orders->addOrder(new AdvanceOrder(*this, *OwnedTerritories[territoryChoice2], *toAttack()[territoryChoice], armyChoice));
 			}
 			else if (advanceChoice == 1)
 			{
-				// new AdvanceOrder(this,OwnedTerritories[territoryChoice2],toDefend()[territoryChoice],armyChoice)
 				Orders->addOrder(new AdvanceOrder(*this, *OwnedTerritories[territoryChoice2], *toDefend()[territoryChoice], armyChoice));
 			}
 		}
@@ -167,11 +166,13 @@ void Player::issueOrder()
 			cards = PlayerHand->getPlayerHand();
 			for (int i = 0; i < cards.size(); i++)
 			{
-				cout << i << ' ' << cards[i]->getCardType();
+				cout << i << ' ' << cards[i]->getCardType()<<endl;
 			}
 			cout << "Which card do you want to play?" << endl;
 			cin >> cardChoice;
 			cards[cardChoice]->setCardParameter(this);
+			if (cards[cardChoice]->getCardType() == "Diplomacy" || cards[cardChoice]->getCardType() == "Blockade")
+				cards[cardChoice]->playerList = enemies;
 			Orders->addOrder(cards[cardChoice]->play());
 		}
 		else if (playerInput == 2)
@@ -275,9 +276,14 @@ void Player::setCanDefend(std::vector<Territory *> territories)
 }
 
 //Temporary setter method for the territories that a player can attack
-void Player::setCanAttack(std::vector<Territory *> territories)
+void Player::setCanAttack()
 {
-	CanAttack = territories;
+	for (int i = 0; i < OwnedTerritories.size(); i++) {
+		for (int j = 0; j < OwnedTerritories[i]->getBorders().size(); j++)
+			if (!playerCanDefend(OwnedTerritories[i]->getBorders()[j]))
+				if (!playerCanAttack(OwnedTerritories[i]->getBorders()[j]))
+					addTerritoryToAttack(OwnedTerritories[i]->getBorders()[j]);
+	}
 }
 
 void Player::addTerritoryToDefend(Territory *territory)
@@ -324,6 +330,17 @@ bool Player::playerCanAttack(Territory *territory)
 	for (vector<Territory *>::iterator it = CanAttack.begin(); it != CanAttack.end(); ++it)
 	{
 		if (CanAttack[index]->getId() == territory->getId())
+			return true;
+		index++;
+	}
+	return false;
+}
+bool Player::playerCanDefend(Territory* territory)
+{
+	int index = 0;
+	for (vector<Territory*>::iterator it = CanDefend.begin(); it != CanDefend.end(); ++it)
+	{
+		if (CanDefend[index]->getId() == territory->getId())
 			return true;
 		index++;
 	}

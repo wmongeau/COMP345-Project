@@ -276,15 +276,15 @@ bool AdvanceOrder::execute() {
 				int defendDeath = 0;
 				for (int i = 0; i < numOfArmies; i++) {
 					attackingChance = rand() % 100 + 1;
-					if (attackingChance <= 60) {
-						attackDeath++;
+					if (attackingChance <= 100){
+						defendDeath++;
 					}
 				}
 
 				for (int i = 0; i < _targetedTerritory->getArmyValue(); i++) {
 					defendingChance = rand() % 100 + 1;
 					if (defendingChance <= 70) {
-						defendDeath++;
+						attackDeath++;
 					}
 				}
 				_sourceTerritory->removeFromArmy(attackDeath);
@@ -297,7 +297,7 @@ bool AdvanceOrder::execute() {
 				effect = _playerIssuingOrder->getPlayerName() + " attacked and conquered " + _targetedTerritory->getName();
 				}
 				else {
-					effect = _playerIssuingOrder->getPlayerName() + " lost " + to_string(attackDeath) + " army units and his ennemy on "
+					effect = _playerIssuingOrder->getPlayerName() + " lost " + to_string(attackDeath) + " army units and his enemy on "
 						+ _targetedTerritory->getName() + " lost " + to_string(defendDeath) + " army units.";
 				}
 			}

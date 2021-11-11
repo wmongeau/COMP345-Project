@@ -222,6 +222,7 @@ void AssignCountriesTransition::execute(string args, GameEngine *engine)
 	cout << "Order of play: " << endl;
 	for (Player *p : engine->getPlayers())
 	{
+		p->setEnemies(enginePlayers);
 		cout << p->getPlayerName() << endl;
 	}
 
@@ -252,6 +253,7 @@ void AssignCountriesTransition::execute(string args, GameEngine *engine)
 
 	for (Player *p : engine->getPlayers())
 	{
+		p->deck = engine->getDeck();
 		p->addCardToHand(engine->getDeck()->draw());
 		p->addCardToHand(engine->getDeck()->draw());
 
@@ -913,12 +915,16 @@ void GameEngine::mainGameLoop()
 			{
 				players.erase(players.begin() + i);
 			}
+			else {
+				players[i]->setCanAttack();
+			}
 		}
+
 		if (!firstTurn)
 		{
 			reinforcementPhase();
-			firstTurn = false;
 		}
+		firstTurn = false;
 		issueOrderPhase();
 		executeOrderPhase();
 
@@ -1007,14 +1013,26 @@ void GameEngine::executeOrderPhase()
 {
 	bool isAllExecuted = false;
 	int counter = 0;
+	int numberOwnedTerritory;
+	vector<bool> playerHasDrawn = *new vector<bool>();
+	for (int i = 0; i < players.size(); i++)
+		playerHasDrawn.push_back(false);
 	cout << "Orders Execution Phase" << endl;
 	cout << "-------------------------------------------------------------" << endl;
 	vector<Order*> orderList;
 	while (!isAllExecuted){
 		for (int i = 0; i < players.size(); i++) {
 			if (players[i]->getOrders()->getOrdersVector().size() != 0) {
+				numberOwnedTerritory = players[i]->getOwnedTerritories().size();
 				players[i]->getOrders()->getOrdersVector()[0]->execute();
+				cout << *players[i]->getOrders()->getOrdersVector()[0];
 				players[i]->getOrders()->remove(0);
+				if (players[i]->getOwnedTerritories().size() > numberOwnedTerritory && !playerHasDrawn[i]) {
+					if (this->getDeck()->getDeckOfCards().size() != 0) {
+						players[i]->addCardToHand(this->getDeck()->draw());
+						playerHasDrawn[i] = true;
+					}
+				}
 			}
 			else
 				counter++;

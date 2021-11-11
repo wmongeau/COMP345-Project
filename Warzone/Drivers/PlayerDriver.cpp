@@ -39,7 +39,7 @@ void playerDriver(Map* map) {
 	}
 
 	player1->setCanDefend(owned);
-	player1->setCanAttack(unowned);
+	player1->setCanAttack();
 
 	cout << *player1;
 	delete player1;

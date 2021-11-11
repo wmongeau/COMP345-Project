@@ -9,11 +9,13 @@ class Territory;
 class Hand;
 class OrdersList;
 class Card;
+class Deck;
 enum class OrdersEnum;
 
 //Class declaration for the Player class
 class Player {
 public:
+	Deck* deck;
 	Player();
 	Player(const Player& p);
 	Player(string playerName);
@@ -26,12 +28,13 @@ public:
 	vector<Player*> getEnemies();
 	void setEnemies(vector<Player*> enemies);
 	void setCanDefend(vector<Territory*> territories);
-	void setCanAttack(vector<Territory*> territories);
+	void setCanAttack();
 	void addTerritoryToDefend(Territory* territory);
 	void addTerritoryToAttack(Territory* territory);
 	void removeTerritoryToDefend(Territory* territory);
 	void removeTerritoryToAttack(Territory* territory);
 	bool playerCanAttack(Territory* territory);
+	bool playerCanDefend(Territory* territory);
 	vector<Territory*> toDefend();
 	vector<Territory*> toAttack();
 	void issueOrder(OrdersEnum orderType);

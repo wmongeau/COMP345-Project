@@ -5,7 +5,7 @@
 
 
 using namespace std;
-
+class Deck;
 namespace CardTypeEnums{
 //enum of card types
 enum cardType {Bomb, Reinforcement, Blockade, Airlift, Diplomacy};
@@ -15,6 +15,8 @@ string cardTypeEnumToString(cardType value);
 class Card
 {
 public:
+    Deck* deck;
+    vector<Player*> playerList;
     //constructor
     Card();
     //destructor
@@ -38,7 +40,6 @@ private:
     CardTypeEnums::cardType type;
     Territory* targetTerritory;
     Territory* sourceTerritory;
-    vector<Player*> playerList;
     Player* targetPlayer;
     Player* sourcePlayer;
     int amount;
