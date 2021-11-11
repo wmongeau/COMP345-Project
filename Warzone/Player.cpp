@@ -107,8 +107,10 @@ void Player::issueOrder()
 		cin >> territoryChoice;
 		cout << "How many armies would you like to deploy of " << reinforcementPool << " armies ?";
 		cin >> armyChoice;
-		//Add deploy orders to orders list new DeployOrders(this,OwnedTerritories[i],armyChoice);
-		Orders->addOrder(new DeployOrder());
+		Orders->addOrder(new DeployOrder(*this, *OwnedTerritories[territoryChoice], armyChoice));
+		reinforcementPool -= armyChoice;
+		if (reinforcementPool < 0)
+			reinforcementPool = 0;
 		return;
 	}
 	//Order issuing phase (Advance and Cards)
@@ -151,12 +153,12 @@ void Player::issueOrder()
 			if (advanceChoice == 0)
 			{
 				// new AdvanceOrder(this,OwnedTerritories[territoryChoice2],toAttack()[territoryChoice],armyChoice)
-				Orders->addOrder(new AdvanceOrder());
+				Orders->addOrder(new AdvanceOrder(*this, *OwnedTerritories[territoryChoice2], *toAttack()[territoryChoice], armyChoice));
 			}
 			else if (advanceChoice == 1)
 			{
 				// new AdvanceOrder(this,OwnedTerritories[territoryChoice2],toDefend()[territoryChoice],armyChoice)
-				Orders->addOrder(new AdvanceOrder());
+				Orders->addOrder(new AdvanceOrder(*this, *OwnedTerritories[territoryChoice2], *toDefend()[territoryChoice], armyChoice));
 			}
 		}
 		else if (playerInput == 1)

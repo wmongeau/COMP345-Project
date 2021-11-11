@@ -120,7 +120,7 @@ Map* MapLoader::loadMap(string args) {
 	return map;
 };
 
-//Function to create Contitent object from a map file
+//Function to create Continent object from a map file
 void MapLoader::loadContinent(string continentStr, int *continentId, Map* map) {
 	if(continentStr == "\r"){
 		return;
@@ -141,6 +141,7 @@ void MapLoader::loadCountry(string country, Map* map) {
 	Territory* territory;
 	territory = new Territory(stoi(countryAsArray[0]), countryAsArray[1], stoi(countryAsArray[2]), stoi(countryAsArray[3]), stoi(countryAsArray[4]));
 	map->addTerritory(territory);
+	map->getContinentById(territory->getContinentId())->getTerritories().push_back(territory);
 }
 
 //Function to create a graph for all Territory object

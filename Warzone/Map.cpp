@@ -284,6 +284,12 @@ string Continent::toString()
     result.append("\n");
     return result;
 }
+
+std::vector<Territory*> Continent::getTerritories()
+{
+    return territories;
+}
+
 //Stream insertion operator
 ostream& operator << (ostream& out, const Continent& c)
 {
@@ -386,7 +392,7 @@ const int Territory::getY()const
 {
     return Y;
 }
-const Player* Territory::getPlayer() const
+Player* Territory::getPlayer() const
 {
     return player;
 }

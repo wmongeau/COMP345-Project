@@ -31,7 +31,7 @@ public:
 	const int getContinentId() const;
 	const int getX() const;
 	const int getY() const;
-	const Player* getPlayer() const;
+	Player* getPlayer() const;
 	const int getArmyValue() const;
 	const std::vector<Territory*> getBorders() const;
 	const std::string toString() const;

@@ -606,7 +606,7 @@ vector<Transition *> GameEngine::getAvailableTransitions()
 	return availableTransitions;
 }
 
-//Method that tells the game engine to execute a transitioin that is given as a parameter
+//Method that tells the game engine to execute a transition that is given as a parameter
 void GameEngine::execute(Transition *transition, string args)
 {
 	transition->execute(args, this);
@@ -737,7 +737,7 @@ Deck *GameEngine::getDeck()
 	return deck;
 }
 
-//Strem operator overload for the GameEngine class
+//stream operator overload for the GameEngine class
 std::ostream &operator<<(std::ostream &os, const GameEngine &engine)
 {
 	os << "-------------------------------------------------------------" << endl;
@@ -902,6 +902,8 @@ std::string Enums::transitionsEnumToString(Enums::transitions value)
 
 void GameEngine::mainGameLoop()
 {
+	bool firstTurn = true;
+
 	while (!winner)
 	{
 		// iterates through the players list, if a player no longer has a territory (they lose), they get removed
@@ -912,7 +914,11 @@ void GameEngine::mainGameLoop()
 				players.erase(players.begin() + i);
 			}
 		}
-		reinforcementPhase();
+		if (!firstTurn)
+		{
+			reinforcementPhase();
+			firstTurn = false;
+		}
 		issueOrderPhase();
 		executeOrderPhase();
 

@@ -40,6 +40,7 @@ private:
     Territory* sourceTerritory;
     vector<Player*> playerList;
     Player* targetPlayer;
+    Player* sourcePlayer;
     int amount;
 };
 class Deck

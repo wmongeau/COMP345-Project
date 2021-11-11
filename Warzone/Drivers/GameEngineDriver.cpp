@@ -36,7 +36,7 @@ using namespace std;
 /* } */
 
 // Entry point for the game
-void gameEngineDriver() {
+void main() {
 	/* int selectedMode; */
 	/* cout << "Select which mode you would like to use by entering its number:" << endl; */
 	/* cout << "[0] Evaluation mode" << endl; */
@@ -101,5 +101,6 @@ void gameEngineDriver() {
 	engine = new GameEngine();
 
 	engine -> startupPhase();
+	engine->mainGameLoop();
 }
 

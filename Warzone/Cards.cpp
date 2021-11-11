@@ -46,19 +46,19 @@ Order* Card::play()
     switch (type)
     {
     case CardTypeEnums::Bomb:
-        return new BombOrder();
+        return new BombOrder(*sourcePlayer,*targetPlayer,*targetTerritory);
         break;
     case CardTypeEnums::Reinforcement:
-        return new DeployOrder();
+        return new DeployOrder(*sourcePlayer,*targetTerritory,amount);
         break;
     case CardTypeEnums::Blockade:
-        return new BlockadeOrder();
+        return new BlockadeOrder(*sourcePlayer,*targetTerritory,playerList);
         break;
     case CardTypeEnums::Airlift:
-        return new AirliftOrder();
+        return new AirliftOrder(*sourcePlayer,*sourceTerritory,*targetTerritory,amount);
         break;
     case CardTypeEnums::Diplomacy:
-        return new NegotiateOrder();
+        return new NegotiateOrder(*sourcePlayer,*targetPlayer);
         break;
     default:
         break;
@@ -71,7 +71,8 @@ void Card::setCardParameter(Player* player)
 {
 	int territoryChoice, territoryChoice2, cardChoice, diplomatChoice;
 	int armyChoice;
-    switch(type)
+    Territory* territory;
+    sourcePlayer = player;
 		switch (type)
 		{
 		case CardTypeEnums::Bomb:
@@ -82,7 +83,10 @@ void Card::setCardParameter(Player* player)
 			}
 			cout << "Which territory do you want to bomb?" << endl;
 			cin >> territoryChoice;
-            targetTerritory = player->toAttack()[territoryChoice];
+            territory = player->toAttack()[territoryChoice];
+            targetTerritory = territory;
+            targetPlayer = territory->getPlayer();
+
 			break;
 		case CardTypeEnums::Reinforcement:
 			cout << "These are the territories that you can reinforcement armies in" << endl;
