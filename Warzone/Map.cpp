@@ -351,6 +351,11 @@ void Territory::updateArmyValue(int newArmyValue)
 {
     armyValue = newArmyValue;
 }
+void Territory::removePlayer()
+{
+    player->removeOwnedTerritory(this);
+    player = NULL;
+}
 //Function to add an adjacent territory
 void Territory::addBorder(Territory* territory) {
     Borders.push_back(territory);

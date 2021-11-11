@@ -4,7 +4,6 @@
 #include "./Headers/Orders.h"
 #include <iostream>
 #include <string>
-
 using namespace std;
 
 //Default constructor for class Player
@@ -84,6 +83,8 @@ vector<Territory *> Player::toDefend()
 void Player::addOwnedTerritory(Territory *territory)
 {
 	OwnedTerritories.push_back(territory);
+	removeTerritoryToAttack(territory);
+	addTerritoryToDefend(territory);
 	territory->updatePlayer(this);
 }
 
@@ -173,6 +174,21 @@ void Player::issueOrder()
 		}
 		else if (playerInput == 2)
 			isTurnFinish = true;
+}
+
+void Player::removeOwnedTerritory(Territory* territory)
+{
+	removeTerritoryToDefend(territory);
+	addTerritoryToAttack(territory);
+	int index = 0;
+	for (vector<Territory*>::iterator it = OwnedTerritories.begin(); it != OwnedTerritories.end(); ++it)
+	{
+		if (OwnedTerritories[index]->getId() == territory->getId()) {
+			OwnedTerritories.erase(it);
+			break;
+		}
+		index++;
+	}
 }
 
 //Method used to create an order and add it to the players order list

@@ -37,6 +37,7 @@ public:
 	void issueOrder(OrdersEnum orderType);
 	void issueOrder();
 	void addOwnedTerritory(Territory* territory);
+	void removeOwnedTerritory(Territory* territory);
 	void addCardToHand(Card* card);
 	void setReinforcementPool(int pool);
 	int getReinforcementPool();
