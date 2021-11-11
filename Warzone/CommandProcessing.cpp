@@ -32,7 +32,11 @@ ostream& operator<<(ostream& out, CommandType commandType)
 
 ostream& operator<<(ostream& out, const Command& c)
 {
-	out << "This command is of type: " << c.commandType << " and contains the following command: " << c.command << endl;
+	out << c.command << endl;
+
+	if (!empty(c.effect)) {
+		out << c.effect << endl;
+	}
 
 	return out;
 }
@@ -68,7 +72,7 @@ string extractPlayerName(Command* command)
 	string commandString = command->getCommand();
 	string delimiter = " ";
 
-	return commandString.substr(1, commandString.find(delimiter));
+	return commandString.erase(0, commandString.find(delimiter) + 1);
 }
 
 string extractMapFile(Command* command)
@@ -78,7 +82,7 @@ string extractMapFile(Command* command)
 	string commandString = command->getCommand();
 	string delimiter = " ";
 
-	return commandString.substr(1, commandString.find(delimiter));
+	return commandString.erase(0, commandString.find(delimiter) + 1);
 }
 
 CommandProcessor::CommandProcessor()
@@ -106,12 +110,14 @@ CommandProcessor& CommandProcessor::operator=(const CommandProcessor& c)
 	return *this;
 }
 
-void CommandProcessor::getCommand(State* currentState)
+Command* CommandProcessor::getCommand(State* currentState)
 {
 	Command* command = readCommand();
 
 	if (validate(currentState, command)) 
 		saveCommand(command);
+
+	return command;
 }
 
 vector<Command*> CommandProcessor::getCommandList()
@@ -164,7 +170,7 @@ bool CommandProcessor::validate(State* currentState, Command* command)
 		return true;
 	}
 	else if (command->getCommandType() == CommandType::gameStart && currentState->getStateName() == Enums::states::playersAdded) {
-		command->saveEffect("effects: The game is starting.");
+		command->saveEffect("effect: The game is starting.");
 		return true;
 	}
 	else if (command->getCommandType() == CommandType::replay && currentState->getStateName() == Enums::states::winState) {
@@ -176,13 +182,15 @@ bool CommandProcessor::validate(State* currentState, Command* command)
 		return true;
 	}
 	else if (command->getCommandType() == CommandType::validateMap && currentState->getStateName() == Enums::states::mapLoaded) {
-		command->saveEffect("effect: The map: " + extractMapFile(command) + " is being validated");
+		command->saveEffect("effect: The map is being validated");
 		return true;
 	}
 	else if (command->getCommandType() == CommandType::loadMap && (currentState->getStateName() == Enums::states::start || currentState->getStateName() == Enums::states::mapLoaded)) {
-		command->saveEffect("effect: The game is starting.");
+		command->saveEffect("effect: The map: " + extractMapFile(command) + " is being loaded.");
 		return true;
 	}
+
+	command->saveEffect("effect: The command: " + command->getCommand() + " was invalid, therefore nothing happened.");
 
 	return false;
 }

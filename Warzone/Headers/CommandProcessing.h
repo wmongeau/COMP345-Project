@@ -43,7 +43,7 @@ public:
 	CommandProcessor(const CommandProcessor& c);
 	CommandProcessor& operator=(const CommandProcessor& c);
 	friend ostream& operator<<(ostream& out, const CommandProcessor& c);
-	void getCommand(State* currentState);
+	Command* getCommand(State* currentState);
 	vector<Command*> getCommandList();
 	string stringToLog();
 private:
