@@ -287,29 +287,8 @@ IssueOrderTransition::IssueOrderTransition(const IssueOrderTransition& issueOrde
 void IssueOrderTransition::execute(string args, GameEngine* engine)
 {
 	cout << "Executing Issue Order Transition" << endl;
-	bool allFinish = false;
-	int counter = 0;
-	cout << "Issue Order Phase" << endl;
-	cout << "-------------------------------------------------------------" << endl;
-	if (!allFinish) {
-		for (int i = 0; i < engine->getPlayers().size(); i++) {
-			if (!engine->getPlayers()[i]->getIsTurnFinish())
-				engine->getPlayers()[i]->issueOrder();
-			else
-				counter++;
-		}
-		if (counter == engine->getPlayers().size())
-		{
-			allFinish = true;
-			for (int i = 0; i < engine->getPlayers().size(); i++) {
-				engine->getPlayers()[i]->setIsTurnFinish(false);
-			}
-		}
-		else {
-			counter = 0;
-			engine->execute(new IssueOrderTransition(), "");
-		}
-	}
+	engine->issueOrderPhase();
+
 }
 
 //Assignment operator override for the IssueOrderTransition class
@@ -363,41 +342,7 @@ void ExecOrderTransition::execute(string args, GameEngine* engine)
 {
 
 	cout << "Executing Exec Order Transition" << endl;
-	bool isAllExecuted = false;
-	int counter = 0;
-	int numberOwnedTerritory;
-	vector<bool> playerHasDrawn = *new vector<bool>();
-	for (int i = 0; i < engine->getPlayers().size(); i++)
-		playerHasDrawn.push_back(false);
-	cout << "Orders Execution Phase" << endl;
-	cout << "-------------------------------------------------------------" << endl;
-	vector<Order*> orderList;
-	if (!isAllExecuted) {
-		for (int i = 0; i < engine->getPlayers().size(); i++) {
-			if (engine->getPlayers()[i]->getOrders()->getOrdersVector().size() != 0) {
-				numberOwnedTerritory = engine->getPlayers()[i]->getOwnedTerritories().size();
-				engine->getPlayers()[i]->getOrders()->getOrdersVector()[0]->execute();
-				cout << *engine->getPlayers()[i]->getOrders()->getOrdersVector()[0];
-				engine->getPlayers()[i]->getOrders()->remove(0);
-				if (engine->getPlayers()[i]->getOwnedTerritories().size() > numberOwnedTerritory && !playerHasDrawn[i]) {
-					if (engine->getDeck()->getDeckOfCards().size() != 0) {
-						engine->getPlayers()[i]->addCardToHand(engine->getDeck()->draw());
-						playerHasDrawn[i] = true;
-					}
-				}
-			}
-			else
-				counter++;
-		}
-		if (counter == engine->getPlayers().size())
-		{
-			isAllExecuted = true;
-		}
-		else {
-			counter = 0;
-			engine->execute(new ExecOrderTransition, "");
-		}
-	}
+	engine->executeOrderPhase();
 }
 
 //Assignment operator override for the ExecOrderTransition class
@@ -424,32 +369,7 @@ EndExecOrdersTransition::EndExecOrdersTransition(const EndExecOrdersTransition& 
 void EndExecOrdersTransition::execute(string args, GameEngine* engine)
 {
 	cout << "Executing End Exec Orders Transition" << endl;
-	int numTerritories = 0;
-	const int MIN_ARMIES = 3;
-	int numArmies;
-
-	cout << "Reinforcement Phase" << endl;
-	cout << "-------------------------------------------------------------" << endl;
-
-	// check if a player owns all the territories of an entire continent
-	for (int i = 0; i < engine->getPlayers().size(); i++)
-	{
-		numTerritories = engine->getPlayers()[i]->getOwnedTerritories().size();
-		numArmies = floor(numTerritories / 3);
-		if (numArmies < 3)
-		{
-			numArmies = MIN_ARMIES;
-		}
-		for (Continent* cont : engine->getMap()->Continents)
-		{
-			if (engine->checkIfContinentOwned(engine->getPlayers()[i], cont))
-				numArmies = numArmies + cont->getArmyValue();
-		}
-		engine->getPlayers()[i]->setReinforcementPool(numArmies);
-		cout << engine->getPlayers()[i]->getPlayerName() << " reinforcement pool has " << engine->getPlayers()[i]->getReinforcementPool() << " armies." << endl;
-		cout << engine->getPlayers()[i]->getPlayerName() << " currently has " << numTerritories << " territories. \n"
-			<< endl;
-	}
+	engine->reinforcementPhase();
 }
 
 //Assignment operator override for the EndExecOrdersTransition class
@@ -1001,6 +921,9 @@ std::string Enums::transitionsEnumToString(Enums::transitions value)
 
 	return "Error";
 }
+// main game loop method.
+// Iterates until only one of the players owns all the territories in the map, at which point a winner is announced and the game ends. 
+// The main game loop also checks for any player that does not control at least one territory; if so, the player is removed from the game.
 
 void GameEngine::mainGameLoop()
 {
@@ -1058,6 +981,7 @@ void GameEngine::mainGameLoop()
 	cout << "-------------------------------------------------------------" << endl;
 }
 
+// method to check if the continent is owned.
 bool GameEngine::checkIfContinentOwned(Player* player, Continent* continent)
 {
 	Player* currentPlayer;
@@ -1071,3 +995,108 @@ bool GameEngine::checkIfContinentOwned(Player* player, Continent* continent)
 	}
 	return true;
 }
+ 
+// Reinforcement phase method is called in a round-robin fashion.
+// Players are given a number of armies that depends on the number of territories they own, (# of territories owned divided by 3, rounded down).
+// It assigned at least 3 armies to each player to deploy. 
+// If the player owns a continent it includes continent bonus
+void GameEngine::reinforcementPhase() {
+
+	cout << "Executing End Exec Orders Transition" << endl;
+	int numTerritories = 0;
+	const int MIN_ARMIES = 3;
+	int numArmies;
+
+	cout << "Reinforcement Phase" << endl;
+	cout << "-------------------------------------------------------------" << endl;
+
+	// check if a player owns all the territories of an entire continent
+	for (int i = 0; i < players.size(); i++)
+	{
+		numTerritories = players[i]->getOwnedTerritories().size();
+		numArmies = floor(numTerritories / 3);
+		if (numArmies < 3)
+		{
+			numArmies = MIN_ARMIES;
+		}
+		for (Continent* cont : map->Continents)
+		{
+			//If the player owns all the territories of an entire continent, the player is given a number of armies corresponding to the continent’s control bonus value.
+			if (checkIfContinentOwned(players[i], cont))
+				numArmies = numArmies + cont->getArmyValue();
+		}
+		players[i]->setReinforcementPool(numArmies);
+		cout << players[i]->getPlayerName() << " reinforcement pool has " << players[i]->getReinforcementPool() << " armies." << endl;
+		cout << players[i]->getPlayerName() << " currently has " << numTerritories << " territories. \n"
+			<< endl;
+	}
+}
+// Execute order phase is called in round robin fashion
+void GameEngine::executeOrderPhase() {
+	bool isAllExecuted = false;
+	int counter = 0;
+	int numberOwnedTerritory;
+	vector<bool> playerHasDrawn = *new vector<bool>();
+	for (int i = 0; i < players.size(); i++)
+		playerHasDrawn.push_back(false);
+
+	cout << "Orders Execution Phase" << endl;
+	cout << "-------------------------------------------------------------" << endl;
+	vector<Order*> orderList;
+	// iterates to check if all orders have been executed
+	if (!isAllExecuted) {
+		for (int i = 0; i < players.size(); i++) {
+			if (players[i]->getOrders()->getOrdersVector().size() != 0) {
+				numberOwnedTerritory = players[i]->getOwnedTerritories().size();
+				players[i]->getOrders()->getOrdersVector()[0]->execute();
+				cout << *players[i]->getOrders()->getOrdersVector()[0];
+				players[i]->getOrders()->remove(0);
+				if (players[i]->getOwnedTerritories().size() > numberOwnedTerritory && !playerHasDrawn[i]) {
+					if (deck->getDeckOfCards().size() != 0) {
+						players[i]->addCardToHand(deck->draw());
+						playerHasDrawn[i] = true;
+					}
+				}
+			}
+			else
+				counter++;
+		}
+		if (counter == players.size())
+		{
+			isAllExecuted = true;
+		}
+		else {
+			counter = 0;
+			execute(new ExecOrderTransition, "");
+		}
+	}
+}
+
+// Method for issueOrderPhase()
+// Orders are to be validated only when they are executed in the orders execution phase.
+void GameEngine::issueOrderPhase() {
+	bool allFinish = false;
+	int counter = 0;
+	cout << "Issue Order Phase" << endl;
+	cout << "-------------------------------------------------------------" << endl;
+	if (!allFinish) {
+		for (int i = 0; i < players.size(); i++) {
+			if (!players[i]->getIsTurnFinish())
+				players[i]->issueOrder();
+			else
+				counter++;
+		}
+		if (counter == players.size())
+		{
+			allFinish = true;
+			for (int i = 0; i < players.size(); i++) {
+				players[i]->setIsTurnFinish(false);
+			}
+		}
+		else {
+			counter = 0;
+			execute(new IssueOrderTransition(), "");
+		}
+	}
+}
+
