@@ -100,9 +100,7 @@ int main(int argc, char *argv[]) {
 			cout << *(processor->getCommand(currentState)) << endl;
 
 			cout << "Lastly, we will print our command list to demonstrate that only valid commands are added, and the validate() method works correctly." << endl;
-			for (Command* cmd : processor->getCommandList()) {
-				cout << *cmd << endl;
-			}
+			cout << *processor << endl;
 
 			delete currentState;
 			currentState = NULL;
