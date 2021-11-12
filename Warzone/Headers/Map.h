@@ -53,6 +53,7 @@ public:
 	const std::string getName() const;
 	const int getArmyValue() const;
 	const std::string getColour() const;
+	void addTerritory(Territory* t);
 	std::string toString();
 	vector<Territory*> getTerritories();
 	~Continent();

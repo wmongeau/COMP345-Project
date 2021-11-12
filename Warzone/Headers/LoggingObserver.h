@@ -25,9 +25,9 @@ public:
     ~LogObserver();
 };
 
-class SubJect {
+class Subject {
 public:
     LogObserver* view = new LogObserver();
     void notify(ILoggable* log);
-    ~SubJect();
+    ~Subject();
 };

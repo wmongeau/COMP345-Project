@@ -111,7 +111,7 @@ DeployOrder::DeployOrder(const DeployOrder& d) : Order(d){
 }
 
 //Parameterized constructor
-DeployOrder::DeployOrder(Player& playerIssuingOrder, Territory& targetedTerritory, int _numOfArmies)
+DeployOrder::DeployOrder(Player& playerIssuingOrder, Territory& targetedTerritory, int _numOfArmies) : Order(OrdersEnum::Deploy)
 {
 	this->_playerIssuingOrder = &playerIssuingOrder;
 	this->_targetedTerritory = &targetedTerritory;
@@ -182,7 +182,7 @@ AdvanceOrder::AdvanceOrder(const AdvanceOrder& a) : Order (a) {
 }
 
 //Parameterized constructor
-AdvanceOrder::AdvanceOrder(Player& playerIssuingOrder, Territory& sourceTerritory, Territory& targetedTerritory, int _numOfArmies)
+AdvanceOrder::AdvanceOrder(Player& playerIssuingOrder, Territory& sourceTerritory, Territory& targetedTerritory, int _numOfArmies) : Order(OrdersEnum::Advance)
 {
 	this->_playerIssuingOrder = &playerIssuingOrder;
 	this->_sourceTerritory = &sourceTerritory;
@@ -331,7 +331,7 @@ BombOrder::BombOrder(const BombOrder& b) : Order(b) {
 
 }
 
-BombOrder::BombOrder(Player& playerIssuingOrder, Player& targetedPlayer, Territory& targetedTerritory)
+BombOrder::BombOrder(Player& playerIssuingOrder, Player& targetedPlayer, Territory& targetedTerritory) : Order(OrdersEnum::Bomb)
 {
 	this->_playerIssuingOrder = &playerIssuingOrder;
 	this->_targetedPlayer = &targetedPlayer;
@@ -442,7 +442,7 @@ BlockadeOrder::BlockadeOrder(const BlockadeOrder& bl) : Order(bl) {
 }
 
 //Parameterized constructor
-BlockadeOrder::BlockadeOrder(Player& playerIssuingOrder, Territory& targetedTerritory, vector<Player*> playerList)
+BlockadeOrder::BlockadeOrder(Player& playerIssuingOrder, Territory& targetedTerritory, vector<Player*> playerList) : Order(OrdersEnum::Blockade)
 {
 	this->_playerIssuingOrder = &playerIssuingOrder;
 	this->_targetedTerritory = &targetedTerritory;
@@ -547,7 +547,7 @@ AirliftOrder::AirliftOrder(const AirliftOrder& air) : Order(air) {
 }
 
 //Parameterized constructor
-AirliftOrder::AirliftOrder(Player& playerIssuingOrder, Territory& sourceTerritory, Territory& targetedTerritory, int _numOfArmies)
+AirliftOrder::AirliftOrder(Player& playerIssuingOrder, Territory& sourceTerritory, Territory& targetedTerritory, int _numOfArmies) : Order(OrdersEnum::Airlift)
 {
 	this->_playerIssuingOrder = &playerIssuingOrder;
 	this->_sourceTerritory = &sourceTerritory;
@@ -638,7 +638,7 @@ NegotiateOrder::NegotiateOrder(const NegotiateOrder& n) : Order(n) {
 
 }
 
-NegotiateOrder::NegotiateOrder(Player& playerIssuingOrder, Player& ennemyPlayer)
+NegotiateOrder::NegotiateOrder(Player& playerIssuingOrder, Player& ennemyPlayer) : Order(OrdersEnum::Negotiate)
 {
 	this->_playerIssuingOrder = &playerIssuingOrder;
 	this->_ennemyPlayer = &ennemyPlayer;

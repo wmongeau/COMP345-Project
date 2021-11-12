@@ -88,6 +88,8 @@ void Player::addOwnedTerritory(Territory *territory)
 	territory->updatePlayer(this);
 }
 
+// Method used to issue order. Players issue orders and place them in their order list through a call to this method.
+// This method is called in a round-robin fashion in the issueOrdersPhase()
 void Player::issueOrder()
 {
 	int territoryChoice, territoryChoice2,cardChoice;
@@ -96,7 +98,9 @@ void Player::issueOrder()
 	int advanceChoice;
 	vector<Card*> cards;
 	cout << "\nPlayer " << PlayerName << "'s turn" << endl;
-	//Deploying phase
+	//Deploying phase. Shows all the territories that the user owns and can deploy to. 
+	//As long as the player has armies still to deploy (see startup phase and reinforcement phase), it will issue a deploy order and no other order. 
+	//Once it has deployed all its available armies, it can proceed with other kinds of orders.
 	if (reinforcementPool != 0)
 	{
 		cout << "These are the territories that you can deploy armies in" << endl;
@@ -114,7 +118,7 @@ void Player::issueOrder()
 			reinforcementPool = 0;
 		return;
 	}
-	//Order issuing phase (Advance and Cards)
+	//Players issues advance orders to either attack their neigbouring enemies or deploy to their neighbouring owned territories
 		cout << "Which action would you like to do?" << endl;
 		cout << "[0] Advance [1]Play a card [2]End turn" << endl ;
 		cin >> playerInput;
@@ -162,6 +166,7 @@ void Player::issueOrder()
 		}
 		else if (playerInput == 1)
 		{
+			// The player uses one of the cards in their hand to issue an order that corresponds to the card in question
 			cout << "Here's the cards in hand:" << endl;
 			cards = PlayerHand->getPlayerHand();
 			for (int i = 0; i < cards.size(); i++)
@@ -179,6 +184,7 @@ void Player::issueOrder()
 			isTurnFinish = true;
 }
 
+//Method used to removed owned territory
 void Player::removeOwnedTerritory(Territory* territory)
 {
 	removeTerritoryToDefend(territory);
@@ -259,11 +265,13 @@ std::string Player::getPlayerName()
 	return PlayerName;
 }
 
+// Method to get enemies
 std::vector<Player*> Player::getEnemies()
 {
 	return enemies;
 }
 
+// Method to set enemies
 void Player::setEnemies(vector<Player*> enemies)
 {
 	this->enemies = enemies;
@@ -286,16 +294,19 @@ void Player::setCanAttack()
 	}
 }
 
+//Method to add territory to defend
 void Player::addTerritoryToDefend(Territory *territory)
 {
 	CanDefend.push_back(territory);
 }
 
+// Method to add territory to attack
 void Player::addTerritoryToAttack(Territory *territory)
 {
 	CanAttack.push_back(territory);
 }
 
+// Method to remove territory to defend
 void Player::removeTerritoryToDefend(Territory *territory)
 {
 	int index = 0;
@@ -310,6 +321,7 @@ void Player::removeTerritoryToDefend(Territory *territory)
 	}
 }
 
+// Method to remove territory to attack
 void Player::removeTerritoryToAttack(Territory *territory)
 {
 	int index = 0;
@@ -324,6 +336,7 @@ void Player::removeTerritoryToAttack(Territory *territory)
 	}
 }
 
+// Boolean to show if the player can attack that specific territory
 bool Player::playerCanAttack(Territory *territory)
 {
 	int index = 0;
@@ -335,6 +348,7 @@ bool Player::playerCanAttack(Territory *territory)
 	}
 	return false;
 }
+// Boolean to show if the player can defend that specific territory
 bool Player::playerCanDefend(Territory* territory)
 {
 	int index = 0;
@@ -365,11 +379,13 @@ int Player::getReinforcementPool()
 	return reinforcementPool;
 }
 
+// Method to get if the users turn is finished
 bool Player::getIsTurnFinish()
 {
 	return isTurnFinish;
 }
 
+// Method to set if the users turn is finished
 void Player::setIsTurnFinish(bool val)
 {
 	isTurnFinish = val;
