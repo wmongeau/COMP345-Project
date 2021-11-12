@@ -7,6 +7,9 @@
 
 using namespace std;
 #include "../Headers/Player.h"
+#include "../Headers/Cards.h"
+#include "../Headers/Map.h"
+#include "../Headers/Orders.h"
 
 //Temporary method used to demo the functionality of the Player class
 void playerDriver(Map* map) {
@@ -16,8 +19,8 @@ void playerDriver(Map* map) {
 	player1->addCardToHand(card1);
 	player1->addCardToHand(card2);
 	player1->getOrders()->addOrder(player1->getPlayerHand()->getPlayerHand()[0]->play());
-	player1->issueOrder(Negotiate);
-	player1->issueOrder(Bomb);
+	player1->issueOrder(OrdersEnum::Negotiate);
+	player1->issueOrder(OrdersEnum::Bomb);
 
 	vector<Territory*> owned = vector<Territory*>();
 	vector<Territory*> unowned = vector<Territory*>();
@@ -39,7 +42,6 @@ void playerDriver(Map* map) {
 	player1->setCanAttack(unowned);
 
 	cout << *player1;
-
 	delete player1;
 	player1 = NULL;
  }

@@ -72,6 +72,9 @@ vector<string> splitString(string stringToSplit) {
 //Function to load a map file and return a Map object
 Map* MapLoader::loadMap(string args) {
 	string filePath = "../Maps/" + args;
+#ifdef _WIN32
+	filePath = "../../../Maps/" + args;
+#endif
 	ifstream file(filePath);
 	if (!file.is_open())
 	{

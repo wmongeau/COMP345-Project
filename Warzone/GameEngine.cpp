@@ -131,7 +131,7 @@ ValidateMapTransition::ValidateMapTransition(const ValidateMapTransition& valida
 
 //Method that executes the ValidateMapTransition
 void ValidateMapTransition::execute(string args, GameEngine* engine) {
-	cout << "Executing Validate Map Transiton" << endl;
+	cout << "Executing Validate Map Transition" << endl;
 	bool valid = engine -> getMap() -> validate();
 	cout << "Map is valid: " << valid << endl;
 }
@@ -526,7 +526,7 @@ vector<Transition*> GameEngine::getAvailableTransitions() {
 	return availableTransitions;
 }
 
-//Method that tells the game engine to execute a transitioin that is given as a parameter
+//Method that tells the game engine to execute a transition that is given as a parameter
 void GameEngine::execute(Transition* transition, string args) {
 	transition -> execute(args, this);
 	delete currentState;
@@ -597,7 +597,8 @@ void GameEngine::execute(Command* command) {
 //ILoggable function
 string GameEngine::stringToLog()
 {
-	return "GameEngine new state: "+to_string(currentState->getStateName())+'\n';
+
+	return "GameEngine new state: "+ Enums::statesEnumToString(currentState->getStateName())+'\n';
 }
 
 Map* GameEngine::getMap() {
