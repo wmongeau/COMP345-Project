@@ -983,11 +983,11 @@ std::string Enums::transitionsEnumToString(Enums::transitions value)
 	}
 	case Enums::play:
 	{
-		return "Play Again";
+		return "replay";
 	}
 	case Enums::end:
 	{
-		return "Quit";
+		return "quit";
 	}
 	}
 
@@ -1036,6 +1036,7 @@ void GameEngine::mainGameLoop()
 			}
 		}
 	}
+
 	cout << "These are the currently available commands: " << endl;
 	for (Transition* transition : availableTransitions)
 	{
@@ -1044,6 +1045,7 @@ void GameEngine::mainGameLoop()
 	cout << "-------------------------------------------------------------" << endl;
 
 	cout << "Please enter one of the available commands" << endl;
+	cin.ignore();
 	processor->getCommand(new State(Enums::winState));
 	Command* command = processor->getCommandList().back();
 	cout << "-------------------------------------------------------------" << endl;
