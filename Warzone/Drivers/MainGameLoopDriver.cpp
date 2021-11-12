@@ -4,11 +4,17 @@
 using namespace std;
 #include "../Headers/MainGameLoopDriver.h"
 #include "../Headers/GameEngine.h"
+#include "../Headers/MapDriver.h"
 
 
 void mainGameLoopDriver(){
-    GameEngine* engine = new GameEngine();
-    
-    engine->startupPhase();
-    engine->mainGameLoop();
+	string arg;
+	arg = "../test.tx";
+#ifdef _WIN32
+	arg = "../../../test.txt";
+#endif
+	FileCommandProcessorAdaptor* fileProcessor =new FileCommandProcessorAdaptor(arg);
+	GameEngine* engine = new GameEngine(fileProcessor);
+	engine->startupPhase();
+	engine->mainGameLoop();
 }

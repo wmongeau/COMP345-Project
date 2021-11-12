@@ -1,5 +1,6 @@
-loadpmap test.map
+loadmap test.map
 validatemap
 addplayer A
 addplayer B
 gamestart
+quit

@@ -13,9 +13,11 @@ using namespace std;
 #include "../Headers/OrdersDriver.h"
 #include "../Headers/PlayerDriver.h"
 #include "../Headers/CommandProcessing.h"
+#include "../Headers/MainGameLoopDriver.h"
 
 // Entry point for the game
 int main(int argc, char *argv[]) {
+	argc = 2;
 	int selectedModule; 
  	do {
  		cout << "Enter the number of the part you would like to test:" << endl; 
@@ -129,8 +131,10 @@ int main(int argc, char *argv[]) {
 			engine = NULL;
  		}
  		else if(selectedModule == 3) { 
+			mainGameLoopDriver();
  		} 
  		else if(selectedModule == 4) {
+			ordersDriver();
  		} 
  		else if(selectedModule == 5) {
  		}
