@@ -3,12 +3,12 @@
 
 using namespace std;
 
-void SubJect::notify(ILoggable *log)
+void Subject::notify(ILoggable *log)
 {
 	view->update(log);
 }
 
-SubJect::~SubJect()
+Subject::~Subject()
 {
 	delete view;
 	view = NULL;

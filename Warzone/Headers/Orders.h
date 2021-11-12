@@ -22,7 +22,7 @@ enum class OrdersEnum
 
 ostream& operator<<(ostream& out, OrdersEnum orderType);
 
-class Order:ILoggable,SubJect {
+class Order:ILoggable,Subject {
 private:
 	// Enum for Order type
 	OrdersEnum OrdersType;
@@ -258,7 +258,7 @@ private:
 };
 
 
-class OrdersList:ILoggable,SubJect {
+class OrdersList:ILoggable,Subject {
 public:
 	// Default Constructor
 	OrdersList();

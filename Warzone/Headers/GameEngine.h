@@ -137,7 +137,7 @@ public:
 	EndTransition& operator= (const EndTransition& endTransition);
 };
 
-class GameEngine:ILoggable,SubJect {
+class GameEngine:ILoggable,Subject {
 public: 
 	GameEngine();
 	GameEngine(CommandProcessor* processor);

@@ -17,7 +17,7 @@ enum CommandType
 
 ostream& operator<<(ostream& out, CommandType commandType);
 
-class Command:ILoggable, SubJect {
+class Command:ILoggable, Subject {
 public:
 	Command();
 	Command(CommandType commandType, string command);
@@ -36,7 +36,7 @@ private:
 	string effect;
 };
 
-class CommandProcessor:ILoggable, SubJect {
+class CommandProcessor:ILoggable, Subject {
 public:
 	CommandProcessor();
 	~CommandProcessor();

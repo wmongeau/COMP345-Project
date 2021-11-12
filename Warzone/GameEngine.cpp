@@ -247,7 +247,7 @@ void AssignCountriesTransition::execute(string args, GameEngine* engine)
 
 	for (Player* p : engine->getPlayers())
 	{
-		p->setReinforcementPool(2);
+		p->setReinforcementPool(50);
 		cout << p->getPlayerName() << " now has 50 armies in their reinforcement pool." << endl;
 	}
 
@@ -1012,15 +1012,12 @@ void GameEngine::mainGameLoop()
 		}
 		if (!firstTurn)
 		{
-			//reinforcementPhase();
 			execute(new EndExecOrdersTransition, "");
 		}
 		firstTurn = false;
 		execute(new IssueOrderTransition, "");
 		execute(new EndIssueOrdersTransition, "");
-		//issueOrderPhase()
 		execute(new ExecOrderTransition, "");
-		//executeOrderPhase();
 
 
 		//checks if a player won
@@ -1054,11 +1051,11 @@ void GameEngine::mainGameLoop()
 
 bool GameEngine::checkIfContinentOwned(Player* player, Continent* continent)
 {
-	Player currentPlayer;
+	Player* currentPlayer;
 	for (Territory* territory : continent->getTerritories())
 	{
-		currentPlayer = *territory->getPlayer();
-		if (territory->getPlayer() == NULL || currentPlayer.getPlayerName() != player->getPlayerName())
+		currentPlayer = territory->getPlayer();
+		if (territory->getPlayer() == NULL || currentPlayer->getPlayerName() != player->getPlayerName())
 		{
 			return false;
 		}

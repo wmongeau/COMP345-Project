@@ -1,0 +1,369 @@
+Enter the number of the part you would like to test:
+[1] Part 1 Command Processor
+[2] Part 2 Startup Phase
+[3] Part 3 Main Game Loop
+[4] Part 4 Order Execution
+[5] Part 5 Game Log Observer
+[6] Quit
+3
+A deck of 50 cards has been created
+Welcome to COMP 345 Warzone!
+-------------------------------------------------------------
+These are the currently available commands:
+loadmap <filename>
+-------------------------------------------------------------
+Please enter one of the available commands
+-------------------------------------------------------------
+Executing Load Map Transition
+Loaded Map test.map
+-------------------------------------------------------------
+These are the currently available commands:
+loadmap <filename>
+validatemap
+-------------------------------------------------------------
+Please enter one of the available commands
+-------------------------------------------------------------
+Executing Validate Map Transition
+----------------------------------------------
+Territory graph is valid!
+------------------------
+Continent has a valid Sub-graph!
+------------------------
+All territories belong to a single continent!
+----------------------------------------------
+Map is valid: 1
+-------------------------------------------------------------
+These are the currently available commands:
+addplayer <playername>
+-------------------------------------------------------------
+Please enter one of the available commands
+-------------------------------------------------------------
+Executing Add Player Transition
+Added A(Player 0)
+-------------------------------------------------------------
+These are the currently available commands:
+addplayer <playername>
+-------------------------------------------------------------
+Please enter one of the available commands
+-------------------------------------------------------------
+Executing Add Player Transition
+Added B(Player 1)
+-------------------------------------------------------------
+These are the currently available commands:
+addplayer <playername>
+gamestart
+-------------------------------------------------------------
+Please enter one of the available commands
+-------------------------------------------------------------
+Executing Add Player Transition
+Added C(Player 2)
+-------------------------------------------------------------
+These are the currently available commands:
+addplayer <playername>
+gamestart
+-------------------------------------------------------------
+Please enter one of the available commands
+-------------------------------------------------------------
+Executing Assign Countries Transition
+Order of play:
+B(Player 1)
+C(Player 2)
+A(Player 0)
+Territories have been assigned to players randomly
+B(Player 1) now has 50 armies in their reinforcement pool.
+C(Player 2) now has 50 armies in their reinforcement pool.
+A(Player 0) now has 50 armies in their reinforcement pool.
+B(Player 1) has drawn two cards.
+C(Player 2) has drawn two cards.
+A(Player 0) has drawn two cards.
+Startup phase is done!
+-------------------------------------------------------------
+Executing Issue Order Transition
+Issue Order Phase
+-------------------------------------------------------------
+
+Player B(Player 1)'s turn
+These are the territories that you can deploy armies in
+0 Brazil 0
+1 Mexico 0
+Which territory do you want to deploy armies to?
+1
+How many armies would you like to deploy of 50 armies ?50
+
+Player C(Player 2)'s turn
+These are the territories that you can deploy armies in
+0 Canada 0
+Which territory do you want to deploy armies to?
+0
+How many armies would you like to deploy of 50 armies ?50
+
+Player A(Player 0)'s turn
+These are the territories that you can deploy armies in
+0 United_State 0
+Which territory do you want to deploy armies to?
+0
+How many armies would you like to deploy of 50 armies ?0
+Executing Issue Order Transition
+Issue Order Phase
+-------------------------------------------------------------
+
+Player B(Player 1)'s turn
+Which action would you like to do?
+[0] Advance [1]Play a card [2]End turn
+0
+Would you like your advance order to Attack[0] or Defend[1]?0
+These are the territories that you can advance to attack
+0 United_State 0
+Which territory do you want to advance armies to attack?
+0
+These are the territories that you can take armies from
+0 Brazil 0
+1 Mexico 0
+Which territory do you want to take armies from?
+1
+How many armies would you like to advance of 0 armies ?50
+
+Player C(Player 2)'s turn
+Which action would you like to do?
+[0] Advance [1]Play a card [2]End turn
+2
+
+Player A(Player 0)'s turn
+These are the territories that you can deploy armies in
+0 United_State 0
+Which territory do you want to deploy armies to?
+0
+How many armies would you like to deploy of 50 armies ?50
+Executing Issue Order Transition
+Issue Order Phase
+-------------------------------------------------------------
+
+Player B(Player 1)'s turn
+Which action would you like to do?
+[0] Advance [1]Play a card [2]End turn
+2
+
+Player A(Player 0)'s turn
+Which action would you like to do?
+[0] Advance [1]Play a card [2]End turn
+2
+Executing Issue Order Transition
+Issue Order Phase
+-------------------------------------------------------------
+Executing End Issue Orders Transition
+Executing Exec Order Transition
+Orders Execution Phase
+-------------------------------------------------------------
+Executing Deploy order...
+The Deploy order is valid!
+Player B(Player 1) has deployed 50 in Mexico
+Executing Deploy order...
+The Deploy order is valid!
+Player C(Player 2) has deployed 50 in Canada
+Executing Deploy order...
+The Deploy order is valid!
+Player A(Player 0) has deployed 0 in United_State
+Executing Exec Order Transition
+Orders Execution Phase
+-------------------------------------------------------------
+Executing Advance order...
+The Advance order is valid!
+B(Player 1) attacked and conquered United_State
+Executing Deploy order...
+The Deploy order is invalid!
+The Deploy order cannot be executed!
+Order has not yet been executed.
+Executing Exec Order Transition
+Orders Execution Phase
+-------------------------------------------------------------
+Executing End Exec Orders Transition
+Reinforcement Phase
+-------------------------------------------------------------
+B(Player 1) reinforcement pool has 13 armies.
+B(Player 1) currently has 3 territories.
+
+C(Player 2) reinforcement pool has 3 armies.
+C(Player 2) currently has 1 territories.
+
+Executing Issue Order Transition
+Issue Order Phase
+-------------------------------------------------------------
+
+Player B(Player 1)'s turn
+These are the territories that you can deploy armies in
+0 Brazil 0
+1 Mexico 50
+2 United_State 50
+Which territory do you want to deploy armies to?
+2
+How many armies would you like to deploy of 13 armies ?13
+
+Player C(Player 2)'s turn
+These are the territories that you can deploy armies in
+0 Canada 50
+Which territory do you want to deploy armies to?
+0
+How many armies would you like to deploy of 3 armies ?3
+Executing Issue Order Transition
+Issue Order Phase
+-------------------------------------------------------------
+
+Player B(Player 1)'s turn
+Which action would you like to do?
+[0] Advance [1]Play a card [2]End turn
+0
+Would you like your advance order to Attack[0] or Defend[1]?1
+These are the territories that you can advance to defend
+0 Brazil 0
+1 Mexico 50
+2 United_State 50
+Which territory do you want to advance armies to?
+2
+These are the territories that you can take armies from
+0 Brazil 0
+1 Mexico 50
+2 United_State 50
+Which territory do you want to take armies from?
+1
+How many armies would you like to advance of 50 armies ?50
+
+Player C(Player 2)'s turn
+Which action would you like to do?
+[0] Advance [1]Play a card [2]End turn
+2
+Executing Issue Order Transition
+Issue Order Phase
+-------------------------------------------------------------
+
+Player B(Player 1)'s turn
+Which action would you like to do?
+[0] Advance [1]Play a card [2]End turn
+0
+Would you like your advance order to Attack[0] or Defend[1]?0
+These are the territories that you can advance to attack
+0 Canada 50
+Which territory do you want to advance armies to attack?
+0
+These are the territories that you can take armies from
+0 Brazil 0
+1 Mexico 50
+2 United_State 50
+Which territory do you want to take armies from?
+2
+How many armies would you like to advance of 50 armies ?100
+Executing Issue Order Transition
+Issue Order Phase
+-------------------------------------------------------------
+
+Player B(Player 1)'s turn
+Which action would you like to do?
+[0] Advance [1]Play a card [2]End turn
+2
+Executing Issue Order Transition
+Issue Order Phase
+-------------------------------------------------------------
+Executing End Issue Orders Transition
+Executing Exec Order Transition
+Orders Execution Phase
+-------------------------------------------------------------
+Executing Deploy order...
+The Deploy order is valid!
+Player B(Player 1) has deployed 13 in United_State
+Executing Deploy order...
+The Deploy order is valid!
+Player C(Player 2) has deployed 3 in Canada
+Executing Exec Order Transition
+Orders Execution Phase
+-------------------------------------------------------------
+Executing Advance order...
+The Advance order is valid!
+B(Player 1) has moved 50 army unit(s) from Mexico to United_State
+Executing Exec Order Transition
+Orders Execution Phase
+-------------------------------------------------------------
+Executing Advance order...
+The Advance order is valid!
+B(Player 1) attacked and conquered Canada
+Executing Exec Order Transition
+Orders Execution Phase
+-------------------------------------------------------------
+-------------------------------------------------------------
+B(Player 1) is the winner
+Executing Win Transition
+These are the currently available commands:
+replay
+quit
+-------------------------------------------------------------
+Please enter one of the available commands
+-------------------------------------------------------------
+Executing Play Transition
+-------------------------------------------------------------
+A deck of 50 cards has been created
+Welcome to COMP 345 Warzone!
+-------------------------------------------------------------
+These are the currently available commands:
+loadmap <filename>
+-------------------------------------------------------------
+Please enter one of the available commands
+-------------------------------------------------------------
+Executing Load Map Transition
+Loaded Map test.map
+-------------------------------------------------------------
+These are the currently available commands:
+loadmap <filename>
+validatemap
+-------------------------------------------------------------
+Please enter one of the available commands
+-------------------------------------------------------------
+Executing Validate Map Transition
+----------------------------------------------
+Territory graph is valid!
+------------------------
+Continent has a valid Sub-graph!
+------------------------
+All territories belong to a single continent!
+----------------------------------------------
+Map is valid: 1
+-------------------------------------------------------------
+These are the currently available commands:
+addplayer <playername>
+-------------------------------------------------------------
+Please enter one of the available commands
+-------------------------------------------------------------
+Executing Add Player Transition
+Added C(Player 0)
+-------------------------------------------------------------
+These are the currently available commands:
+addplayer <playername>
+-------------------------------------------------------------
+Please enter one of the available commands
+-------------------------------------------------------------
+Executing Add Player Transition
+Added D(Player 1)
+-------------------------------------------------------------
+These are the currently available commands:
+addplayer <playername>
+gamestart
+-------------------------------------------------------------
+Please enter one of the available commands
+-------------------------------------------------------------
+Executing Assign Countries Transition
+Order of play:
+C(Player 0)
+D(Player 1)
+Territories have been assigned to players randomly
+C(Player 0) now has 50 armies in their reinforcement pool.
+D(Player 1) now has 50 armies in their reinforcement pool.
+C(Player 0) has drawn two cards.
+D(Player 1) has drawn two cards.
+Startup phase is done!
+-------------------------------------------------------------
+Executing Issue Order Transition
+Issue Order Phase
+-------------------------------------------------------------
+
+Player C(Player 0)'s turn
+These are the territories that you can deploy armies in
+0 Mexico 0
+1 United_State 0
+Which territory do you want to deploy armies to?

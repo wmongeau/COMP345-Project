@@ -8,13 +8,21 @@ using namespace std;
 
 
 void mainGameLoopDriver(){
-	string arg;
+	string arg,arg2;
 	arg = "../test.tx";
+	arg2 = "../test2.tx";
 #ifdef _WIN32
 	arg = "../../../test.txt";
+	arg2 = "../../../test2.txt";
 #endif
 	FileCommandProcessorAdaptor* fileProcessor =new FileCommandProcessorAdaptor(arg);
 	GameEngine* engine = new GameEngine(fileProcessor);
-	engine->startupPhase();
-	engine->mainGameLoop();
+	while (engine->getCurrentState()->getStateName() != Enums::quit)
+	{
+		engine->startupPhase();
+		engine->mainGameLoop();
+		engine = new GameEngine(new FileCommandProcessorAdaptor(arg2));
+	}
+	delete engine;
+	engine = NULL;
 }
