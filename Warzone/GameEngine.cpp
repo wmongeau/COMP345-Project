@@ -1101,4 +1101,3 @@ void GameEngine::issueOrderPhase() {
 		}
 	}
 }
-

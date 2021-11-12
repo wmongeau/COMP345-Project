@@ -9,12 +9,8 @@ using namespace std;
 
 void mainGameLoopDriver(){
 	string arg,arg2;
-	arg = "../test.txt";
-	arg2 = "../test2.txt";
-#ifdef _WIN32
-	arg = "../../../test.txt";
-	arg2 = "../../../test2.txt";
-#endif
+	arg = "test.txt";
+	arg2 = "test2.txt";
 	FileCommandProcessorAdaptor* fileProcessor = new FileCommandProcessorAdaptor(arg);
 	GameEngine* engine = new GameEngine(fileProcessor);
 	while (engine->getCurrentState()->getStateName() != Enums::quit)

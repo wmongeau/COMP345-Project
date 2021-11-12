@@ -13,7 +13,7 @@ using namespace std;
 void ordersDriver(){
 	//Creating a player list
 	cout << "Creating player list..." << endl;
-	vector<Player*> playerList = *new vector<Player*>();
+	vector<Player*> playerList =  vector<Player*>();
 	cout << "Player list successfully created!" << endl;
 
 	cout << "-----------------------------------" << endl;
