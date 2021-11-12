@@ -273,6 +273,12 @@ const std::string Continent::getColour()const
 {
     return Colour;
 }
+
+void Continent::addTerritory(Territory* t)
+{
+    territories.push_back(t);
+}
+
 string Continent::toString()
 {
     string result;

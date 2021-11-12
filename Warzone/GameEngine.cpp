@@ -256,7 +256,7 @@ void AssignCountriesTransition::execute(string args, GameEngine* engine)
 		p->deck = engine->getDeck();
 		p->addCardToHand(engine->getDeck()->draw());
 		p->addCardToHand(engine->getDeck()->draw());
-
+		p->setIsTurnFinish(false);
 		cout << p->getPlayerName() << " has drawn two cards." << endl;
 	}
 
@@ -1011,17 +1011,11 @@ void GameEngine::mainGameLoop()
 			}
 		}
 
-		if (!firstTurn)
-		{
-			//reinforcementPhase();
-			execute(new EndExecOrdersTransition, "");
-		}
-		firstTurn = false;
 		execute(new IssueOrderTransition, "");
 		execute(new EndIssueOrdersTransition, "");
-		//issueOrderPhase()
 		execute(new ExecOrderTransition, "");
-		//executeOrderPhase();
+		execute(new EndExecOrdersTransition, "");
+
 
 		//checks if a player won
 		for (int i = 0; i < players.size(); i++)
