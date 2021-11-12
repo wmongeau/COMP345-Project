@@ -99,8 +99,7 @@ void main() {
 
 	GameEngine *engine;
 	engine = new GameEngine();
-
-	engine -> startupPhase();
-	engine->mainGameLoop();
+		engine->startupPhase();
+		engine->mainGameLoop();
 }
 

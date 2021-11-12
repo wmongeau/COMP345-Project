@@ -1,0 +1,5 @@
+loadpmap test.map
+validatemap
+addplayer A
+addplayer B
+gamestart

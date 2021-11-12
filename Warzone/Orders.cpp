@@ -283,7 +283,7 @@ bool AdvanceOrder::execute() {
 
 				for (int i = 0; i < _targetedTerritory->getArmyValue(); i++) {
 					defendingChance = rand() % 100 + 1;
-					if (defendingChance <= 70) {
+					if (defendingChance <= 10) {
 						attackDeath++;
 					}
 				}
