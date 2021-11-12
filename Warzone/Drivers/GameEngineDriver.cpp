@@ -137,14 +137,6 @@ int main(int argc, char *argv[]) {
 			ordersDriver();
  		} 
  		else if(selectedModule == 5) {
-			string arg;
-			arg = "../test.tx";
-		#ifdef _WIN32
-			arg = "../../../test.txt";
-		#endif
-			FileCommandProcessorAdaptor* fileProcessor = new FileCommandProcessorAdaptor(arg);
-			GameEngine* engine = new GameEngine(fileProcessor);
-			engine->startupPhase();
  		}
  	} while(selectedModule != 6);		
 
