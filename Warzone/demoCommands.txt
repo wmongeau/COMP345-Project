@@ -1,0 +1,11 @@
+loadmap bigeurope.map
+loadmap bigeurope.map
+validatemap
+addplayer Patrick
+addplayer William
+addplayer Amadou
+gamestart
+replay
+quit
+invalidcommandjusttotest
+gamestart

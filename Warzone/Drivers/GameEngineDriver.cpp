@@ -2,6 +2,7 @@
 /* The #include Of this file */
 /* ------------------------- */
 
+#include <cstring>
 #include <iostream>
 #include <string>
 
@@ -13,93 +14,128 @@ using namespace std;
 #include "../Headers/PlayerDriver.h"
 #include "../Headers/CommandProcessing.h"
 
-/* void gameEngineDriver() { */
-/* 	GameEngine *engine; */
-/* 	engine = new GameEngine(); */
-/* 	do { */
-/* 		vector<Transition*> availableTransitions = engine -> getAvailableTransitions(); */
-/* 		cout << *engine << endl; */
-/* 		cout << "Select a command by entering its number: " << endl; */
-/* 		int selected; */
-/* 		cin >> selected; */
-		
-/* 		while(selected < 0 || selected >= availableTransitions.size()){ */
-/* 			cout << "Please select one of the available actions:" << endl; */
-/* 			cin >> selected; */
-/* 		} */
-
-/* 		engine -> execute(availableTransitions[selected]); */
-/* 	} while(Enums::statesEnumToString(engine -> getCurrentState() -> getStateName()) != "Quit"); */
-
-/* 	delete engine; */
-/* 	engine = NULL; */
-/* } */
-
 // Entry point for the game
-void gameEngineDriver() {
-	/* int selectedMode; */
-	/* cout << "Select which mode you would like to use by entering its number:" << endl; */
-	/* cout << "[0] Evaluation mode" << endl; */
-	/* cout << "[1] Normal mode" << endl; */
-	/* cin >> selectedMode; */
+int main(int argc, char *argv[]) {
+	int selectedModule; 
+ 	do {
+ 		cout << "Enter the number of the part you would like to test:" << endl; 
+ 		cout << "[1] Part 1 Command Processor" << endl; 
+ 		cout << "[2] Part 2 Startup Phase" << endl; 
+ 		cout << "[3] Part 3 Main Game Loop" << endl; 
+ 		cout << "[4] Part 4 Order Execution" << endl; 
+ 		cout << "[5] Part 5 Game Log Observer" << endl; 
+ 		cout << "[6] Quit" << endl; 
 
-	/* while(selectedMode != 0 && selectedMode != 1) { */
-	/* 	cout << "Please enter a valid option:" << endl; */
-	/* 	cin >> selectedMode; */
-	/* } */
+ 		cin >> selectedModule; 
 
-	/* if(selectedMode == 1) { */
-	/* 	cout << "You have selected normal mode!" << endl; */
-	/* 	gameEngineDriver(); */
-	/* } */
-	/* else { */
-	/* 	cout << "You have selected evaluation mode!" << endl; */
+ 		while(selectedModule < 1 || selectedModule > 6) { 
+ 			cout << "Please enter a valid option:" << endl; 
+ 			cin >> selectedModule; 
+ 		} 
 
-	/* 	int selectedModule; */
-	/* 	do { */
-	/* 		cout << "Enter the number of the part you would like to test:" << endl; */
-	/* 		cout << "[1] Part 1 Map" << endl; */
-	/* 		cout << "[2] Part 2 Player" << endl; */
-	/* 		cout << "[3] Part 3 Orders List" << endl; */
-	/* 		cout << "[4] Part 4 Cards Deck/Hand" << endl; */
-	/* 		cout << "[5] Part 5 Game Engine" << endl; */
-	/* 		cout << "[6] Quit" << endl; */
+ 		cin.ignore(); 
 
-	/* 		cin >> selectedModule; */
+ 		if(selectedModule == 1) {
+			CommandProcessor* processor;
+			string source;
 
-	/* 		while(selectedModule < 1 || selectedModule > 6) { */
-	/* 			cout << "Please enter a valid option:" << endl; */
-	/* 			cin >> selectedModule; */
-	/* 		} */
+			if (argc == 2) {
+				processor = new CommandProcessor();
+				source = "Command Line";
+			}
+			else if (argc == 3) {
+				processor = new FileCommandProcessorAdaptor(argv[2]);
+				source = "File";
+			}
+			else {
+				cout << "You did not enter valid command line arguments when starting Warzone!" << endl;
+				return 1;
+			}
 
-	/* 		cin.ignore(); */
+			cout << "Because of the given command line argument, commands will be read from source: " + source << endl;
+			cout << "Starting with command: loadmap bigeurope.map. This command is called from state: start and results in the map being loaded when executed. (state: maploaded)" << endl;
+			State* currentState = new State(Enums::states::start);
+			cout << *(processor->getCommand(currentState)) << endl;
 
-	/* 		if(selectedModule == 1) { */
-	/* 			mapDriver(); */
-	/* 		} */
-	/* 		else if(selectedModule == 2) { */
-	/* 			cout << "Before demonstrating the player class, we must load a map!" << endl; */ 
-	/* 			Map* map; */
-	/* 			map = MapLoader::loadMap(); */
-	/* 			playerDriver(map); */
-	/* 			delete map; */
-	/* 			map = NULL; */
-	/* 		} */
-	/* 		else if(selectedModule == 3) { */
-	/* 			ordersDriver(); */
-	/* 		} */
-	/* 		else if(selectedModule == 4) { */
-	/* 			cardsDriver(); */
-	/* 		} */
-	/* 		else if(selectedModule == 5) { */
-	/* 			gameEngineDriver(); */
-	/* 		} */
-	/* 	} while(selectedModule != 6); */
-	/* } */
+			cout << "Next command: loadmap bigeurope.map. This command is called from state: maploaded and results in the map being loaded when executed. (state: maploaded)" << endl; 
+			delete currentState;
+			currentState = NULL;
+			currentState = new State(Enums::states::mapLoaded);
+			cout << *(processor->getCommand(currentState)) << endl;
 
-	GameEngine *engine;
-	engine = new GameEngine();
+			cout << "Next command: validatemap. This command is called from state: maploaded and results in the map being validated when executed. (state: mapvalidated)" << endl;
+			cout << *(processor->getCommand(currentState)) << endl;
 
-	engine -> startupPhase();
+			cout << "Next command: addplayer Patrick. This command is called from state: mapvalidated and results in the player: Patrick being added when executed. (state: playersadded)" << endl;
+			delete currentState;
+			currentState = NULL;
+			currentState = new State(Enums::states::mapValidated);
+			cout << *(processor->getCommand(currentState)) << endl;
+
+			cout << "Next command: addplayer William. This command is called from state: playersadded and results in the player: William being added when executed. (state: playersadded)" << endl;
+			delete currentState;
+			currentState = NULL;
+			currentState = new State(Enums::states::playersAdded);
+			cout << *(processor->getCommand(currentState)) << endl;
+
+			cout << "Next command: addplayer Amadou. This command is called from state: playersadded and results in the player: Amadou being added when executed. (state: playersadded)" << endl;
+			cout << *(processor->getCommand(currentState)) << endl;
+
+			cout << "Next command: gamestart. This command is called from state: playersadded and results the game starting when executed. (state: assignreinforcements)" << endl;
+			cout << *(processor->getCommand(currentState)) << endl;
+
+			cout << "Next command: replay. This command is called from state: win and results in a new game starting from before a map is even loaded. (state: start)." << endl;
+			delete currentState;
+			currentState = NULL;
+			currentState = new State(Enums::states::winState);
+			cout << *(processor->getCommand(currentState)) << endl;
+
+			cout << "Next command: quit. This command is called from state: win and results in the program exiting. (state: none/exit program)." << endl;
+			cout << *(processor->getCommand(currentState)) << endl;
+
+			cout << "Next command: invalidcommandjusttotest. This command is called from state: win and results in no command being added to the command list." << endl;
+			cout << *(processor->getCommand(currentState)) << endl;
+
+			cout << "Next command: gamestart. This command is called from state: win and results in no command being added to the command list as this is not a valid state for the command." << endl;
+			cout << *(processor->getCommand(currentState)) << endl;
+
+			cout << "Lastly, we will print our command list to demonstrate that only valid commands are added, and the validate() method works correctly." << endl;
+			cout << *processor << endl;
+
+			delete currentState;
+			currentState = NULL;
+			delete processor;
+			processor = NULL;
+		}
+ 		else if(selectedModule == 2) { 
+			CommandProcessor* processor;
+
+			if(argc == 2) {
+				processor = new CommandProcessor();	
+			}
+			else if(argc == 3) {
+				processor = new FileCommandProcessorAdaptor(argv[2]);
+			} 
+			else {
+				cout << "You did not valid command line arguments when starting Warzone!" << endl;
+				return 1;
+			}
+
+			GameEngine *engine;
+			engine = new GameEngine(processor);
+
+			engine -> startupPhase();
+			delete engine;
+			engine = NULL;
+ 		}
+ 		else if(selectedModule == 3) { 
+ 		} 
+ 		else if(selectedModule == 4) {
+ 		} 
+ 		else if(selectedModule == 5) {
+ 		}
+ 	} while(selectedModule != 6);		
+
+	return 0;
 }
 
