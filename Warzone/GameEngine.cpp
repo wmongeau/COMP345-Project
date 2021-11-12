@@ -247,7 +247,7 @@ void AssignCountriesTransition::execute(string args, GameEngine* engine)
 
 	for (Player* p : engine->getPlayers())
 	{
-		p->setReinforcementPool(50);
+		p->setReinforcementPool(2);
 		cout << p->getPlayerName() << " now has 50 armies in their reinforcement pool." << endl;
 	}
 
@@ -1010,11 +1010,17 @@ void GameEngine::mainGameLoop()
 				players[i]->setCanAttack();
 			}
 		}
-
+		if (!firstTurn)
+		{
+			//reinforcementPhase();
+			execute(new EndExecOrdersTransition, "");
+		}
+		firstTurn = false;
 		execute(new IssueOrderTransition, "");
 		execute(new EndIssueOrdersTransition, "");
+		//issueOrderPhase()
 		execute(new ExecOrderTransition, "");
-		execute(new EndExecOrdersTransition, "");
+		//executeOrderPhase();
 
 
 		//checks if a player won
