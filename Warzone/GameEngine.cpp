@@ -631,6 +631,8 @@ void GameEngine::execute(Transition* transition, string args)
 	delete currentState;
 	currentState = new State(*(transition->getNextState()));
 	notify(this);
+	delete transition;
+	transition = NULL;
 	updateAvailableTransitions();
 }
 

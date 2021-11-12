@@ -402,6 +402,12 @@ FileLineReader::FileLineReader(string fileName)
 	this->fileDirectory = filePath;
 }
 
+FileLineReader::FileLineReader()
+{
+	currentLine = 1;
+	fileDirectory = "";
+}
+
 /// <summary>
 /// Destructor for the class FileLineReader.
 /// </summary>
@@ -458,6 +464,11 @@ string FileLineReader::readLineFromFile()
 FileCommandProcessorAdaptor::FileCommandProcessorAdaptor(string fileDirectory)
 {
 	this->flr = new FileLineReader(fileDirectory);
+}
+
+FileCommandProcessorAdaptor::FileCommandProcessorAdaptor()
+{
+	flr = new FileLineReader();
 }
 
 /// <summary>

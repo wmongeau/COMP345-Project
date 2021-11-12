@@ -73,11 +73,21 @@ void commandProcessorDriver(int argc, char* argv[]) {
 	cout << "Next command: quit. This command is called from state: win and results in the program exiting. (state: none/exit program)." << endl;
 	cout << *(processor->getCommand(currentState)) << endl;
 
+	Command* command;
+
 	cout << "Next command: invalidcommandjusttotest. This command is called from state: win and results in no command being added to the command list." << endl;
-	cout << *(processor->getCommand(currentState)) << endl;
+	command = processor->getCommand(currentState);
+	cout << *command << endl;
+
+	delete command;
+	command = NULL;
 
 	cout << "Next command: gamestart. This command is called from state: win and results in no command being added to the command list as this is not a valid state for the command." << endl;
-	cout << *(processor->getCommand(currentState)) << endl;
+	command = processor->getCommand(currentState);
+	cout << *command << endl;
+
+	delete command;
+	command = NULL;
 
 	cout << "Lastly, we will print our command list to demonstrate that only valid commands are added, and the validate() method works correctly." << endl;
 	cout << *processor << endl;
@@ -87,7 +97,31 @@ void commandProcessorDriver(int argc, char* argv[]) {
 	delete processor;
 	processor = NULL;
 }
+
+void startupPhaseDriver(int argc, char* argv[]) {
+	CommandProcessor* processor;
+
+	if (argc == 2) {
+		processor = new CommandProcessor();
+	}
+	else if (argc == 3) {
+		processor = new FileCommandProcessorAdaptor(argv[2]);
+	}
+	else {
+		cout << "You did not valid command line arguments when starting Warzone!" << endl;
+		return 1;
+	}
+
+	GameEngine* engine;
+	engine = new GameEngine(processor);
+
+	engine->startupPhase();
+	delete engine;
+	engine = NULL;
+}
+
 void logObserverDriver();
+
 // Entry point for the game
 int main(int argc, char *argv[]) {
 	int selectedModule; 
@@ -113,25 +147,7 @@ int main(int argc, char *argv[]) {
 			commandProcessorDriver(argc, argv);
 		}
  		else if(selectedModule == 2) { 
-			CommandProcessor* processor;
-
-			if(argc == 2) {
-				processor = new CommandProcessor();	
-			}
-			else if(argc == 3) {
-				processor = new FileCommandProcessorAdaptor(argv[2]);
-			} 
-			else {
-				cout << "You did not valid command line arguments when starting Warzone!" << endl;
-				return 1;
-			}
-
-			GameEngine *engine;
-			engine = new GameEngine(processor);
-
-			engine -> startupPhase();
-			delete engine;
-			engine = NULL;
+			startupPhaseDriver(argc, argv);
  		}
  		else if(selectedModule == 3) { 
 			mainGameLoopDriver();
@@ -159,5 +175,5 @@ void logObserverDriver() {
 			cout << *transition << endl;
 		}
 		cout << "-------------------------------------------------------------" << endl;
-
+	}
 }

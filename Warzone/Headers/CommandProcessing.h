@@ -39,7 +39,7 @@ private:
 class CommandProcessor:ILoggable, Subject {
 public:
 	CommandProcessor();
-	~CommandProcessor();
+	virtual ~CommandProcessor();
 	CommandProcessor(const CommandProcessor& c);
 	CommandProcessor& operator=(const CommandProcessor& c);
 	friend ostream& operator<<(ostream& out, const CommandProcessor& c);
@@ -56,6 +56,7 @@ private:
 class FileLineReader {
 public:
 	FileLineReader(string fileDirectory);
+	FileLineReader();
 	~FileLineReader();
 	FileLineReader(const FileLineReader& c);
 	FileLineReader& operator=(const FileLineReader& c);
@@ -69,6 +70,7 @@ private:
 class FileCommandProcessorAdaptor: public CommandProcessor {
 public:
 	FileCommandProcessorAdaptor(string fileDirectory);
+	FileCommandProcessorAdaptor();
 	~FileCommandProcessorAdaptor();
 	FileCommandProcessorAdaptor(const FileCommandProcessorAdaptor& c);
 	FileCommandProcessorAdaptor& operator=(const FileCommandProcessorAdaptor& c);
