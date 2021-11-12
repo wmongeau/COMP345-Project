@@ -392,10 +392,14 @@ string Command::getCommand()
 /// Parameterized constructor for the FileLineReader that takes a string to the file it will be reading from.
 /// </summary>
 /// <param name="fileDirectory"></param>
-FileLineReader::FileLineReader(string fileDirectory)
+FileLineReader::FileLineReader(string fileName)
 {
+	string filePath = "../GameCommandFiles/" + fileName;
+#ifdef _WIN32
+	filePath = "../../../GameCommandFiles/" + fileName;
+#endif
 	this->currentLine = 1;
-	this->fileDirectory = fileDirectory;
+	this->fileDirectory = filePath;
 }
 
 /// <summary>

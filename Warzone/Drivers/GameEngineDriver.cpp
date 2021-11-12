@@ -149,7 +149,7 @@ int main(int argc, char *argv[]) {
 
 void logObserverDriver() {
 	string arg;
-	arg = "../test.tx";
+	arg = "../test.txt";
 #ifdef _WIN32
 	arg = "../../../test.txt";
 #endif
@@ -159,4 +159,10 @@ void logObserverDriver() {
 	OrdersList* orders = new OrdersList();
 	orders->addOrder(new DeployOrder());
 
+	delete fileProcessor;
+	fileProcessor = NULL;
+	delete engine;
+	engine = NULL;
+	delete orders;
+	orders = NULL;
 }
