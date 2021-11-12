@@ -87,7 +87,7 @@ void commandProcessorDriver(int argc, char* argv[]) {
 	delete processor;
 	processor = NULL;
 }
-
+void logObserverDriver();
 // Entry point for the game
 int main(int argc, char *argv[]) {
 	int selectedModule; 
@@ -140,9 +140,23 @@ int main(int argc, char *argv[]) {
 			ordersDriver();
  		} 
  		else if(selectedModule == 5) {
+			logObserverDriver();
  		}
  	} while(selectedModule != 6);		
 
 	return 0;
 }
 
+void logObserverDriver() {
+	string arg;
+	arg = "../test.tx";
+#ifdef _WIN32
+	arg = "../../../test.txt";
+#endif
+	FileCommandProcessorAdaptor* fileProcessor = new FileCommandProcessorAdaptor(arg);
+	GameEngine* engine = new GameEngine(fileProcessor);
+	engine->startupPhase();
+	OrdersList* orders = new OrdersList();
+	orders->addOrder(new DeployOrder());
+
+}
