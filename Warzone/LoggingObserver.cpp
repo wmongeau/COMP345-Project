@@ -28,12 +28,10 @@ void LogObserver::update(ILoggable *log)
 
 LogObserver::LogObserver()
 {
-
 }
 
 LogObserver::~LogObserver()
 {
-
 }
 
 Observer::~Observer()
