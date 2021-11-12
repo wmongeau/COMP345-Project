@@ -658,6 +658,7 @@ void GameEngine::startupPhase()
 	}
 }
 
+//Method that takes in a command and executes the appropriate command
 void GameEngine::execute(Command* command)
 {
 	switch (command->getCommandType())
@@ -711,40 +712,48 @@ string GameEngine::stringToLog()
 	return "GameEngine new state: " + statesEnumToString(getCurrentState()->getStateName()) + '\n';
 }
 
+//Getter for the map of the engine
 Map* GameEngine::getMap()
 {
 	return map;
 }
 
+//Setter for the map of the engine
 void GameEngine::setMap(Map* loadedMap)
 {
 	map = loadedMap;
 }
 
+//Getter for the list of players in the game
 vector<Player*> GameEngine::getPlayers()
 {
 	return players;
 }
 
+//Method to add a player to the game
 void GameEngine::addPlayer(Player* player)
 {
 	players.push_back(player);
 }
 
+//Setter for the list of players in the game
 void GameEngine::setPlayers(vector<Player*> newPlayers) {
 	players = newPlayers;
 }
 
+//Getter for the boolean indicating whether or not we are in the startup phase
 bool GameEngine::getStarting()
 {
 	return starting;
 }
 
+//Setter for the boolean indicating if we are in the startup phase
 void GameEngine::setStarting(bool isStarting)
 {
 	starting = isStarting;
 }
 
+//Getter for the game's card deck
 Deck* GameEngine::getDeck()
 {
 	return deck;
