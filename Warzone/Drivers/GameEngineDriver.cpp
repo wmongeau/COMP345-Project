@@ -17,7 +17,6 @@ using namespace std;
 
 // Entry point for the game
 int main(int argc, char *argv[]) {
-	argc = 2;
 	int selectedModule; 
  	do {
  		cout << "Enter the number of the part you would like to test:" << endl; 
