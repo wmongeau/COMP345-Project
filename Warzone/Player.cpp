@@ -265,11 +265,13 @@ std::string Player::getPlayerName()
 	return PlayerName;
 }
 
+// Method to get enemies
 std::vector<Player*> Player::getEnemies()
 {
 	return enemies;
 }
 
+// Method to set enemies
 void Player::setEnemies(vector<Player*> enemies)
 {
 	this->enemies = enemies;
@@ -292,16 +294,19 @@ void Player::setCanAttack()
 	}
 }
 
+//Method to add territory to defend
 void Player::addTerritoryToDefend(Territory *territory)
 {
 	CanDefend.push_back(territory);
 }
 
+// Method to add territory to attack
 void Player::addTerritoryToAttack(Territory *territory)
 {
 	CanAttack.push_back(territory);
 }
 
+// Method to remove territory to defend
 void Player::removeTerritoryToDefend(Territory *territory)
 {
 	int index = 0;
@@ -316,6 +321,7 @@ void Player::removeTerritoryToDefend(Territory *territory)
 	}
 }
 
+// Method to remove territory to attack
 void Player::removeTerritoryToAttack(Territory *territory)
 {
 	int index = 0;
@@ -330,6 +336,7 @@ void Player::removeTerritoryToAttack(Territory *territory)
 	}
 }
 
+// Boolean to show if the player can attack that specific territory
 bool Player::playerCanAttack(Territory *territory)
 {
 	int index = 0;
@@ -341,6 +348,7 @@ bool Player::playerCanAttack(Territory *territory)
 	}
 	return false;
 }
+// Boolean to show if the player can defend that specific territory
 bool Player::playerCanDefend(Territory* territory)
 {
 	int index = 0;
@@ -371,11 +379,13 @@ int Player::getReinforcementPool()
 	return reinforcementPool;
 }
 
+// Method to get if the users turn is finished
 bool Player::getIsTurnFinish()
 {
 	return isTurnFinish;
 }
 
+// Method to set if the users turn is finished
 void Player::setIsTurnFinish(bool val)
 {
 	isTurnFinish = val;

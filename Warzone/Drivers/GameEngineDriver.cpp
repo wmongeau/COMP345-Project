@@ -148,21 +148,16 @@ int main(int argc, char *argv[]) {
 }
 
 void logObserverDriver() {
-	string arg;
-	arg = "../test.txt";
-#ifdef _WIN32
-	arg = "../../../test.txt";
-#endif
-	FileCommandProcessorAdaptor* fileProcessor = new FileCommandProcessorAdaptor(arg);
-	GameEngine* engine = new GameEngine(fileProcessor);
-	engine->startupPhase();
-	OrdersList* orders = new OrdersList();
-	orders->addOrder(new DeployOrder());
+	CommandProcessor* processor = new CommandProcessor();
+	GameEngine* engine = new GameEngine(processor);
+	bool done = false;
+	int counter = 0;
+	while (engine->getCurrentState()->getStateName() != Enums::assignReinforcement) {
+		cout << "These are the currently available commands: " << endl;
+		for (Transition* transition : engine->getAvailableTransitions())
+		{
+			cout << *transition << endl;
+		}
+		cout << "-------------------------------------------------------------" << endl;
 
-	delete fileProcessor;
-	fileProcessor = NULL;
-	delete engine;
-	engine = NULL;
-	delete orders;
-	orders = NULL;
 }
