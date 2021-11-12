@@ -140,6 +140,7 @@ public:
 class GameEngine:ILoggable,SubJect {
 public: 
 	GameEngine();
+	GameEngine(CommandProcessor* processor);
 	GameEngine(const GameEngine& engine);
 	State* getCurrentState();
 	std::vector<Transition*> getAvailableTransitions();

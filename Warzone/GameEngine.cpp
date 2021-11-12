@@ -551,6 +551,17 @@ GameEngine::GameEngine()
 	winner = false;
 }
 
+//Constructor for the GameEngine class that takes in a command processor
+GameEngine::GameEngine(CommandProcessor* passedProcessor) {
+	currentState = new State(Enums::start);
+	updateAvailableTransitions();
+	map = NULL;
+	processor = passedProcessor;
+	players = vector<Player*>();
+	starting = true;
+	deck = new Deck();
+}
+
 //Copy constructor for the GameEngine class
 GameEngine::GameEngine(const GameEngine &engine)
 {
@@ -806,13 +817,7 @@ void GameEngine::addPlayer(Player *player)
 	players.push_back(player);
 }
 
-void GameEngine::setPlayers(vector<Player *> newPlayers)
-{
-	/* for(auto p : players) { */
-	/* 	delete p; */
-	/* 	p = NULL; */
-	/* } */
-
+void GameEngine::setPlayers(vector<Player*> newPlayers) {
 	players = newPlayers;
 }
 
