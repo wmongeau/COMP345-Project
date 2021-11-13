@@ -449,9 +449,14 @@ BlockadeOrder::BlockadeOrder(Player& playerIssuingOrder, Territory& targetedTerr
 	this->_playerList = playerList;
 }
 
+vector<Player*> BlockadeOrder::getPlayerList()
+{
+	return this->_playerList;
+}
+
 // Destructor
 BlockadeOrder::~BlockadeOrder() {
-
+	
 }
 
 // Assignment operator

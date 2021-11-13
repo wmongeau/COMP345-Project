@@ -41,7 +41,7 @@ public:
 	Order(const Order& c);
 
 	// Destructor
-	~Order();
+	virtual ~Order();
 
 	// Assignment operator
 	Order& operator=(const Order& o);
@@ -186,6 +186,8 @@ public:
 
 	// If Blockade order is valid, execute order
 	bool execute() override;
+
+	vector<Player*> getPlayerList();
 
 private:
 	//Data members

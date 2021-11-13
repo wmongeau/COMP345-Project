@@ -7,14 +7,14 @@ using namespace std;
 class ILoggable{
    public:
       virtual string stringToLog() = 0; // Pure Virtual Function
-      ~ILoggable();
+      virtual ~ILoggable();
 };
 
 
 class Observer {
 public:
     virtual void update(ILoggable *log)=0;
-    ~Observer();
+    virtual ~Observer();
 };
 
 class LogObserver :Observer {
@@ -29,5 +29,5 @@ class Subject {
 public:
     LogObserver* view = new LogObserver();
     void notify(ILoggable* log);
-    ~Subject();
+    virtual ~Subject();
 };

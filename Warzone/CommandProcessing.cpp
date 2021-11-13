@@ -404,8 +404,8 @@ FileLineReader::FileLineReader(string fileName)
 
 FileLineReader::FileLineReader()
 {
-	currentLine = 1;
-	fileDirectory = "";
+	this->currentLine = 1;
+	this->fileDirectory = "";
 }
 
 /// <summary>

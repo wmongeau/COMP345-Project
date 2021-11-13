@@ -39,7 +39,7 @@ private:
 class CommandProcessor:ILoggable, Subject {
 public:
 	CommandProcessor();
-	virtual ~CommandProcessor();
+	~CommandProcessor();
 	CommandProcessor(const CommandProcessor& c);
 	CommandProcessor& operator=(const CommandProcessor& c);
 	friend ostream& operator<<(ostream& out, const CommandProcessor& c);

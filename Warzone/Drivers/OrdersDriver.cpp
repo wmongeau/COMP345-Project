@@ -110,6 +110,7 @@ void ordersDriver(){
 
 	//Testing invalid Deploy Order
 	cout << "Creating invalid Deploy Order..." << endl;
+	delete deployOrder;
 	deployOrder = new DeployOrder(*amadou, *territory2, 50);
 	cout << "--> Deploy Order was created! " << endl;
 	cout << "Preparing execution of Deploy Order..." << endl;
@@ -128,6 +129,7 @@ void ordersDriver(){
 	cout << *advanceOrder << endl;
 
 	cout << "Creating valid Advance Order (advancing on ennemy territory)..." << endl;
+	delete advanceOrder;
 	advanceOrder = new AdvanceOrder(*amadou, *territory1, *territory2, 10);
 	cout << "--> Advance Order was created! " << endl;
 	cout << "Preparing execution of Advance Order..." << endl;
@@ -136,6 +138,7 @@ void ordersDriver(){
 
 	//Testing invalid Advance Orders
 	cout << "Creating invalid Advance Order (source territory does not belong to the player that issued the order)..." << endl;
+	delete advanceOrder;
 	advanceOrder = new AdvanceOrder(*amadou, *territory2, *territory1, 10);
 	cout << "--> Advance Order was created! " << endl;
 	cout << "Preparing execution of Advance Order..." << endl;
@@ -143,6 +146,7 @@ void ordersDriver(){
 	cout << *advanceOrder << endl;
 
 	cout << "Creating invalid Advance Order (source territory is not adjacent to target territory)..." << endl;
+	delete advanceOrder;
 	advanceOrder = new AdvanceOrder(*amadou, *territory1, *territory4, 10);
 	cout << "--> Advance Order was created! " << endl;
 	cout << "Preparing execution of Advance Order..." << endl;
@@ -156,12 +160,6 @@ void ordersDriver(){
 	AirliftOrder* airliftOrder;
 	airliftOrder = new AirliftOrder(*amadou, *territory1, *territory3, 10);
 
-	// ---------- TO FIX FOR CARDS ----------
-	//Card* airliftCard = new airliftCard(airliftOrder);
-	//amadou->playerHand().selectCard(airliftCard);
-	//airliftCard.play();
-	// --------------------------------------
-
 	cout << "--> Airlift Order was created! " << endl;
 	cout << "Preparing execution of Airlift Order..." << endl;
 	airliftOrder->execute();
@@ -169,13 +167,8 @@ void ordersDriver(){
 
 	//Testing valid Airlift Order
 	cout << "Creating invalid Airlift Order..." << endl;
+	delete airliftOrder;
 	airliftOrder = new AirliftOrder(*amadou, *territory2, *territory3, 10);
-
-	// ---------- TO FIX FOR CARDS ----------
-	//Card* airliftCard = new airliftCard(airliftOrder);
-	//amadou->playerHand().selectCard(airliftCard);
-	//airliftCard.play();
-	// --------------------------------------
 
 	cout << "--> Airlift Order was created! " << endl;
 	cout << "Preparing execution of Airlift Order..." << endl;
@@ -189,12 +182,6 @@ void ordersDriver(){
 	BombOrder* bombOrder;
 	bombOrder = new BombOrder(*amadou, *matt, *territory2);
 
-	// ---------- TO FIX FOR CARDS ----------
-	//Card* bombCard = new bombCard(bombOrder);
-	//amadou->playerHand().selectCard(bombCard);
-	//bombCard.play();
-	// --------------------------------------
-
 	cout << "--> Bomb Order was created! " << endl;
 	cout << "Preparing execution of Bomb Order..." << endl;
 	bombOrder->execute();
@@ -202,13 +189,8 @@ void ordersDriver(){
 	
 	//Testing invalid Bomb Orders
 	cout << "Creating invalid Bomb Order (target territory is owned by issuing player)..." << endl;
+	delete bombOrder;
 	bombOrder = new BombOrder(*amadou, *matt, *territory1);
-
-	// ---------- TO FIX FOR CARDS ----------
-	//Card* bombCard = new bombCard(bombOrder);
-	//amadou->playerHand().selectCard(bombCard);
-	//bombCard.play();
-	// --------------------------------------
 
 	cout << "--> Bomb Order was created! " << endl;
 	cout << "Preparing execution of Bomb Order..." << endl;
@@ -216,6 +198,7 @@ void ordersDriver(){
 	cout << *bombOrder << endl;
 
 	cout << "Creating invalid Bomb Order (target territory is not adjacent to a territory owned by the issuing player)..." << endl;
+	delete bombOrder;
 	bombOrder = new BombOrder(*amadou, *matt, *territory4);
 	cout << "--> Bomb Order was created! " << endl;
 	cout << "Preparing execution of Bomb Order..." << endl;
@@ -229,12 +212,6 @@ void ordersDriver(){
 	BlockadeOrder* blockadeOrder;
 	blockadeOrder = new BlockadeOrder(*amadou, *territory1, playerList);
 
-	// ---------- TO FIX FOR CARDS ----------
-	//Card* blockadeCard = new blockadeCard(blockadeOrder);
-	//amadou->playerHand().selectCard(blockadeCard);
-	//blockadeCard.play();
-	// --------------------------------------
-
 	cout << "--> Blockade Order was created! " << endl;
 	cout << "Preparing execution of Blockade Order..." << endl;
 	blockadeOrder->execute();
@@ -242,13 +219,9 @@ void ordersDriver(){
 
 	//Testing invalid Blockade Order
 	cout << "Creating invalid Blockade Order..." << endl;
+	playerList.push_back(blockadeOrder->getPlayerList().back());
+	delete blockadeOrder;
 	blockadeOrder = new BlockadeOrder(*amadou, *territory2, playerList);
-
-	// ---------- TO FIX FOR CARDS ----------
-	//Card* blockadeCard = new blockadeCard(blockadeOrder);
-	//amadou->playerHand().selectCard(blockadeCard);
-	//blockadeCard.play();
-	// --------------------------------------
 
 	cout << "--> Blockade Order was created! " << endl;
 	cout << "Preparing execution of Blockade Order..." << endl;
@@ -262,12 +235,6 @@ void ordersDriver(){
 	NegotiateOrder* negotiateOrder;
 	negotiateOrder = new NegotiateOrder(*amadou, *matt);
 
-	// ---------- TO FIX FOR CARDS ----------
-	//Card* negotiateCard = new negotiateCard(negotiateOrder);
-	//amadou->playerHand().selectCard(negotiateCard);
-	//negotiateCard.play();
-	// --------------------------------------
-
 	cout << "--> Negotiate Order was created! " << endl;
 	cout << "Preparing execution of Negotiate Order..." << endl;
 	negotiateOrder->execute();
@@ -275,13 +242,8 @@ void ordersDriver(){
 
 	//Testing invalid Negotiate Order
 	cout << "Creating invalid Negotiate Order..." << endl;
+	delete negotiateOrder;
 	negotiateOrder = new NegotiateOrder(*amadou, *amadou);
-
-	// ---------- TO FIX FOR CARDS ----------
-	//Card* negotiateCard = new negotiateCard(negotiateOrder);
-	//amadou->playerHand().selectCard(negotiateCard);
-	//negotiateCard.play();
-	// --------------------------------------
 
 	cout << "--> Negotiate Order was created! " << endl;
 	cout << "Preparing execution of Negotiate Order..." << endl;
@@ -295,6 +257,7 @@ void ordersDriver(){
 	cout << "--> Advance Order was created! " << endl;
 	cout << "Preparing execution of Advance Order..." << endl;
 	while (amadou != territory6->getPlayer()) {
+		delete advanceOrder;
 		advanceOrder = new AdvanceOrder(*amadou, *territory5, *territory6, territory5->getArmyValue() - 1);
 		advanceOrder->execute();
 		cout << *advanceOrder << endl;
@@ -310,15 +273,63 @@ void ordersDriver(){
 		amadou->addCardToHand(newDeck->draw());
 		cout << amadou->getPlayerName() + " has drawn a card from the deck after conquering " + territory6->getName() + "!" << endl;
 		amadou->getPlayerHand()->showHand();
+
+		delete newDeck;
+		newDeck = NULL;
 	}
 	
 	cout << "-----------------------------------" << endl;
 
 	//Testing Advance Order on a territory that belongs to a player we cannot attack (because of Negotiate Order)
 	cout << "Creating an Advance Order to test the Negotiate functionality..." << endl;
+	delete advanceOrder;
 	advanceOrder = new AdvanceOrder(*amadou, *territory1, *territory2, 10);
 	cout << "--> Advance Order was created! " << endl;
 	cout << "Preparing execution of Advance Order..." << endl;
 	advanceOrder->execute();
 	cout << *advanceOrder << endl;
+
+	delete amadou;
+	amadou = NULL;
+
+	delete matt;
+	matt = NULL;
+
+	delete samil;
+	samil = NULL;
+
+	delete playerList.back();
+
+	delete territory1;
+	territory1 = NULL;
+
+	delete territory3;
+	territory3 = NULL;
+
+	delete territory5;
+	territory5 = NULL;
+
+	delete territory4;
+	territory4 = NULL;
+
+	delete territory6;
+	territory6 = NULL;
+
+	delete deployOrder;
+	deployOrder = NULL;
+
+	delete advanceOrder;
+	advanceOrder = NULL;
+
+	delete airliftOrder;
+	airliftOrder = NULL;
+
+	delete bombOrder;
+	bombOrder = NULL;
+
+	delete blockadeOrder;
+	blockadeOrder = NULL;
+
+	delete negotiateOrder;
+	negotiateOrder = NULL;
 }
