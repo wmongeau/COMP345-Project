@@ -157,7 +157,7 @@ int main(int argc, char *argv[]) {
  		else if(selectedModule == 5) {
 			logObserverDriver();
  		}
- 	} while(selectedModule != 6);		
+ 	} while(selectedModule != 6);
 
 	return 0;
 }
@@ -174,5 +174,39 @@ void logObserverDriver() {
 			cout << *transition << endl;
 		}
 		cout << "-------------------------------------------------------------" << endl;
+
+		cout << "Please enter one of the available commands" << endl;
+		processor->getCommand(engine->getCurrentState());
+		Command* command = processor->getCommandList().back();
+		cout << "-------------------------------------------------------------" << endl;
+		engine->execute(command);
+		cout << "-------------------------------------------------------------" << endl;
 	}
+	for (int i = 0; i < engine->getPlayers().size(); i++) {
+		engine->getPlayers()[i]->setEnemies(engine->getPlayers());
+		engine->getPlayers()[i]->setIsTurnFinish(false);
+		engine->getPlayers()[i]->setCanAttack();
+	}
+	while (!done) {
+		for (int i = 0; i < engine->getPlayers().size(); i++) {
+			if (!engine->getPlayers()[i]->getIsTurnFinish())
+				engine->getPlayers()[i]->issueOrder();
+			else
+				counter++;
+		}
+		if (counter == engine->getPlayers().size())
+		{
+			done = true;
+		}
+		else {
+			counter = 0;
+		}
+	}
+	done = false;
+	for (int i = 0; i < engine->getPlayers().size(); i++) {
+		for (int j = 0; j < engine->getPlayers()[i]->getOrders()->getOrdersVector().size(); j++)
+			engine->getPlayers()[i]->getOrders()->getOrdersVector()[j]->execute();
+	}
+	delete engine;
+	engine = NULL;
 }

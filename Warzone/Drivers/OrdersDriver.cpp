@@ -13,7 +13,7 @@ using namespace std;
 void ordersDriver(){
 	//Creating a player list
 	cout << "Creating player list..." << endl;
-	vector<Player*> playerList =  vector<Player*>();
+	vector<Player*> playerList = vector<Player*>();
 	cout << "Player list successfully created!" << endl;
 
 	cout << "-----------------------------------" << endl;
@@ -302,6 +302,9 @@ void ordersDriver(){
 
 	delete territory1;
 	territory1 = NULL;
+
+	delete territory2;
+	territory2 = NULL;
 
 	delete territory3;
 	territory3 = NULL;

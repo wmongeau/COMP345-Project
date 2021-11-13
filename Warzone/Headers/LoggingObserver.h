@@ -10,7 +10,6 @@ class ILoggable{
       virtual ~ILoggable();
 };
 
-
 class Observer {
 public:
     virtual void update(ILoggable *log)=0;
@@ -23,11 +22,16 @@ public:
     LogObserver();
     void update(ILoggable* log);
     ~LogObserver();
+    friend ostream& operator<<(ostream& os, const LogObserver& c);
 };
 
 class Subject {
 public:
-    LogObserver* view = new LogObserver();
+    LogObserver* view;
+    Subject();
+    Subject(const Subject& c);
+    Subject& operator=(const Subject& c);
+    friend ostream& operator<<(ostream& os, const Subject& c);
     void notify(ILoggable* log);
     virtual ~Subject();
 };

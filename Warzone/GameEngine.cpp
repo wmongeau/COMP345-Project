@@ -1038,7 +1038,7 @@ void GameEngine::executeOrderPhase() {
 	bool isAllExecuted = false;
 	int counter = 0;
 	int numberOwnedTerritory;
-	vector<bool> playerHasDrawn = *new vector<bool>();
+	vector<bool> playerHasDrawn = vector<bool>();
 	for (int i = 0; i < players.size(); i++)
 		playerHasDrawn.push_back(false);
 
