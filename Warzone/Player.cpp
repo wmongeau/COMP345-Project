@@ -106,12 +106,18 @@ Player::~Player()
 //Method returning all the territories a player can attack
 vector<Territory *> Player::toAttack()
 {
+	//IMPORTANT
+	//when we replace this with the strategy pattern we must make sure to call adjustPlayerStrategy()
+	//this will ensure that if the players type has been changed it will use the correct strategy
 	return CanAttack;
 }
 
 //Method returning all the territories a player can defend
 vector<Territory *> Player::toDefend()
 {
+	//IMPORTANT
+	//when we replace this with the strategy pattern we must make sure to call adjustPlayerStrategy()
+	//this will ensure that if the players type has been changed it will use the correct strategy
 	return CanDefend;
 }
 
