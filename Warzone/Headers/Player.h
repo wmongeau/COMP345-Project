@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <string>
+#include "PlayerStrategies.h"
 
 using namespace std;
 
@@ -12,13 +13,17 @@ class Card;
 class Deck;
 enum class OrdersEnum;
 
+enum class PlayerType { human, neutral, cheater, aggressive, benevolent };
+
 //Class declaration for the Player class
 class Player {
 public:
 	Deck* deck;
+	PlayerStrategy* ps;
 	Player();
 	Player(const Player& p);
 	Player(string playerName);
+	Player(string playerName, PlayerType playerType);
 	Player& operator =(const Player& p);
 	~Player();
 	vector<Territory*> getOwnedTerritories();
@@ -47,6 +52,8 @@ public:
 	friend ostream& operator <<(ostream& out, Player& player);
 	bool getIsTurnFinish();
 	void setIsTurnFinish(bool val);
+	PlayerType getPlayerType();
+	void changePlayerType(PlayerType newType);
 private:
 	bool isTurnFinish;
 	vector<Player*> enemies;
@@ -57,6 +64,8 @@ private:
 	OrdersList* Orders;
 	vector<Territory*> OwnedTerritories;
 	int reinforcementPool;
+	PlayerType playerType;
+	void adjustPlayerStrategy();
 };
 
 ostream& operator <<(ostream& out, Player& player);
