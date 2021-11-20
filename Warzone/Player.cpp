@@ -128,8 +128,6 @@ vector<Territory *> Player::toDefend()
 void Player::addOwnedTerritory(Territory *territory)
 {
 	OwnedTerritories.push_back(territory);
-	removeTerritoryToAttack(territory);
-	addTerritoryToDefend(territory);
 	territory->updatePlayer(this);
 }
 
@@ -278,12 +276,7 @@ void Player::setCanDefend(std::vector<Territory *> territories)
 //Temporary setter method for the territories that a player can attack
 void Player::setCanAttack()
 {
-	for (int i = 0; i < OwnedTerritories.size(); i++) {
-		for (int j = 0; j < OwnedTerritories[i]->getBorders().size(); j++)
-			if (!playerCanDefend(OwnedTerritories[i]->getBorders()[j]))
-				if (!playerCanAttack(OwnedTerritories[i]->getBorders()[j]))
-					addTerritoryToAttack(OwnedTerritories[i]->getBorders()[j]);
-	}
+	toAttack();
 }
 
 //Method to add territory to defend

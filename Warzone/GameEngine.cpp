@@ -941,7 +941,8 @@ void GameEngine::mainGameLoop()
 				players.erase(players.begin() + i);
 			}
 			else {
-				players[i]->setCanAttack();
+				players[i]->toDefend();
+				players[i]->toAttack();
 			}
 		}
 		if (!firstTurn)

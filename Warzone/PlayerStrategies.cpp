@@ -188,11 +188,21 @@ void HumanPlayerStrategy::issueOrder()
 
 vector<Territory*> HumanPlayerStrategy::toAttack()
 {
+	for (int i = 0; i < player->getOwnedTerritories().size(); i++) {
+		for (int j = 0; j < player->getOwnedTerritories()[i]->getBorders().size(); j++)
+			if (!player->playerCanDefend(player->getOwnedTerritories()[i]->getBorders()[j]))
+				if (!player->playerCanAttack(player->getOwnedTerritories()[i]->getBorders()[j]))
+					player->addTerritoryToAttack(player->getOwnedTerritories()[i]->getBorders()[j]);
+	}
 	return player->toAttack();
 }
 
 vector<Territory*> HumanPlayerStrategy::toDefend()
 {
+	for (int i = 0; i < player->getOwnedTerritories().size(); i++) {
+		if (!player->playerCanDefend(player->getOwnedTerritories()[i]))
+			player->addTerritoryToDefend(player->getOwnedTerritories()[i]);
+	}
 	return player->toDefend();
 }
 
