@@ -47,7 +47,7 @@ ostream& operator<<(ostream& out, const Command& c)
 {
 	out << c.command << endl;
 
-	if (!empty(c.effect)) {
+	if (!c.effect.empty()) {
 		out << c.effect << endl;
 	}
 
@@ -397,6 +397,8 @@ FileLineReader::FileLineReader(string fileName)
 	string filePath = "../GameCommandFiles/" + fileName;
 #ifdef _WIN32
 	filePath = "../../../GameCommandFiles/" + fileName;
+#elif __APPLE__
+	filePath = "../Warzone/GameCommandFiles/" + fileName;
 #endif
 	this->currentLine = 1;
 	this->fileDirectory = filePath;

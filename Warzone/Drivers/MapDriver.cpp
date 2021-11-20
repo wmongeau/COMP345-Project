@@ -74,6 +74,8 @@ Map* MapLoader::loadMap(string args) {
 	string filePath = "../Maps/" + args;
 #ifdef _WIN32
 	filePath = "../../../Maps/" + args;
+#elif __APPLE__
+	filePath = "../Warzone/Maps/" + args;
 #endif
 	ifstream file(filePath);
 	if (!file.is_open())
@@ -86,9 +88,7 @@ Map* MapLoader::loadMap(string args) {
 	Map* map;
 	map = new Map();
 	int continentId = 1;
-
 	while (getline(file, line)) {
-
 		if (line[0] == ';' || line == "") {
 			continue;
 		}
