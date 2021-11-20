@@ -183,7 +183,7 @@ void AddPlayerTransition::execute(string args, GameEngine* engine)
 {
 	cout << "Executing Add Player Transition" << endl;
 	string name = args + "(Player " + to_string(engine->getPlayers().size()) + ")";
-	engine->addPlayer(new Player(name));
+	engine->addPlayer(new Player(name, PlayerType::human));
 	cout << "Added " + name << endl;
 }
 

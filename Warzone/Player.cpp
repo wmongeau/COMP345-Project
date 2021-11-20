@@ -16,6 +16,8 @@ Player::Player()
 	CanAttack = vector<Territory *>();
 	CanDefend = vector<Territory *>();
 	reinforcementPool = 0;
+	playerType = PlayerType::human;
+	ps = new HumanPlayerStrategy(this);
 }
 
 //Copy constructor for the class Player
@@ -28,6 +30,8 @@ Player::Player(const Player &p)
 	CanAttack = p.CanAttack;
 	CanDefend = p.CanDefend;
 	reinforcementPool = p.reinforcementPool;
+	playerType = p.playerType;
+	ps = p.ps;
 }
 
 //Constructor taking a parameter of type string to be set as the name of the player
@@ -40,6 +44,38 @@ Player::Player(string playerName)
 	CanAttack = vector<Territory *>();
 	CanDefend = vector<Territory *>();
 	reinforcementPool = 0;
+	playerType = PlayerType::human;
+	ps = new HumanPlayerStrategy(this);
+}
+
+Player::Player(string playerName, PlayerType playerType) 
+{
+	PlayerName = playerName;
+	PlayerHand = new Hand();
+	Orders = new OrdersList();
+	OwnedTerritories = vector<Territory*>();
+	CanAttack = vector<Territory*>();
+	CanDefend = vector<Territory*>();
+	reinforcementPool = 0;
+	playerType = playerType;
+	switch (playerType) 
+	{
+	case PlayerType::human:
+		ps = new HumanPlayerStrategy(this);
+		break;
+	case PlayerType::cheater:
+		ps = new CheaterPlayerStrategy(this);
+		break;
+	case PlayerType::benevolent:
+		ps = new BenevolentPlayerStrategy(this);
+		break;
+	case PlayerType::neutral:
+		ps = new NeutralPlayerStrategy(this);
+		break;
+	case PlayerType::aggressive:
+		ps = new AggressivePlayerStrategy(this);
+		break;
+	}
 }
 
 //Assignment operator for the class Player
@@ -52,6 +88,7 @@ Player &Player::operator=(const Player &p)
 	CanAttack = p.CanAttack;
 	CanDefend = p.CanDefend;
 	reinforcementPool = p.reinforcementPool;
+	playerType = p.playerType;
 
 	return *this;
 }
@@ -69,7 +106,6 @@ Player::~Player()
 //Method returning all the territories a player can attack
 vector<Territory *> Player::toAttack()
 {
-
 	return CanAttack;
 }
 
@@ -92,96 +128,47 @@ void Player::addOwnedTerritory(Territory *territory)
 // This method is called in a round-robin fashion in the issueOrdersPhase()
 void Player::issueOrder()
 {
-	int territoryChoice, territoryChoice2,cardChoice;
-	int armyChoice;
-	int playerInput = 0;
-	int advanceChoice;
-	vector<Card*> cards;
-	cout << "\nPlayer " << PlayerName << "'s turn" << endl;
-	//Deploying phase. Shows all the territories that the user owns and can deploy to. 
-	//As long as the player has armies still to deploy (see startup phase and reinforcement phase), it will issue a deploy order and no other order. 
-	//Once it has deployed all its available armies, it can proceed with other kinds of orders.
-	if (reinforcementPool != 0)
+	adjustPlayerStrategy();
+
+	ps->issueOrder();
+}
+
+void Player::adjustPlayerStrategy() 
+{
+	if (playerType == PlayerType::human && typeid(ps).name() != "HumanPlayerStrategy")
 	{
-		cout << "These are the territories that you can deploy armies in" << endl;
-		for (int i = 0; i < OwnedTerritories.size(); i++)
-		{
-			cout << i << " " << OwnedTerritories[i]->getName() << " " << OwnedTerritories[i]->getArmyValue() << endl;
-		}
-		cout << "Which territory do you want to deploy armies to?" << endl;
-		cin >> territoryChoice;
-		cout << "How many armies would you like to deploy of " << reinforcementPool << " armies ?";
-		cin >> armyChoice;
-		Orders->addOrder(new DeployOrder(*this, *OwnedTerritories[territoryChoice], armyChoice));
-		reinforcementPool -= armyChoice;
-		if (reinforcementPool < 0)
-			reinforcementPool = 0;
+		delete ps;
+		ps = new HumanPlayerStrategy(this);
 		return;
 	}
-	//Players issues advance orders to either attack their neigbouring enemies or deploy to their neighbouring owned territories
-		cout << "Which action would you like to do?" << endl;
-		cout << "[0] Advance [1]Play a card [2]End turn" << endl ;
-		cin >> playerInput;
-		if (playerInput == 0)
-		{
-			cout << "Would you like your advance order to Attack[0] or Defend[1]?";
-			cin >> advanceChoice;
-			if (advanceChoice == 0)
-			{
-				cout << "These are the territories that you can advance to attack" << endl;
-				for (int i = 0; i < toAttack().size(); i++)
-				{
-					cout << i << " " << toAttack()[i]->getName() << " " << toAttack()[i]->getArmyValue() << endl;
-				}
-				cout << "Which territory do you want to advance armies to attack? " << endl;
-				cin >> territoryChoice;
-			}
-			if (advanceChoice == 1)
-			{
-				cout << "These are the territories that you can advance to defend" << endl;
-				for (int i = 0; i < toDefend().size(); i++)
-				{
-					cout << i << " " << toDefend()[i]->getName() << " " << toDefend()[i]->getArmyValue() << endl;
-				}
-				cout << "Which territory do you want to advance armies to?" << endl;
-				cin >> territoryChoice;
-			}
-			cout << "These are the territories that you can take armies from" << endl;
-			for (int i = 0; i < OwnedTerritories.size(); i++)
-			{
-				cout << i << " " << OwnedTerritories[i]->getName() << " " << OwnedTerritories[i]->getArmyValue() << endl;
-			}
-			cout << "Which territory do you want to take armies from?" << endl;
-			cin >> territoryChoice2;
-			cout << "How many armies would you like to advance of " << OwnedTerritories[territoryChoice2]->getArmyValue() << " armies ?";
-			cin >> armyChoice;
-			if (advanceChoice == 0)
-			{
-				Orders->addOrder(new AdvanceOrder(*this, *OwnedTerritories[territoryChoice2], *toAttack()[territoryChoice], armyChoice));
-			}
-			else if (advanceChoice == 1)
-			{
-				Orders->addOrder(new AdvanceOrder(*this, *OwnedTerritories[territoryChoice2], *toDefend()[territoryChoice], armyChoice));
-			}
-		}
-		else if (playerInput == 1)
-		{
-			// The player uses one of the cards in their hand to issue an order that corresponds to the card in question
-			cout << "Here's the cards in hand:" << endl;
-			cards = PlayerHand->getPlayerHand();
-			for (int i = 0; i < cards.size(); i++)
-			{
-				cout << i << ' ' << cards[i]->getCardType()<<endl;
-			}
-			cout << "Which card do you want to play?" << endl;
-			cin >> cardChoice;
-			cards[cardChoice]->setCardParameter(this);
-			if (cards[cardChoice]->getCardType() == "Diplomacy" || cards[cardChoice]->getCardType() == "Blockade")
-				cards[cardChoice]->playerList = enemies;
-			Orders->addOrder(cards[cardChoice]->play());
-		}
-		else if (playerInput == 2)
-			isTurnFinish = true;
+	else if (playerType == PlayerType::neutral && typeid(ps).name() != "NeutralPlayerStrategy")
+	{
+
+		delete ps;
+		ps = new NeutralPlayerStrategy(this);
+		return;
+	}
+	else if (playerType == PlayerType::benevolent && typeid(ps).name() != "BenevolentPlayerStrategy")
+	{
+
+		delete ps;
+		ps = new BenevolentPlayerStrategy(this);
+		return;
+	}
+	else if (playerType == PlayerType::cheater && typeid(ps).name() != "CheaterPlayerStrategy")
+	{
+
+		delete ps;
+		ps = new CheaterPlayerStrategy(this);
+		return;
+	}
+	else if (playerType == PlayerType::aggressive && typeid(ps).name() != "AggressivePlayerStrategy")
+	{
+
+		delete ps;
+		ps = new AggressivePlayerStrategy(this);
+		return;
+	}
 }
 
 //Method used to removed owned territory
@@ -389,6 +376,16 @@ bool Player::getIsTurnFinish()
 void Player::setIsTurnFinish(bool val)
 {
 	isTurnFinish = val;
+}
+
+PlayerType Player::getPlayerType()
+{
+	return playerType;
+}
+
+void Player::changePlayerType(PlayerType newType)
+{
+	playerType = newType;
 }
 
 //Stream insertion operator for the Player class. Prints all info relevant to the player.
