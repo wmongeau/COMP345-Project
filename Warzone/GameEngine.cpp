@@ -1024,7 +1024,7 @@ void GameEngine::reinforcementPhase() {
 		}
 		for (Continent* cont : map->Continents)
 		{
-			//If the player owns all the territories of an entire continent, the player is given a number of armies corresponding to the continent’s control bonus value.
+			//If the player owns all the territories of an entire continent, the player is given a number of armies corresponding to the continentï¿½s control bonus value.
 			if (checkIfContinentOwned(players[i], cont))
 				numArmies = numArmies + cont->getArmyValue();
 		}

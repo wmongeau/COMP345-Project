@@ -42,7 +42,7 @@ public:
 	virtual void execute(string args, GameEngine* engine) = 0;
 	friend std::ostream& operator<<(std::ostream& os, const Transition& transition);
 	Transition& operator= (const Transition& transition);
-	~Transition();
+	virtual ~Transition();
 protected:
 	Enums::transitions transitionName;
 	State* nextState;
