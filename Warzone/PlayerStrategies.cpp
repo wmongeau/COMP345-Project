@@ -260,6 +260,10 @@ NeutralPlayerStrategy& NeutralPlayerStrategy::operator=(const NeutralPlayerStrat
 
 void NeutralPlayerStrategy::issueOrder()
 {
+	//IMPORTANT
+	//Somewhere we must check if the neutral player has been attacked (idk if it's in this method or not)
+	//If they have been attacked, we can simply change them to an aggressive player like so:
+	//player->changePlayerType(PlayerType::aggressive)
 }
 
 vector<Territory*> NeutralPlayerStrategy::toAttack()
