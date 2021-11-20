@@ -57,7 +57,7 @@ Player::Player(string playerName, PlayerType playerType)
 	CanAttack = vector<Territory*>();
 	CanDefend = vector<Territory*>();
 	reinforcementPool = 0;
-	playerType = playerType;
+	this->playerType = playerType;
 	switch (playerType) 
 	{
 	case PlayerType::human:
@@ -101,6 +101,9 @@ Player::~Player()
 
 	delete Orders;
 	Orders = NULL;
+
+	delete ps;
+	ps = NULL;
 }
 
 //Method returning all the territories a player can attack
@@ -149,28 +152,24 @@ void Player::adjustPlayerStrategy()
 	}
 	else if (playerType == PlayerType::neutral && typeid(ps).name() != "NeutralPlayerStrategy")
 	{
-
 		delete ps;
 		ps = new NeutralPlayerStrategy(this);
 		return;
 	}
 	else if (playerType == PlayerType::benevolent && typeid(ps).name() != "BenevolentPlayerStrategy")
 	{
-
 		delete ps;
 		ps = new BenevolentPlayerStrategy(this);
 		return;
 	}
 	else if (playerType == PlayerType::cheater && typeid(ps).name() != "CheaterPlayerStrategy")
 	{
-
 		delete ps;
 		ps = new CheaterPlayerStrategy(this);
 		return;
 	}
 	else if (playerType == PlayerType::aggressive && typeid(ps).name() != "AggressivePlayerStrategy")
 	{
-
 		delete ps;
 		ps = new AggressivePlayerStrategy(this);
 		return;
