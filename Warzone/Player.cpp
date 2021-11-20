@@ -118,7 +118,7 @@ void Player::issueOrder()
 			reinforcementPool = 0;
 		return;
 	}
-	//Players issues advance orders to either attack their neigbouring enemies or deploy to their neighbouring owned territories
+	//Players issues advance orders to either attack their neighboring enemies or deploy to their neighboring owned territories
 		cout << "Which action would you like to do?" << endl;
 		cout << "[0] Advance [1]Play a card [2]End turn" << endl ;
 		cin >> playerInput;

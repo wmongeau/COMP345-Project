@@ -287,16 +287,16 @@ bool AdvanceOrder::execute() {
 						attackDeath++;
 					}
 				}
-				_sourceTerritory->removeFromArmy(attackDeath);
 				_targetedTerritory->removeFromArmy(defendDeath);
 				if (_targetedTerritory->getArmyValue() == 0) {
 					_targetedTerritory->removePlayer();
 					_playerIssuingOrder->addOwnedTerritory(_targetedTerritory);
-					_targetedTerritory->updateArmyValue(numOfArmies);
-
-				effect = _playerIssuingOrder->getPlayerName() + " attacked and conquered " + _targetedTerritory->getName();
+					_targetedTerritory->updateArmyValue(numOfArmies-attackDeath);
+					_sourceTerritory->removeFromArmy(numOfArmies);
+					effect = _playerIssuingOrder->getPlayerName() + " attacked and conquered " + _targetedTerritory->getName();
 				}
 				else {
+					_sourceTerritory->removeFromArmy(attackDeath);
 					effect = _playerIssuingOrder->getPlayerName() + " lost " + to_string(attackDeath) + " army units and his enemy on "
 						+ _targetedTerritory->getName() + " lost " + to_string(defendDeath) + " army units.";
 				}
