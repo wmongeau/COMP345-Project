@@ -83,43 +83,43 @@ void Card::setCardParameter(Player* player)
 		{
 		case CardTypeEnums::Bomb:
 			cout << "These are the territories that you can us bomb on" << endl;
-			for (int i = 0; i < player->toAttack().size(); i++)
+			for (int i = 0; i < player->getToAttack().size(); i++)
 			{
-				cout << i << " " << player->toAttack()[i]->getName() << " " << player->toAttack()[i]->getArmyValue() << endl;
+				cout << i << " " << player->getToAttack()[i]->getName() << " " << player->getToAttack()[i]->getArmyValue() << endl;
 			}
 			cout << "Which territory do you want to bomb?" << endl;
 			cin >> territoryChoice;
-            territory = player->toAttack()[territoryChoice];
+            territory = player->getToAttack()[territoryChoice];
             targetTerritory = territory;
             targetPlayer = territory->getPlayer();
 
 			break;
 		case CardTypeEnums::Reinforcement:
 			cout << "These are the territories that you can reinforcement armies in" << endl;
-			for (int i = 0; i < player->toDefend().size(); i++)
+			for (int i = 0; i < player->getToDefend().size(); i++)
 			{
-				cout << i << " " << player->toDefend()[i]->getName() << " " << player->toDefend()[i]->getArmyValue() << endl;
+				cout << i << " " << player->getToDefend()[i]->getName() << " " << player->getToDefend()[i]->getArmyValue() << endl;
 			}
 			cout << "Which territory do you want to reinforcement armies to of 3?" << endl;
 			cin >> territoryChoice;
-			targetTerritory = player->toDefend()[territoryChoice];
+			targetTerritory = player->getToDefend()[territoryChoice];
             amount = 3;
 			break;
 		case CardTypeEnums::Blockade:
 			cout << "These are the territories that you can use blockade on" << endl;
-			for (int i = 0; i < player->toDefend().size(); i++)
+			for (int i = 0; i < player->getToDefend().size(); i++)
 			{
-				cout << i << " " << player->toDefend()[i]->getName() << " " << player->toDefend()[i]->getArmyValue() << endl;
+				cout << i << " " << player->getToDefend()[i]->getName() << " " << player->getToDefend()[i]->getArmyValue() << endl;
 			}
 			cout << "Which territory do you want to add blockade?" << endl;
 			cin >> territoryChoice;
-            targetTerritory = player->toDefend()[territoryChoice];
+            targetTerritory = player->getToDefend()[territoryChoice];
 			break;
 		case CardTypeEnums::Airlift:
 			cout << "These are the territories that you can airlift to defend" << endl;
-			for (int i = 0; i < player->toDefend().size(); i++)
+			for (int i = 0; i < player->getToDefend().size(); i++)
 			{
-				cout << i << " " << player->toDefend()[i]->getName() << " " << player->toDefend()[i]->getArmyValue() << endl;
+				cout << i << " " << player->getToDefend()[i]->getName() << " " << player->getToDefend()[i]->getArmyValue() << endl;
 			}
 			cout << "Which territory do you want to airlift armies to?" << endl;
 			cin >> territoryChoice;
@@ -133,7 +133,7 @@ void Card::setCardParameter(Player* player)
 			cout << "How many armies would you like to airlift of " << player->getOwnedTerritories()[territoryChoice2]->getArmyValue() << " armies ?";
 			cin >> armyChoice;
             sourceTerritory = player->getOwnedTerritories()[territoryChoice2];
-            targetTerritory = player->toDefend()[territoryChoice];
+            targetTerritory = player->getToDefend()[territoryChoice];
             amount = armyChoice;
 			break;
         case CardTypeEnums::Diplomacy:

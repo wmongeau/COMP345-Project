@@ -112,7 +112,8 @@ vector<Territory *> Player::toAttack()
 	//IMPORTANT
 	//when we replace this with the strategy pattern we must make sure to call adjustPlayerStrategy()
 	//this will ensure that if the players type has been changed it will use the correct strategy
-	return CanAttack;
+	adjustPlayerStrategy();
+	return ps->toAttack();
 }
 
 //Method returning all the territories a player can defend
@@ -121,7 +122,8 @@ vector<Territory *> Player::toDefend()
 	//IMPORTANT
 	//when we replace this with the strategy pattern we must make sure to call adjustPlayerStrategy()
 	//this will ensure that if the players type has been changed it will use the correct strategy
-	return CanDefend;
+	adjustPlayerStrategy();
+	return ps->toDefend();
 }
 
 //Method used to add a new owned territory to the players list of owned territories
@@ -274,9 +276,9 @@ void Player::setCanDefend(std::vector<Territory *> territories)
 }
 
 //Temporary setter method for the territories that a player can attack
-void Player::setCanAttack()
+void Player::setCanAttack(vector<Territory*> territories)
 {
-	toAttack();
+	CanAttack = territories;
 }
 
 //Method to add territory to defend
@@ -344,6 +346,16 @@ bool Player::playerCanDefend(Territory* territory)
 		index++;
 	}
 	return false;
+}
+
+vector<Territory*> Player::getToDefend()
+{
+	return CanDefend;
+}
+
+vector<Territory*> Player::getToAttack()
+{
+	return CanAttack;
 }
 
 //Temporary method to add cards to the players' hand
