@@ -188,6 +188,7 @@ void logObserverDriver() {
 		engine->getPlayers()[i]->toDefend();
 		engine->getPlayers()[i]->toAttack();
 	}
+	engine->getPlayers()[0]->changePlayerType(PlayerType::neutral);
 	while (!done) {
 		for (int i = 0; i < engine->getPlayers().size(); i++) {
 			if (!engine->getPlayers()[i]->getIsTurnFinish())
