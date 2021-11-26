@@ -689,6 +689,11 @@ void GameEngine::execute(Command* command)
 		execute(new AssignCountriesTransition(), args);
 		break;
 	}
+	case CommandType::tournament:
+	{
+		cout << "You entered a valid tournament command" << endl;
+		starting = false;
+	}
 	case CommandType::replay:
 	{
 		string args = "";

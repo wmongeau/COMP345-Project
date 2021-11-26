@@ -12,7 +12,7 @@ class State;
 
 enum CommandType
 {
-	loadMap, validateMap, addPlayer, gameStart, replay, quit, error
+	loadMap, validateMap, addPlayer, tournament, gameStart, replay, quit, error
 };
 
 ostream& operator<<(ostream& out, CommandType commandType);

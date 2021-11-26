@@ -214,6 +214,7 @@ Command* CommandProcessor::readCommand()
 	getline(cin, commandString);
 	regex loadmapRegex("loadmap .+");
 	regex addplayerRegex("addplayer [a-zA-Z]+");
+	regex tournamentRegex("tournament\s-M\s\S*\s-P\s\S*\s\-G\s[1-5]\s-D\s([1-9]|[1-5][0-9])$");
 
 	if (commandString == "validatemap")
 		return new Command(CommandType::validateMap, commandString);
@@ -223,10 +224,12 @@ Command* CommandProcessor::readCommand()
 		return new Command(CommandType::replay, commandString);
 	else if (commandString == "quit")
 		return new Command(CommandType::quit, commandString);
-	else if (regex_match(commandString, loadmapRegex)) 
+	else if (regex_match(commandString, loadmapRegex))
 		return new Command(CommandType::loadMap, commandString);
-	else if (regex_match(commandString, addplayerRegex)) 
+	else if (regex_match(commandString, addplayerRegex))
 		return new Command(CommandType::addPlayer, commandString);
+	else if (regex_match(commandString, tournamentRegex))
+		return new Command(CommandType::tournament, commandString);
 
 	return new Command(CommandType::error, commandString);
 }
@@ -276,6 +279,10 @@ bool CommandProcessor::validate(State* currentState, Command* command)
 	}
 	else if (command->getCommandType() == CommandType::loadMap && (currentState->getStateName() == Enums::states::start || currentState->getStateName() == Enums::states::mapLoaded)) {
 		command->saveEffect("effect: The map: " + extractMapFile(command) + " is being loaded.");
+		return true;
+	}
+	else if (command->getCommandType() == CommandType::tournament && (currentState->getStateName() == Enums::states::start)) {
+		command->saveEffect("effect: A tournament is being started.");
 		return true;
 	}
 
@@ -513,6 +520,7 @@ Command* FileCommandProcessorAdaptor::readCommand()
 	string commandString = flr->readLineFromFile();
 	regex loadmapRegex("loadmap .+");
 	regex addplayerRegex("addplayer [a-zA-Z]+");
+	regex tournamentRegex("tournament\s-M\s\S*\s-P\s\S*\s\-G\s[0-5]\s-D\s([1-9]|[1-5][0-9])$");
 
 	if (commandString == "validatemap")
 		return new Command(CommandType::validateMap, commandString);
@@ -526,6 +534,8 @@ Command* FileCommandProcessorAdaptor::readCommand()
 		return new Command(CommandType::loadMap, commandString);
 	else if (regex_match(commandString, addplayerRegex))
 		return new Command(CommandType::addPlayer, commandString);
+	else if (regex_match(commandString, tournamentRegex))
+		return new Command(CommandType::tournament, commandString);
 
 	return new Command(CommandType::error, commandString);
 }

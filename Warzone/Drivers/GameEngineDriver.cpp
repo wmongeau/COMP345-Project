@@ -108,7 +108,8 @@ void startupPhaseDriver(int argc, char* argv[]) {
 		processor = new FileCommandProcessorAdaptor(argv[2]);
 	}
 	else {
-		cout << "You did not valid command line arguments when starting Warzone!" << endl;
+		processor = new CommandProcessor();
+		//cout << "You did not valid command line arguments when starting Warzone!" << endl;
 	}
 
 	GameEngine* engine;
