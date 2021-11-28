@@ -214,7 +214,7 @@ Command* CommandProcessor::readCommand()
 	getline(cin, commandString);
 	regex loadmapRegex("loadmap .+");
 	regex addplayerRegex("addplayer [a-zA-Z]+");
-	regex tournamentRegex("tournament\s-M\s\S*\s-P\s\S*\s\-G\s[1-5]\s-D\s([1-9]|[1-5][0-9])$");
+	regex tournamentRegex("tournament .+");
 
 	if (commandString == "validatemap")
 		return new Command(CommandType::validateMap, commandString);
