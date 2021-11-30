@@ -12,7 +12,7 @@ class State;
 
 enum CommandType
 {
-	loadMap, validateMap, addPlayer, gameStart, replay, quit, error
+	loadMap, validateMap, addPlayer, tournament, gameStart, replay, quit, error
 };
 
 ostream& operator<<(ostream& out, CommandType commandType);
@@ -82,3 +82,7 @@ private:
 
 string extractPlayerName(Command* command);
 string extractMapFile(Command* command);
+std::vector<string> getTournamentMaps(std::vector<string> args);
+std::vector<string> getTournamentPlayers(std::vector<string> args);
+int getTournamentNumberOfGames(std::vector<string> args);
+int getTournamentMaxNumberOfTurns(std::vector<string> args);

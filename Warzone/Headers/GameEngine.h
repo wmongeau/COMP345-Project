@@ -10,7 +10,7 @@
 
 namespace Enums{
 	enum states { start, mapLoaded, mapValidated, playersAdded, assignReinforcement, issueOrders, executeOrders, winState, quit };
-	enum transitions { loadMap, validateMap, addPlayer, assignCountries, issueOrder, endIssueOrders, endExecuteOrders, execOrder, winTransition, play, end };
+	enum transitions { loadMap, validateMap, addPlayer, assignCountries, issueOrder, endIssueOrders, endExecuteOrders, execOrder, winTransition, play, end, tournament };
 	std::string statesEnumToString(states value);
 	std::string transitionsEnumToString(transitions value);
 }
@@ -137,6 +137,18 @@ public:
 	EndTransition& operator= (const EndTransition& endTransition);
 };
 
+class TournamentTransition : public Transition, ILoggable, Subject{
+public:
+	TournamentTransition();
+	TournamentTransition(const TournamentTransition& tournamentTransition);
+	void execute(string args, GameEngine* engine);
+	void storeTournamentResults(GameEngine* engine);
+	string stringToLog();
+	TournamentTransition& operator= (const TournamentTransition& tournamentTransition);
+private:
+	string tournamentResults;
+};
+
 class GameEngine:ILoggable,Subject {
 public: 
 	GameEngine();
@@ -164,6 +176,13 @@ public:
 	void issueOrderPhase();
 	void executeOrderPhase();
 	bool checkIfContinentOwned(Player* player, Continent* continent);
+	std::vector<string> getTournamentMaps();
+	std::vector<string> getTournamentPlayers();
+	int getTournamentNumberOfGames();
+	int getTournamentMaxNumberOfTurns();
+	bool getTournamentMode();
+	std::vector<std::vector<string>> getGames();
+	void addGame(vector<string> game);
 private:
 	State* currentState;
 	Map* map;
@@ -172,7 +191,17 @@ private:
 	bool starting;
 	Deck* deck;
 	std::vector<Transition*> availableTransitions;
+	std::vector<string> getTournamentMaps(std::vector<string> args);
+	std::vector<string> getTournamentPlayers(std::vector<string> args);
+	int getTournamentNumberOfGames(std::vector<string> args);
+	int getTournamentMaxNumberOfTurns(std::vector<string> args);
+	std::vector<string> tournamentMaps;
+	std::vector<string> tournamentPlayers;
+	std::vector<std::vector<string>> games;
+	int tournamentGames;
+	int tournamentTurns;
 	void updateAvailableTransitions();
 	bool winner;
 	bool playersFinishedOrders;
+	bool tournamentMode;
 };

@@ -8,7 +8,6 @@
 #include <cstdlib>
 #include <ctime>
 #include <math.h>
-
 using namespace std;
 #include "./Headers/GameEngine.h"
 #include "./Headers/CommandProcessing.h"
@@ -182,8 +181,24 @@ AddPlayerTransition::AddPlayerTransition(const AddPlayerTransition& addPlayerTra
 void AddPlayerTransition::execute(string args, GameEngine* engine)
 {
 	cout << "Executing Add Player Transition" << endl;
+	PlayerType type;
 	string name = args + "(Player " + to_string(engine->getPlayers().size()) + ")";
-	engine->addPlayer(new Player(name, PlayerType::human));
+	if (args == "Aggressive") {
+		type = PlayerType::aggressive;
+	}
+	else if (args == "Benevolent") {
+		type = PlayerType::benevolent;
+	}
+	else if (args == "Neutral") {
+		type = PlayerType::neutral;
+	}
+	else if (args == "Cheater") {
+		type = PlayerType::cheater;
+	}
+	else {
+		type = PlayerType::human;
+	}
+	engine->addPlayer(new Player(name, type));
 	cout << "Added " + name << endl;
 }
 
@@ -458,6 +473,118 @@ EndTransition& EndTransition::operator=(const EndTransition& endTransition)
 	return *this;
 }
 
+//Default constructor for the EndTransition class
+TournamentTransition::TournamentTransition() : Transition(Enums::tournament)
+{
+	nextState = new State(Enums::quit);
+}
+
+//Copy constructor for the EndTransition class
+TournamentTransition::TournamentTransition(const TournamentTransition& tournamentTransition) : Transition(tournamentTransition)
+{
+	nextState = tournamentTransition.nextState;
+}
+
+//Method that executes the EndTransition
+void TournamentTransition::execute(string args, GameEngine* engine)
+{
+	cout << "Starting Tournament" << endl;
+	for (string map : engine->getTournamentMaps()) {
+		for (int i = 0; i < engine->getTournamentNumberOfGames(); i++) {
+			cout << "Starting game for map: " << map << endl;
+			engine->execute(new LoadMapTransition(), map);
+			engine->execute(new ValidateMapTransition(), "");
+			for (string player : engine->getTournamentPlayers()) {
+				engine->execute(new AddPlayerTransition(), player);
+			}
+			engine->execute(new AssignCountriesTransition(), "");
+			std::vector<string> game;
+			game.push_back(map);
+			engine->addGame(game);
+			engine->mainGameLoop();
+		}
+	}
+
+	storeTournamentResults(engine);
+	notify(this);
+}
+
+void TournamentTransition::storeTournamentResults(GameEngine* engine)
+{
+	string tournamentResultsString = "";
+	tournamentResultsString += "Tournament Mode:\n" ;
+	tournamentResultsString += "M: ";
+
+	for (string map : engine->getTournamentMaps()) {
+		tournamentResultsString += map;
+		tournamentResultsString += ", ";
+	}
+
+	tournamentResultsString += "\n";
+
+	tournamentResultsString += "P: ";
+
+	for (string player : engine->getTournamentPlayers()) {
+		tournamentResultsString += player;
+		tournamentResultsString += ", ";
+	}
+
+	tournamentResultsString += "\n";
+
+	tournamentResultsString += "G: ";
+	tournamentResultsString += std::to_string(engine->getTournamentNumberOfGames());
+	tournamentResultsString += "\n";
+
+	tournamentResultsString += "D: ";
+	tournamentResultsString += std::to_string(engine->getTournamentMaxNumberOfTurns());
+	tournamentResultsString += "\n";
+
+	tournamentResultsString += "Results: \n";
+
+	tournamentResultsString += "           ";
+
+	for (int i = 1; i <= engine->getTournamentNumberOfGames(); i++) {
+		tournamentResultsString += "Game ";
+		tournamentResultsString += std::to_string(i);
+		tournamentResultsString += "    ";
+	}
+
+	tournamentResultsString += "\n";
+
+	int counter = 0;
+
+	for (vector<string> game : engine->getGames()) {
+		if (counter != 0 && counter % engine->getTournamentNumberOfGames() == 0) {
+			tournamentResultsString += "\n";
+		}
+
+		if (counter % engine->getTournamentNumberOfGames() == 0) {
+			tournamentResultsString += game.front();
+			tournamentResultsString += " ";
+		}
+		tournamentResultsString += game.back();
+		tournamentResultsString += "      ";
+
+		counter++;
+	}
+
+	tournamentResultsString += "\n";
+	cout << tournamentResultsString;
+	tournamentResults = tournamentResultsString;
+}
+
+string TournamentTransition::stringToLog() {
+	return tournamentResults;
+}
+
+//Assignment operator override for the EndTransition class
+TournamentTransition& TournamentTransition::operator=(const TournamentTransition& tournamentTransition)
+{
+	transitionName = tournamentTransition.transitionName;
+	nextState = tournamentTransition.nextState;
+	return *this;
+}
+
 //Default constructor for the GameEngine class
 GameEngine::GameEngine()
 {
@@ -469,6 +596,12 @@ GameEngine::GameEngine()
 	starting = true;
 	deck = new Deck();
 	winner = false;
+	tournamentMaps = vector<string>();
+	tournamentPlayers = vector<string>();
+	tournamentTurns = 0;
+	tournamentGames = 0;
+	games = vector<vector<string>>();
+	tournamentMode = false;
 }
 
 //Constructor for the GameEngine class that takes in a command processor
@@ -480,6 +613,13 @@ GameEngine::GameEngine(CommandProcessor* passedProcessor) {
 	players = vector<Player*>();
 	starting = true;
 	deck = new Deck();
+	winner = false;
+	tournamentMaps = vector<string>();
+	tournamentPlayers = vector<string>();
+	tournamentTurns = 0;
+	tournamentGames = 0;
+	games = vector<vector<string>>();
+	tournamentMode = false;
 }
 
 //Copy constructor for the GameEngine class
@@ -493,6 +633,12 @@ GameEngine::GameEngine(const GameEngine& engine)
 	starting = engine.starting;
 	deck = engine.deck;
 	winner = engine.winner;
+	tournamentMaps = engine.tournamentMaps;
+	tournamentPlayers = engine.tournamentPlayers;
+	tournamentGames = engine.tournamentGames;
+	tournamentTurns = engine.tournamentTurns;
+	games = engine.games;
+	tournamentMode = engine.tournamentMode;
 }
 
 //Method that updates the available transitions of the game engine, given the current state
@@ -509,6 +655,7 @@ void GameEngine::updateAvailableTransitions()
 		}
 		availableTransitions.clear();
 		availableTransitions.push_back(new LoadMapTransition());
+		availableTransitions.push_back(new TournamentTransition());
 		break;
 	}
 	case Enums::mapLoaded:
@@ -665,47 +812,176 @@ void GameEngine::execute(Command* command)
 {
 	switch (command->getCommandType())
 	{
-	case CommandType::loadMap:
-	{
-		string args = splitString(command->getCommand()).back();
-		execute(new LoadMapTransition(), args);
-		break;
+		case CommandType::loadMap:
+		{
+			string args = splitString(command->getCommand()).back();
+			execute(new LoadMapTransition(), args);
+			break;
+		}
+		case CommandType::validateMap:
+		{
+			string args = "";
+			execute(new ValidateMapTransition(), args);
+			break;
+		}
+		case CommandType::addPlayer:
+		{
+			string args = splitString(command->getCommand()).back();
+			execute(new AddPlayerTransition(), args);
+			break;
+		}
+		case CommandType::gameStart:
+		{
+			string args = "";
+			execute(new AssignCountriesTransition(), args);
+			break;
+		}
+		case CommandType::tournament:
+		{
+			vector<string> args = splitString(command->getCommand());
+			tournamentMaps = getTournamentMaps(args);
+			tournamentPlayers = getTournamentPlayers(args);
+			tournamentGames = getTournamentNumberOfGames(args);
+			tournamentTurns = getTournamentMaxNumberOfTurns(args);
+			tournamentMode = true;
+			starting = false;
+			execute(new TournamentTransition(), "");
+			break;
+		}
+		case CommandType::replay:
+		{
+			string args = "";
+			execute(new PlayTransition(), args);
+			break;
+		}
+		case CommandType::quit:
+		{
+			string args = "";
+			execute(new EndTransition(), args);
+			break;
+		}
+		case CommandType::error:
+		{
+			cout << "The command you entered was invalid." << endl;
+		}
 	}
-	case CommandType::validateMap:
-	{
-		string args = "";
-		execute(new ValidateMapTransition(), args);
-		break;
+}
+
+vector<string> GameEngine::getTournamentMaps(vector<string> args)
+{
+	bool map = false;
+	vector<string> maps;
+
+	for (string str : args) {
+		if (str == "-M") {
+			map = true;
+		}
+		else if (str == "-P" || str == "-G" || str == "-D") {
+			map = false;
+		}
+		else {
+			if (map) {
+				maps.push_back(str);
+			}
+		}
 	}
-	case CommandType::addPlayer:
-	{
-		string args = splitString(command->getCommand()).back();
-		execute(new AddPlayerTransition(), args);
-		break;
+
+	return maps;
+}
+
+vector<string> GameEngine::getTournamentPlayers(vector<string> args)
+{
+	bool player = false;
+	vector<string> players;
+
+	for (string str : args) {
+		if (str == "-P") {
+			player = true;
+		}
+		else if (str == "-M" || str == "-G" || str == "-D") {
+			player = false;
+		}
+		else {
+			if (player) {
+				players.push_back(str);
+			}
+		}
 	}
-	case CommandType::gameStart:
-	{
-		string args = "";
-		execute(new AssignCountriesTransition(), args);
-		break;
+
+	return players;
+}
+
+int GameEngine::getTournamentNumberOfGames(vector<string> args)
+{
+	bool game = false;
+	int numberOfGames = 0;
+
+	for (string str : args) {
+		if (str == "-G") {
+			game = true;
+		}
+		else if (str == "-M" || str == "-P" || str == "-D") {
+			game = false;
+		}
+		else {
+			if (game) {
+				std::string::size_type sz;
+
+				numberOfGames = std::stoi(str, &sz);
+			}
+		}
 	}
-	case CommandType::replay:
-	{
-		string args = "";
-		execute(new PlayTransition(), args);
-		break;
+
+	return numberOfGames;
+}
+
+int GameEngine::getTournamentMaxNumberOfTurns(vector<string> args)
+{
+	bool turn = false;
+	int numberOfTurns = 0;
+
+	for (string str : args) {
+		if (str == "-D") {
+			turn = true;
+		}
+		else if (str == "-M" || str == "-P" || str == "-G") {
+			turn = false;
+		}
+		else {
+			if (turn) {
+				std::string::size_type sz;
+
+				numberOfTurns = std::stoi(str, &sz);
+			}
+		}
 	}
-	case CommandType::quit:
-	{
-		string args = "";
-		execute(new EndTransition(), args);
-		break;
-	}
-	case CommandType::error:
-	{
-		cout << "The command you entered was invalid." << endl;
-	}
-	}
+
+	return numberOfTurns;
+}
+
+vector<string> GameEngine::getTournamentMaps()
+{
+	return tournamentMaps;
+}
+
+vector<string> GameEngine::getTournamentPlayers()
+{
+	return tournamentPlayers;
+}
+
+int GameEngine::getTournamentNumberOfGames()
+{
+	return tournamentGames;
+}
+
+int GameEngine::getTournamentMaxNumberOfTurns()
+{
+	return tournamentTurns;
+}
+
+bool GameEngine::getTournamentMode() 
+{
+	return tournamentMode;
 }
 
 //ILoggable function
@@ -793,6 +1069,13 @@ GameEngine& GameEngine::operator=(const GameEngine& engine)
 	players = engine.players;
 	starting = engine.starting;
 	deck = engine.deck;
+	winner = engine.winner;
+	tournamentMaps = engine.tournamentMaps;
+	tournamentPlayers = engine.tournamentPlayers;
+	tournamentGames = engine.tournamentGames;
+	tournamentTurns = engine.tournamentTurns;
+	games = engine.games;
+	tournamentMode = engine.tournamentMode;
 	return *this;
 }
 
@@ -919,6 +1202,10 @@ std::string Enums::transitionsEnumToString(Enums::transitions value)
 	{
 		return "quit";
 	}
+	case Enums::tournament:
+	{
+		return "tournament -M <spaceseperatedlistofmaps> -P <spaceseperatedlistofplayerstrategies> -G <numberofgames> -D <maxnumberofturns>";
+	}
 	}
 
 	return "Error";
@@ -930,6 +1217,7 @@ std::string Enums::transitionsEnumToString(Enums::transitions value)
 void GameEngine::mainGameLoop()
 {
 	bool firstTurn = true;
+	int currentTurn = 1;
 
 	while (currentState->getStateName() != Enums::winState)
 	{
@@ -953,19 +1241,33 @@ void GameEngine::mainGameLoop()
 		execute(new IssueOrderTransition, "");
 		execute(new EndIssueOrdersTransition, "");
 		execute(new ExecOrderTransition, "");
+		currentTurn++;
 
+
+		if (tournamentMode && currentTurn > tournamentTurns) {
+			games.back().push_back("Draw");
+			execute(new WinTransition(), "");
+		}
 
 		//checks if a player won
 		for (int i = 0; i < players.size(); i++)
 		{
 			if (players[i]->getOwnedTerritories().size() == map->Territories.size())
 			{
+				if (tournamentMode) {
+					games.back().push_back(players[i]->getPlayerName());
+				}
 				cout << "-------------------------------------------------------------" << endl;
 				cout << players[i]->getPlayerName() << " is the winner" << endl;
 				winner = true;
 				execute(new WinTransition, "");
 			}
 		}
+	}
+
+	if (tournamentMode) {
+		execute(new PlayTransition(), "");
+		return;
 	}
 
 	cout << "These are the currently available commands: " << endl;
@@ -982,6 +1284,14 @@ void GameEngine::mainGameLoop()
 	cout << "-------------------------------------------------------------" << endl;
 	execute(command);
 	cout << "-------------------------------------------------------------" << endl;
+}
+
+std::vector<std::vector<string>> GameEngine::getGames() {
+	return games;
+}
+
+void GameEngine::addGame(std::vector<string> game) {
+	games.push_back(game);
 }
 
 // method to check if the continent is owned.
