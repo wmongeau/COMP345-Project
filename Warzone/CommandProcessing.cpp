@@ -1,4 +1,5 @@
 #include "Headers/CommandProcessing.h"
+#include "./Headers/MapDriver.h"
 #include <regex>
 #include <fstream>
 
@@ -31,8 +32,10 @@ ostream& operator<<(ostream& out, CommandType commandType)
 	case CommandType::validateMap:
 		out << "Validate Map";
 		break;
+	case CommandType::tournament:
+		out << "Tournament";
+		break;
 	}
-
 	return out;
 }
 
@@ -214,7 +217,7 @@ Command* CommandProcessor::readCommand()
 	getline(cin, commandString);
 	regex loadmapRegex("loadmap .+");
 	regex addplayerRegex("addplayer [a-zA-Z]+");
-	regex tournamentRegex("tournament\s-M\s\S*\s-P\s\S*\s\-G\s[1-5]\s-D\s([1-9]|[1-5][0-9])$");
+	regex tournamentRegex("tournament .+");
 
 	if (commandString == "validatemap")
 		return new Command(CommandType::validateMap, commandString);
@@ -281,9 +284,16 @@ bool CommandProcessor::validate(State* currentState, Command* command)
 		command->saveEffect("effect: The map: " + extractMapFile(command) + " is being loaded.");
 		return true;
 	}
-	else if (command->getCommandType() == CommandType::tournament && (currentState->getStateName() == Enums::states::start)) {
-		command->saveEffect("effect: A tournament is being started.");
-		return true;
+	else if (command->getCommandType() == CommandType::tournament) {
+		vector<string> args = splitString(command->getCommand());
+		vector<string> maps = getTournamentMaps(args);
+		vector<string> players = getTournamentPlayers(args);
+		int numberOfGames = getTournamentNumberOfGames(args);
+		int numberOfTurns = getTournamentMaxNumberOfTurns(args);
+		if (currentState->getStateName() == Enums::states::start && maps.size() >= 1 && maps.size()<=5 && players.size() >= 2 && players.size() <= 4 && numberOfGames >= 1 && numberOfGames <= 5 && numberOfTurns >= 10 && numberOfTurns <= 50) {
+			command->saveEffect("effect: A tournament is being started.");
+			return true;
+		}
 	}
 
 	command->saveEffect("effect: The command: " + command->getCommand() + " was invalid, therefore nothing happened.");
@@ -520,7 +530,7 @@ Command* FileCommandProcessorAdaptor::readCommand()
 	string commandString = flr->readLineFromFile();
 	regex loadmapRegex("loadmap .+");
 	regex addplayerRegex("addplayer [a-zA-Z]+");
-	regex tournamentRegex("tournament\s-M\s\S*\s-P\s\S*\s\-G\s[0-5]\s-D\s([1-9]|[1-5][0-9])$");
+	regex tournamentRegex("tournament .+");
 
 	if (commandString == "validatemap")
 		return new Command(CommandType::validateMap, commandString);
@@ -538,4 +548,96 @@ Command* FileCommandProcessorAdaptor::readCommand()
 		return new Command(CommandType::tournament, commandString);
 
 	return new Command(CommandType::error, commandString);
+}
+
+vector<string> getTournamentMaps(vector<string> args)
+{
+	bool map = false;
+	vector<string> maps;
+
+	for (string str : args) {
+		if (str == "-M") {
+			map = true;
+		}
+		else if (str == "-P" || str == "-G" || str == "-D") {
+			map = false;
+		}
+		else {
+			if (map) {
+				maps.push_back(str);
+			}
+		}
+	}
+
+	return maps;
+}
+
+vector<string> getTournamentPlayers(vector<string> args)
+{
+	bool player = false;
+	vector<string> players;
+
+	for (string str : args) {
+		if (str == "-P") {
+			player = true;
+		}
+		else if (str == "-M" || str == "-G" || str == "-D") {
+			player = false;
+		}
+		else {
+			if (player) {
+				players.push_back(str);
+			}
+		}
+	}
+
+	return players;
+}
+
+int getTournamentNumberOfGames(vector<string> args)
+{
+	bool game = false;
+	int numberOfGames = 0;
+
+	for (string str : args) {
+		if (str == "-G") {
+			game = true;
+		}
+		else if (str == "-M" || str == "-P" || str == "-D") {
+			game = false;
+		}
+		else {
+			if (game) {
+				std::string::size_type sz;
+
+				numberOfGames = std::stoi(str, &sz);
+			}
+		}
+	}
+
+	return numberOfGames;
+}
+
+int getTournamentMaxNumberOfTurns(vector<string> args)
+{
+	bool turn = false;
+	int numberOfTurns = 0;
+
+	for (string str : args) {
+		if (str == "-D") {
+			turn = true;
+		}
+		else if (str == "-M" || str == "-P" || str == "-G") {
+			turn = false;
+		}
+		else {
+			if (turn) {
+				std::string::size_type sz;
+
+				numberOfTurns = std::stoi(str, &sz);
+			}
+		}
+	}
+
+	return numberOfTurns;
 }
