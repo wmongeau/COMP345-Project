@@ -273,11 +273,8 @@ bool AdvanceOrder::execute() {
 				int attackingChance;
 				int attackDeath = 0;
 				int defendingChance;
-				int defendDeath = 0;
-				 struct timespec ts; 
-				 clock_gettime(CLOCK_MONOTONIC, &ts); 
-				 /* using nano-seconds instead of seconds */ 
-				 srand((time_t)ts.tv_nsec); 
+				int defendDeath = 0;  
+				srand(time(nullptr));
 				for (int i = 0; i < numOfArmies; i++) {
 					attackingChance = rand() % 100 + 1;
 					if (attackingChance <= 60){

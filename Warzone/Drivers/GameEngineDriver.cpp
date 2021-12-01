@@ -120,19 +120,16 @@ void startupPhaseDriver(int argc, char* argv[]) {
 	engine = NULL;
 }
 
-void logObserverDriver();
+void StrategyPattern();
 
 // Entry point for the game
 int main(int argc, char *argv[]) {
 	int selectedModule; 
  	do {
  		cout << "Enter the number of the part you would like to test:" << endl; 
- 		cout << "[1] Part 1 Command Processor" << endl; 
+ 		cout << "[1] Part 1  Strategy Pattern" << endl; 
  		cout << "[2] Part 2 Startup Phase" << endl; 
- 		cout << "[3] Part 3 Main Game Loop" << endl; 
- 		cout << "[4] Part 4 Order Execution" << endl; 
- 		cout << "[5] Part 5 Game Log Observer" << endl; 
- 		cout << "[6] Quit" << endl; 
+ 		cout << "[3] Quit" << endl;
 
  		cin >> selectedModule; 
 
@@ -144,72 +141,35 @@ int main(int argc, char *argv[]) {
  		cin.ignore(); 
 
  		if(selectedModule == 1) {
-			commandProcessorDriver(argc, argv);
+			StrategyPattern();
 		}
  		else if(selectedModule == 2) { 
 			startupPhaseDriver(argc, argv);
  		}
- 		else if(selectedModule == 3) { 
-			mainGameLoopDriver();
- 		} 
- 		else if(selectedModule == 4) {
-			ordersDriver();
- 		} 
- 		else if(selectedModule == 5) {
-			logObserverDriver();
- 		}
- 	} while(selectedModule != 6);
+ 	} while(selectedModule != 3);
 
 	return 0;
 }
 
-void logObserverDriver() {
-	CommandProcessor* processor = new CommandProcessor();
-	GameEngine* engine = new GameEngine(processor);
-	bool done = false;
-	int counter = 0;
-	while (engine->getCurrentState()->getStateName() != Enums::assignReinforcement) {
-		cout << "These are the currently available commands: " << endl;
-		for (Transition* transition : engine->getAvailableTransitions())
-		{
-			cout << *transition << endl;
-		}
-		cout << "-------------------------------------------------------------" << endl;
-
-		cout << "Please enter one of the available commands" << endl;
-		processor->getCommand(engine->getCurrentState());
-		Command* command = processor->getCommandList().back();
-		cout << "-------------------------------------------------------------" << endl;
-		engine->execute(command);
-		cout << "-------------------------------------------------------------" << endl;
+void StrategyPattern() {
+	string arg;
+	arg = "StrategyTest.txt";
+	FileCommandProcessorAdaptor* fileProcessor = new FileCommandProcessorAdaptor(arg);
+	GameEngine* engine = new GameEngine(fileProcessor);
+	engine->startupPhase();
+	for (int i = 0; i < engine->getPlayers().size();i++) {
+		if (engine->getPlayers()[i]->getPlayerName() == "Neutral")
+			engine->getPlayers()[0]->changePlayerType(PlayerType::neutral);
+		else if (engine->getPlayers()[i]->getPlayerName() == "Benevolent")
+			engine->getPlayers()[1]->changePlayerType(PlayerType::benevolent);
+		else if (engine->getPlayers()[i]->getPlayerName() == "Human")
+			engine->getPlayers()[2]->changePlayerType(PlayerType::human);
+		else if (engine->getPlayers()[i]->getPlayerName() == "Aggressive")
+			engine->getPlayers()[3]->changePlayerType(PlayerType::aggressive);
+		else if (engine->getPlayers()[i]->getPlayerName() == "Cheater")
+			engine->getPlayers()[4]->changePlayerType(PlayerType::cheater);
 	}
-	for (int i = 0; i < engine->getPlayers().size(); i++) {
-		engine->getPlayers()[i]->setEnemies(engine->getPlayers());
-		engine->getPlayers()[i]->setIsTurnFinish(false);
-		engine->getPlayers()[i]->toDefend();
-		engine->getPlayers()[i]->toAttack();
-	}
-	engine->getPlayers()[0]->changePlayerType(PlayerType::neutral);
-	while (!done) {
-		for (int i = 0; i < engine->getPlayers().size(); i++) {
-			if (!engine->getPlayers()[i]->getIsTurnFinish())
-				engine->getPlayers()[i]->issueOrder();
-			else
-				counter++;
-		}
-		if (counter == engine->getPlayers().size())
-		{
-			done = true;
-		}
-		else {
-			counter = 0;
-		}
-	}
-	done = false;
-	for (int i = 0; i < engine->getPlayers().size(); i++) {
-		for (int j = 0; j < engine->getPlayers()[i]->getOrders()->getOrdersVector().size(); j++)
-			engine->getPlayers()[i]->getOrders()->getOrdersVector()[j]->execute();
-	}
+	engine->mainGameLoop();
 	delete engine;
 	engine = NULL;
 }
