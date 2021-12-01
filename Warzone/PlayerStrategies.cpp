@@ -309,10 +309,9 @@ NeutralPlayerStrategy &NeutralPlayerStrategy::operator=(const NeutralPlayerStrat
 
 void NeutralPlayerStrategy::issueOrder()
 {
-	//IMPORTANT
-	//Somewhere we must check if the neutral player has been attacked (idk if it's in this method or not)
-	//If they have been attacked, we can simply change them to an aggressive player like so:
-	//player->changePlayerType(PlayerType::aggressive)
+	cout << "\nPlayer " << player->getPlayerName() << "'s turn" << endl;
+	cout << "\nPlayer " << player->getPlayerName() << "  is standing by." << endl;
+	player->setIsTurnFinish(true);
 }
 
 vector<Territory *> NeutralPlayerStrategy::toAttack()
@@ -468,11 +467,8 @@ BenevolentPlayerStrategy &BenevolentPlayerStrategy::operator=(const BenevolentPl
 
 void BenevolentPlayerStrategy::issueOrder()
 {
-	int territoryChoice, territoryChoice2, cardChoice;
+	int territoryChoice;
 	int armyChoice;
-	int playerInput = 0;
-	int advanceChoice;
-	vector<Card *> cards;
 	cout << "\nPlayer " << player->getPlayerName() << "'s turn" << endl;
 	//Deploying phase. Shows all the territories that the user owns and can deploy to.
 	//As long as the player has armies still to deploy (see startup phase and reinforcement phase), it will issue a deploy order and no other order.
@@ -496,70 +492,7 @@ void BenevolentPlayerStrategy::issueOrder()
 			player->setReinforcementPool(0);
 		return;
 	}
-	//Players issues advance orders to either attack their neighboring enemies or deploy to their neighboring owned territories
-	cout << "Which action would you like to do?" << endl;
-	cout << "[0] Advance [1]Play a card [2]End turn" << endl;
-	playerInput = 2;
-	if (playerInput == 0)
-	{
-		cout << "Would you like your advance order to Attack[0] or Defend[1]?";
-		cin >> advanceChoice;
-		if (advanceChoice == 0)
-		{
-			cout << "These are the territories that you can advance to attack" << endl;
-			for (int i = 0; i < player->getToAttack().size(); i++)
-			{
-				cout << i << " " << player->getToAttack()[i]->getName() << " " << player->getToAttack()[i]->getArmyValue() << endl;
-			}
-			cout << "Which territory do you want to advance armies to attack? " << endl;
-			cin >> territoryChoice;
-		}
-		if (advanceChoice == 1)
-		{
-			cout << "These are the territories that you can advance to defend" << endl;
-			for (int i = 0; i < player->getToDefend().size(); i++)
-			{
-				cout << i << " " << player->getToDefend()[i]->getName() << " " << player->getToDefend()[i]->getArmyValue() << endl;
-			}
-			cout << "Which territory do you want to advance armies to?" << endl;
-			cin >> territoryChoice;
-		}
-		cout << "These are the territories that you can take armies from" << endl;
-		for (int i = 0; i < player->getOwnedTerritories().size(); i++)
-		{
-			cout << i << " " << player->getOwnedTerritories()[i]->getName() << " " << player->getOwnedTerritories()[i]->getArmyValue() << endl;
-		}
-		cout << "Which territory do you want to take armies from?" << endl;
-		cin >> territoryChoice2;
-		cout << "How many armies would you like to advance of " << player->getOwnedTerritories()[territoryChoice2]->getArmyValue() << " armies ?";
-		cin >> armyChoice;
-		if (advanceChoice == 0)
-		{
-			player->getOrders()->addOrder(new AdvanceOrder(*player, *(player->getOwnedTerritories())[territoryChoice2], *player->getToAttack()[territoryChoice], armyChoice));
-		}
-		else if (advanceChoice == 1)
-		{
-			player->getOrders()->addOrder(new AdvanceOrder(*player, *(player->getOwnedTerritories())[territoryChoice2], *player->getToDefend()[territoryChoice], armyChoice));
-		}
-	}
-	else if (playerInput == 1)
-	{
-		// The player uses one of the cards in their hand to issue an order that corresponds to the card in question
-		cout << "Here's the cards in hand:" << endl;
-		cards = player->getPlayerHand()->getPlayerHand();
-		for (int i = 0; i < cards.size(); i++)
-		{
-			cout << i << ' ' << cards[i]->getCardType() << endl;
-		}
-		cout << "Which card do you want to play?" << endl;
-		cin >> cardChoice;
-		cards[cardChoice]->setCardParameter(player);
-		if (cards[cardChoice]->getCardType() == "Diplomacy" || cards[cardChoice]->getCardType() == "Blockade")
-			cards[cardChoice]->playerList = player->getEnemies();
-		player->getOrders()->addOrder(cards[cardChoice]->play());
-	}
-	else if (playerInput == 2)
-		player->setIsTurnFinish(true);
+	player->setIsTurnFinish(true);
 }
 
 vector<Territory *> BenevolentPlayerStrategy::toAttack()

@@ -108,7 +108,8 @@ void startupPhaseDriver(int argc, char* argv[]) {
 		processor = new FileCommandProcessorAdaptor(argv[2]);
 	}
 	else {
-		cout << "You did not valid command line arguments when starting Warzone!" << endl;
+		processor = new CommandProcessor();
+		//cout << "You did not valid command line arguments when starting Warzone!" << endl;
 	}
 
 	GameEngine* engine;
@@ -188,6 +189,7 @@ void logObserverDriver() {
 		engine->getPlayers()[i]->toDefend();
 		engine->getPlayers()[i]->toAttack();
 	}
+	engine->getPlayers()[0]->changePlayerType(PlayerType::neutral);
 	while (!done) {
 		for (int i = 0; i < engine->getPlayers().size(); i++) {
 			if (!engine->getPlayers()[i]->getIsTurnFinish())

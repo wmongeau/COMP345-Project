@@ -338,6 +338,11 @@ void Territory::addToArmy(int val)
 
 void Territory::removeFromArmy(int val)
 {
+    if (player->getPlayerType() == PlayerType::neutral)
+    {
+        player->changePlayerType(PlayerType::aggressive);
+        cout << "Player " << player->getPlayerName() << " has been attack and now turn aggressive. Be careful!" << endl;
+    }
 	armyValue -= val;
 	if (armyValue < 0)
 		armyValue = 0;
