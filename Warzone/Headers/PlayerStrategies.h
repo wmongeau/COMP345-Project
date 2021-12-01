@@ -10,7 +10,7 @@ class PlayerStrategy {
 public:
 	PlayerStrategy();
 	PlayerStrategy(Player* player);
-	~PlayerStrategy();
+	virtual ~PlayerStrategy();
 	PlayerStrategy(const PlayerStrategy& c);
 	PlayerStrategy& operator=(const PlayerStrategy& c);
 	friend ostream& operator<<(ostream& out, const PlayerStrategy& c);

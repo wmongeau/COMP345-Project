@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <string>
+#include <time.h> 
 
 using namespace std;
 #include "./Headers/Orders.h"
@@ -268,31 +269,35 @@ bool AdvanceOrder::execute() {
 					break;
 				}
 			}
-
 			if (canAttack) {
 				int attackingChance;
 				int attackDeath = 0;
 				int defendingChance;
 				int defendDeath = 0;
+				 struct timespec ts; 
+				 clock_gettime(CLOCK_MONOTONIC, &ts); 
+				 /* using nano-seconds instead of seconds */ 
+				 srand((time_t)ts.tv_nsec); 
 				for (int i = 0; i < numOfArmies; i++) {
 					attackingChance = rand() % 100 + 1;
 					if (attackingChance <= 60){
-						defendDeath++;
+						attackDeath++;
 					}
 				}
 
 				for (int i = 0; i < _targetedTerritory->getArmyValue(); i++) {
 					defendingChance = rand() % 100 + 1;
 					if (defendingChance <= 70) {
-						attackDeath++;
+						defendDeath++;
 					}
 				}
 				_targetedTerritory->removeFromArmy(defendDeath);
+				numOfArmies -= attackDeath;
 				if (_targetedTerritory->getArmyValue() == 0) {
 					_targetedTerritory->removePlayer();
 					_playerIssuingOrder->addOwnedTerritory(_targetedTerritory);
-					_targetedTerritory->updateArmyValue(numOfArmies-attackDeath);
-					_sourceTerritory->removeFromArmy(numOfArmies);
+					_targetedTerritory->updateArmyValue(numOfArmies);
+					_sourceTerritory->removeFromArmy(numOfArmies+attackDeath);
 					effect = _playerIssuingOrder->getPlayerName() + " attacked and conquered " + _targetedTerritory->getName();
 				}
 				else {
@@ -505,20 +510,20 @@ bool BlockadeOrder::execute() {
 		bool neutralPlayerExists = false;
 		//check if Neutral player already exists
 		for (int i = 0; i < _playerList.size(); i++) {
-			if (_playerList[i]->getPlayerName() == "Neutral") {
+			if (_playerList[i]->getPlayerType() == PlayerType::neutral) {
 				neutralPlayerExists = true;
 				break;
 			}
 		}
 		
 		if (!neutralPlayerExists) {
-			_playerList.push_back(new Player("Neutral"));
+			_playerList.push_back(new Player("Neutral", PlayerType::neutral));
 		}
 
 		// Transferring ownership of territory from playerIssuingOrder to Neutral Player
 		_playerIssuingOrder->removeOwnedTerritory(_targetedTerritory);
 		for (int i = 0; i < _playerList.size(); i++) {
-			if (_playerList[i]->getPlayerName() == "Neutral") {
+			if (_playerList[i]->getPlayerType() == PlayerType::neutral) {
 				_playerList[i]->addOwnedTerritory(_targetedTerritory);
 				break;
 			}
@@ -682,7 +687,7 @@ bool NegotiateOrder::validate() {
 
 // Execute Negotiate order if valid
 // --> Targets an enemy player
-// --> Results in the target player and the player issuing the order to not be able to successfully attack each others’ territories for the remainder of the turn
+// --> Results in the target player and the player issuing the order to not be able to successfully attack each othersï¿½ territories for the remainder of the turn
 // --> Created by playing the diplomacy card
 bool NegotiateOrder::execute() {
 	cout << "Executing Negotiate order..." << endl;
