@@ -182,7 +182,7 @@ string CardTypeEnums::cardTypeEnumToString(CardTypeEnums::cardType value){
 Deck::Deck()
 {
 CardTypeEnums::cardType typelist[] ={CardTypeEnums::Bomb,CardTypeEnums::Reinforcement,CardTypeEnums::Blockade,CardTypeEnums::Airlift,CardTypeEnums::Diplomacy};
-    const int CARDS = 50;
+    const int CARDS = 500;
     for (int count = 0; count < CARDS; count++)
     {
         deckOfCards.push_back(new Card(typelist[count % 5]));

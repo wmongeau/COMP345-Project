@@ -681,7 +681,8 @@ void BenevolentPlayerStrategy::issueOrder()
 	territoryChoice = 0;
 	armyChoice = player->getReinforcementPool();
 	cout << "Player chose to reinforce it's weakest territory with " << armyChoice << " armies!!" << endl;
-	player->getOrders()->addOrder(new DeployOrder(*player, *(player->getToDefend())[territoryChoice], armyChoice));
+	if(player -> getToDefend().size() > 0)
+		player->getOrders()->addOrder(new DeployOrder(*player, *(player->getToDefend())[territoryChoice], armyChoice));
 	player->setReinforcementPool(player->getReinforcementPool() - armyChoice);
 	if (player->getReinforcementPool() < 0)
 		player->setReinforcementPool(0);
