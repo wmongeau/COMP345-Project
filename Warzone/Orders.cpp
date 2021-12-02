@@ -244,6 +244,13 @@ bool AdvanceOrder::validate() {
 // --> Tells a certain number of army units to move from a source territory to a target adjacent territory
 bool AdvanceOrder::execute() {
 	cout << "Executing Advance order..." << endl;
+	if (_playerIssuingOrder->getPlayerType() == PlayerType::cheater) {
+		effect = "\nPlayer " + _playerIssuingOrder->getPlayerName() + " cheated and conquered " + _targetedTerritory->getName() +'\n';
+		_targetedTerritory->removePlayer();
+		_playerIssuingOrder->addOwnedTerritory(_targetedTerritory);
+		Order::execute();
+		return true;
+	}
 	if (validate()) {
 		bool isTerritoryOwned = false;
 		for (int i = 0; i < _playerIssuingOrder->getOwnedTerritories().size(); i++) {

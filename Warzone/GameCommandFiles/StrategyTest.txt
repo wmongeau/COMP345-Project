@@ -1,4 +1,4 @@
-loadmap test.map
+loadmap canada.map
 validatemap
 addplayer Neutral
 addplayer Benevolent
