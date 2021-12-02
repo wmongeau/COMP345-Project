@@ -6,25 +6,44 @@ using std::cout;
 #include "Headers/Orders.h"
 #include "Headers/Cards.h"
 
+/// <summary>
+/// Default constructor for PlayerStrategy class
+/// </summary>
 PlayerStrategy::PlayerStrategy()
 {
 	player = NULL;
 }
 
+/// <summary>
+/// Parameterized constructor for PlayerStrategy class taking a Player*
+/// </summary>
+/// <param name="player">The player this strategy belongs to</param>
 PlayerStrategy::PlayerStrategy(Player *player)
 {
 	this->player = player;
 }
 
+/// <summary>
+/// Dextructor for the PlayerStrategy class
+/// </summary>
 PlayerStrategy::~PlayerStrategy()
 {
 }
 
+/// <summary>
+/// Copy constructor for the PlayerStrategy class
+/// </summary>
+/// <param name="c">The PlayerStrategy being copied</param>
 PlayerStrategy::PlayerStrategy(const PlayerStrategy &c)
 {
 	player = c.player;
 }
 
+/// <summary>
+/// Overloaded = operator for the PlayerStrategy class
+/// </summary>
+/// <param name="c">The PlayerStrategy being assigned</param>
+/// <returns>A new PlayerStrategy identical to c</returns>
 PlayerStrategy &PlayerStrategy::operator=(const PlayerStrategy &c)
 {
 	player = c.player;
@@ -32,6 +51,12 @@ PlayerStrategy &PlayerStrategy::operator=(const PlayerStrategy &c)
 	return *this;
 }
 
+/// <summary>
+/// Stream insertion operator overload for the PlayerStrategy class
+/// </summary>
+/// <param name="out"></param>
+/// <param name="c"></param>
+/// <returns></returns>
 ostream &operator<<(ostream &out, const PlayerStrategy &c)
 {
 	out << "Player strategy for player: " << c.player->getPlayerName();
@@ -39,59 +64,112 @@ ostream &operator<<(ostream &out, const PlayerStrategy &c)
 	return out;
 }
 
+/// <summary>
+/// Stream insertion operator overload for the HumanPlayerStrategy class
+/// </summary>
+/// <param name="out"></param>
+/// <param name="c"></param>
+/// <returns></returns>
 ostream &operator<<(ostream &out, const HumanPlayerStrategy &c)
 {
 	out << "Human player strategy for player: " << c.player->getPlayerName();
 	return out;
 }
 
+/// <summary>
+/// Stream insertion operator overload for the CheaterPlayerStrategy class
+/// </summary>
+/// <param name="out"></param>
+/// <param name="c"></param>
+/// <returns></returns>
 ostream &operator<<(ostream &out, const CheaterPlayerStrategy &c)
 {
 	out << "Cheater player strategy for player: " << c.player->getPlayerName();
 	return out;
 }
 
+/// <summary>
+/// Stream insertion operator overload for the NeutralPlayerStrategy class
+/// </summary>
+/// <param name="out"></param>
+/// <param name="c"></param>
+/// <returns></returns>
 ostream &operator<<(ostream &out, const NeutralPlayerStrategy &c)
 {
 	out << "Neutral player strategy for player: " << c.player->getPlayerName();
 	return out;
 }
 
+/// <summary>
+/// Stream insertion operator overload for the AggressivePlayerStrategy class
+/// </summary>
+/// <param name="out"></param>
+/// <param name="c"></param>
+/// <returns></returns>
 ostream &operator<<(ostream &out, const AggressivePlayerStrategy &c)
 {
 	out << "Aggressive player strategy for player: " << c.player->getPlayerName();
 	return out;
 }
 
+/// <summary>
+/// Stream insertion operator overload for the BenevolentPlayerStrategy class
+/// </summary>
+/// <param name="out"></param>
+/// <param name="c"></param>
+/// <returns></returns>
 ostream &operator<<(ostream &out, const BenevolentPlayerStrategy &c)
 {
 	out << "Benevolent player strategy for player: " << c.player->getPlayerName();
 	return out;
 }
 
+/// <summary>
+/// Default constructor for HumanPlayerStrategy
+/// </summary>
 HumanPlayerStrategy::HumanPlayerStrategy()
 {
 }
 
+/// <summary>
+/// Parameterized constructor for the HumanPlayerStrategy class
+/// </summary>
+/// <param name="player"></param>
 HumanPlayerStrategy::HumanPlayerStrategy(Player *player) : PlayerStrategy(player)
 {
 }
 
+/// <summary>
+/// Destructor for the HumanPlayerStrategy
+/// </summary>
+/// <param name="player"></param>
 HumanPlayerStrategy::~HumanPlayerStrategy()
 {
 }
 
-HumanPlayerStrategy::HumanPlayerStrategy(const PlayerStrategy &c)
+/// <summary>
+/// Copy constructor for the HumanPlayerStrategy class
+/// </summary>
+/// <param name="c">The HumanPlayerStrategy being copied</param>
+HumanPlayerStrategy::HumanPlayerStrategy(const HumanPlayerStrategy&c)
 {
 	player = c.player;
 }
 
+/// <summary>
+/// Overloaded = operator for the HumanPlayerStrategy class
+/// </summary>
+/// <param name="c">The HumanPlayerStrategy being assigned</param>
+/// <returns>A new HumanPlayerStrategy identical to c</returns>
 HumanPlayerStrategy &HumanPlayerStrategy::operator=(const HumanPlayerStrategy &c)
 {
 	player = c.player;
 	return *this;
 }
 
+/// <summary>
+/// Issue an order as a Human player
+/// </summary>
 void HumanPlayerStrategy::issueOrder()
 {
 	int territoryChoice, territoryChoice2, cardChoice;
@@ -186,6 +264,10 @@ void HumanPlayerStrategy::issueOrder()
 		player->setIsTurnFinish(true);
 }
 
+/// <summary>
+/// Get's the territories that the Human player can attack
+/// </summary>
+/// <returns>The territories the player can attack</returns>
 vector<Territory *> HumanPlayerStrategy::toAttack()
 {
 	vector<Territory *> territoryList = *new vector<Territory *>();
@@ -200,6 +282,10 @@ vector<Territory *> HumanPlayerStrategy::toAttack()
 	return player->getToAttack();
 }
 
+/// <summary>
+/// Get's the territories that the Human player can defend
+/// </summary>
+/// <returns>The territories the player can defend</returns>
 vector<Territory *> HumanPlayerStrategy::toDefend()
 {
 	vector<Territory *> territoryList = *new vector<Territory *>();
@@ -212,30 +298,52 @@ vector<Territory *> HumanPlayerStrategy::toDefend()
 	return player->getToDefend();
 }
 
+/// <summary>
+/// Default constructor for CheaterPlayerStrategy
+/// </summary>
 CheaterPlayerStrategy::CheaterPlayerStrategy()
 {
 }
 
+/// <summary>
+/// Parameterized constructor for the CheaterPlayerStrategy that takes in a player
+/// </summary>
+/// <param name="player">The player who belongs to this strategy</param>
 CheaterPlayerStrategy::CheaterPlayerStrategy(Player *player) : PlayerStrategy(player)
 {
 	this->player = player;
 }
 
+/// <summary>
+/// Destructor for the CheaterPlayerStrategy
+/// </summary>
 CheaterPlayerStrategy::~CheaterPlayerStrategy()
 {
 }
 
+/// <summary>
+/// Copy constructor for the CheaterPlayerStrategy
+/// </summary>
+/// <param name="c">The CheaterPlayerStrategy being copied</param>
 CheaterPlayerStrategy::CheaterPlayerStrategy(const CheaterPlayerStrategy &c)
 {
 	player = c.player;
 }
 
+/// <summary>
+/// Overloaded = operator for the CheaterPlayerStrategy class
+/// </summary>
+/// <param name="c">The CheaterPlayerStrategy being assigned</param>
+/// <returns>A new CheaterPlayerStrategy identical to c</returns>
 CheaterPlayerStrategy &CheaterPlayerStrategy::operator=(const CheaterPlayerStrategy &c)
 {
 	player = c.player;
 	return *this;
 }
 
+/// <summary>
+/// Issue an order as a Cheater player
+/// </summary>
 void CheaterPlayerStrategy::issueOrder()
 {
 	cout << "\nPlayer " << player->getPlayerName() << "'s turn" << endl;
@@ -248,6 +356,10 @@ void CheaterPlayerStrategy::issueOrder()
 	player->setIsTurnFinish(true);
 }
 
+/// <summary>
+/// Get's the territories that the Cheater player can attack
+/// </summary>
+/// <returns>The territories the player can attack</returns>
 vector<Territory *> CheaterPlayerStrategy::toAttack()
 {
 	vector<Territory *> territoryList = *new vector<Territory *>();
@@ -262,6 +374,10 @@ vector<Territory *> CheaterPlayerStrategy::toAttack()
 	return player->getToAttack();
 }
 
+/// <summary>
+/// Get's the territories that the Cheater player can defend
+/// </summary>
+/// <returns>The territories the player can defend</returns>
 vector<Territory *> CheaterPlayerStrategy::toDefend()
 {
 	vector<Territory *> territoryList = *new vector<Territory *>();
@@ -274,30 +390,52 @@ vector<Territory *> CheaterPlayerStrategy::toDefend()
 	return player->getToDefend();
 }
 
+/// <summary>
+/// Default constructor for NeutralPlayerStrategy
+/// </summary>
 NeutralPlayerStrategy::NeutralPlayerStrategy()
 {
 }
 
+/// <summary>
+/// Parameterized constructor for the NeutralPlayerStrategy that takes in a player
+/// </summary>
+/// <param name="player">The player using the strategy</param>
 NeutralPlayerStrategy::NeutralPlayerStrategy(Player *player) : PlayerStrategy(player)
 {
 	this->player = player;
 }
 
+/// <summary>
+/// Destructor for the NeutralPlayerStrategy
+/// </summary>
 NeutralPlayerStrategy::~NeutralPlayerStrategy()
 {
 }
 
+/// <summary>
+/// Copy constructor for the NeutralPlayerStrategy
+/// </summary>
+/// <param name="c">The NeutralPlayerStrategy being copied</param>
 NeutralPlayerStrategy::NeutralPlayerStrategy(const NeutralPlayerStrategy &c)
 {
 	player = c.player;
 }
 
+/// <summary>
+/// Overloaded = operator for the NeutralPlayerStrategy class
+/// </summary>
+/// <param name="c">The NeutralPlayerStrategy being assigned</param>
+/// <returns>A new NeutralPlayerStrategy identical to c</returns>
 NeutralPlayerStrategy &NeutralPlayerStrategy::operator=(const NeutralPlayerStrategy &c)
 {
 	player = c.player;
 	return *this;
 }
 
+/// <summary>
+/// Issue an order as a Neutral player
+/// </summary>
 void NeutralPlayerStrategy::issueOrder()
 {
 	cout << "\nPlayer " << player->getPlayerName() << "'s turn" << endl;
@@ -310,11 +448,19 @@ void NeutralPlayerStrategy::issueOrder()
 	player->setIsTurnFinish(true);
 }
 
+/// <summary>
+/// Get's the territories that the Neutral player can attack
+/// </summary>
+/// <returns>The territories the player can attack</returns>
 vector<Territory *> NeutralPlayerStrategy::toAttack()
 {
 	return vector<Territory *>();
 }
 
+/// <summary>
+/// Get's the territories that the Neutral player can defend
+/// </summary>
+/// <returns>The territories the player can defend</returns>
 vector<Territory *> NeutralPlayerStrategy::toDefend()
 {
 	vector<Territory*> territoryList = *new vector<Territory*>();
@@ -327,30 +473,52 @@ vector<Territory *> NeutralPlayerStrategy::toDefend()
 	return player->getToDefend();
 }
 
+/// <summary>
+/// Default constructor for AggressivePlayerStrategy
+/// </summary>
 AggressivePlayerStrategy::AggressivePlayerStrategy()
 {
 }
 
+/// <summary>
+/// Parameterized constructor for the AggrssivePlayerStrategy taking in a player
+/// </summary>
+/// <param name="player">The player using the strategy</param>
 AggressivePlayerStrategy::AggressivePlayerStrategy(Player *player) : PlayerStrategy(player)
 {
 	this->player = player;
 }
 
+/// <summary>
+/// Destructor for AggressivePlayerStrategy
+/// </summary>
 AggressivePlayerStrategy::~AggressivePlayerStrategy()
 {
 }
 
+/// <summary>
+/// Copy constructor for AggressivePlayerStrategy
+/// </summary>
+/// <param name="c">The AggressivePlayerStrategy being copied</param>
 AggressivePlayerStrategy::AggressivePlayerStrategy(const AggressivePlayerStrategy &c)
 {
 	player = c.player;
 }
 
+/// <summary>
+/// Overloaded = operator for the AggressivePlayerStrategy class
+/// </summary>
+/// <param name="c">The AggressivePlayerStrategy being assigned</param>
+/// <returns>A new AggressivePlayerStrategy identical to c</returns>
 AggressivePlayerStrategy &AggressivePlayerStrategy::operator=(const AggressivePlayerStrategy &c)
 {
 	player = c.player;
 	return *this;
 }
 
+/// <summary>
+/// Issue an order as a Aggressive player
+/// </summary>
 void AggressivePlayerStrategy::issueOrder()
 {
 	int territoryChoice, territoryChoice2, cardChoice;
@@ -414,6 +582,10 @@ void AggressivePlayerStrategy::issueOrder()
 	player->setIsTurnFinish(true);
 }
 
+/// <summary>
+/// Get's the territories that the Aggressive player can attack
+/// </summary>
+/// <returns>The territories the player can attack</returns>
 vector<Territory *> AggressivePlayerStrategy::toAttack()
 {
 	vector<Territory *> territoryList = *new vector<Territory *>();
@@ -425,6 +597,10 @@ vector<Territory *> AggressivePlayerStrategy::toAttack()
 	return player->getToAttack();
 }
 
+/// <summary>
+/// Get's the territories that the Aggressive player can defend
+/// </summary>
+/// <returns>The territories the player can defend</returns>
 vector<Territory *> AggressivePlayerStrategy::toDefend()
 {
 	vector<Territory *> territoryList = *new vector<Territory *>();
@@ -446,30 +622,52 @@ vector<Territory *> AggressivePlayerStrategy::toDefend()
 	return player->getToDefend();
 }
 
+/// <summary>
+/// Default constructor for BenevolentPlayerStrategy
+/// </summary>
 BenevolentPlayerStrategy::BenevolentPlayerStrategy()
 {
 }
 
+/// <summary>
+/// Parameterized constructor for BenevolentPlayerStrategy taking in a Player*
+/// </summary>
+/// <param name="player">The Player using the BenevolentPlayerStrategy</param>
 BenevolentPlayerStrategy::BenevolentPlayerStrategy(Player *player) : PlayerStrategy(player)
 {
 	this->player = player;
 }
 
+/// <summary>
+/// Destructor for the BenevolentPlayerStrategy
+/// </summary>
 BenevolentPlayerStrategy::~BenevolentPlayerStrategy()
 {
 }
 
+/// <summary>
+/// Copy constructor for the BenevolentPlayerStrategy
+/// </summary>
+/// <param name="c">The BenevolentPlayerStrategy being copied</param>
 BenevolentPlayerStrategy::BenevolentPlayerStrategy(const BenevolentPlayerStrategy &c)
 {
 	player = c.player;
 }
 
+/// <summary>
+/// Overloaded = operator for the BenevolentPlayerStrategy class
+/// </summary>
+/// <param name="c">The BenevolentPlayerStrategy being assigned</param>
+/// <returns>A new BenevolentPlayerStrategy identical to c</returns>
 BenevolentPlayerStrategy &BenevolentPlayerStrategy::operator=(const BenevolentPlayerStrategy &c)
 {
 	player = c.player;
 	return *this;
 }
 
+/// <summary>
+/// Issue an order as a Benevolent player
+/// </summary>
 void BenevolentPlayerStrategy::issueOrder()
 {
 	int territoryChoice;
@@ -490,6 +688,10 @@ void BenevolentPlayerStrategy::issueOrder()
 	player->setIsTurnFinish(true);
 }
 
+/// <summary>
+/// Get's the territories that the Benevolent player can attack
+/// </summary>
+/// <returns>The territories the player can attack</returns>
 vector<Territory *> BenevolentPlayerStrategy::toAttack()
 {
 	vector<Territory *> territoryList = *new vector<Territory *>();
@@ -497,6 +699,10 @@ vector<Territory *> BenevolentPlayerStrategy::toAttack()
 	return player->getToAttack();
 }
 
+/// <summary>
+/// Get's the territories that the Benevolent player can defend
+/// </summary>
+/// <returns>The territories the player can defend</returns>
 vector<Territory *> BenevolentPlayerStrategy::toDefend()
 {
 	vector<Territory *> territoryList = *new vector<Territory *>();
