@@ -244,6 +244,13 @@ bool AdvanceOrder::validate() {
 // --> Tells a certain number of army units to move from a source territory to a target adjacent territory
 bool AdvanceOrder::execute() {
 	cout << "Executing Advance order..." << endl;
+	if (_playerIssuingOrder->getPlayerType() == PlayerType::cheater) {
+		effect = "\nPlayer " + _playerIssuingOrder->getPlayerName() + " cheated and conquered " + _targetedTerritory->getName() +'\n';
+		_targetedTerritory->removePlayer();
+		_playerIssuingOrder->addOwnedTerritory(_targetedTerritory);
+		Order::execute();
+		return true;
+	}
 	if (validate()) {
 		bool isTerritoryOwned = false;
 		for (int i = 0; i < _playerIssuingOrder->getOwnedTerritories().size(); i++) {
@@ -273,11 +280,8 @@ bool AdvanceOrder::execute() {
 				int attackingChance;
 				int attackDeath = 0;
 				int defendingChance;
-				int defendDeath = 0;
-				 struct timespec ts; 
-				 clock_gettime(CLOCK_MONOTONIC, &ts); 
-				 /* using nano-seconds instead of seconds */ 
-				 srand((time_t)ts.tv_nsec); 
+				int defendDeath = 0;  
+				srand(time(nullptr));
 				for (int i = 0; i < numOfArmies; i++) {
 					attackingChance = rand() % 100 + 1;
 					if (attackingChance <= 60){

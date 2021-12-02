@@ -1,0 +1,9 @@
+loadmap canada.map
+validatemap
+addplayer Neutral
+addplayer Benevolent
+addplayer Human
+addplayer Aggressive
+addplayer Cheater
+gamestart
+quit
