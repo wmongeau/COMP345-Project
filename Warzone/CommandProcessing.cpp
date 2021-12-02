@@ -550,6 +550,11 @@ Command* FileCommandProcessorAdaptor::readCommand()
 	return new Command(CommandType::error, commandString);
 }
 
+/// <summary>
+/// This method returns the values passed in for maps in the tournament command to then validate that command
+/// </summary>
+/// <param name="args">String tokens from the tournament command</param>
+/// <returns>A vector of strings representing the maps to be used in the tournament</returns>
 vector<string> getTournamentMaps(vector<string> args)
 {
 	bool map = false;
@@ -572,6 +577,12 @@ vector<string> getTournamentMaps(vector<string> args)
 	return maps;
 }
 
+/// <summary>
+/// This method returns the values passed in for player strategies in the 
+/// tournament command to then validate that command
+/// </summary>
+/// <param name="args">String tokens from the tournament command</param>
+/// <returns>A vector of strings representing the player strategies to be used in the tournament</returns>
 vector<string> getTournamentPlayers(vector<string> args)
 {
 	bool player = false;
@@ -594,6 +605,12 @@ vector<string> getTournamentPlayers(vector<string> args)
 	return players;
 }
 
+/// <summary>
+/// This method returns the value passed in for the number of games in the 
+/// tournament command to then validate that command
+/// </summary>
+/// <param name="args">String tokens from the tournament command</param>
+/// <returns>An integer representing the number of games to be used in the tournament</returns>
 int getTournamentNumberOfGames(vector<string> args)
 {
 	bool game = false;
@@ -618,6 +635,12 @@ int getTournamentNumberOfGames(vector<string> args)
 	return numberOfGames;
 }
 
+/// <summary>
+/// This method returns the value passed in for the maximum number of turns in the 
+/// tournament command to then validate that command
+/// </summary>
+/// <param name="args">String tokens from the tournament command</param>
+/// <returns>An integer representing the maximum number of turns to be used in the tournament</returns>
 int getTournamentMaxNumberOfTurns(vector<string> args)
 {
 	bool turn = false;

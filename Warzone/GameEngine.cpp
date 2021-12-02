@@ -473,19 +473,19 @@ EndTransition& EndTransition::operator=(const EndTransition& endTransition)
 	return *this;
 }
 
-//Default constructor for the EndTransition class
+//Default constructor for the TournamentTransition class
 TournamentTransition::TournamentTransition() : Transition(Enums::tournament)
 {
 	nextState = new State(Enums::quit);
 }
 
-//Copy constructor for the EndTransition class
+//Copy constructor for the TournamentTransition class
 TournamentTransition::TournamentTransition(const TournamentTransition& tournamentTransition) : Transition(tournamentTransition)
 {
 	nextState = tournamentTransition.nextState;
 }
 
-//Method that executes the EndTransition
+//Method that executes the TournamentTransition 
 void TournamentTransition::execute(string args, GameEngine* engine)
 {
 	cout << "Starting Tournament" << endl;
@@ -509,6 +509,7 @@ void TournamentTransition::execute(string args, GameEngine* engine)
 	notify(this);
 }
 
+// This method sotres the results of a tournament in a string in the transition that can then be used for logging
 void TournamentTransition::storeTournamentResults(GameEngine* engine)
 {
 	string tournamentResultsString = "";
@@ -573,11 +574,12 @@ void TournamentTransition::storeTournamentResults(GameEngine* engine)
 	tournamentResults = tournamentResultsString;
 }
 
+// This method logs the results of a tournament
 string TournamentTransition::stringToLog() {
 	return tournamentResults;
 }
 
-//Assignment operator override for the EndTransition class
+//Assignment operator override for the TournamentTransition class
 TournamentTransition& TournamentTransition::operator=(const TournamentTransition& tournamentTransition)
 {
 	transitionName = tournamentTransition.transitionName;
@@ -867,6 +869,7 @@ void GameEngine::execute(Command* command)
 	}
 }
 
+//This method extracts the maps from a tournament command
 vector<string> GameEngine::getTournamentMaps(vector<string> args)
 {
 	bool map = false;
@@ -889,6 +892,7 @@ vector<string> GameEngine::getTournamentMaps(vector<string> args)
 	return maps;
 }
 
+//This method extracts the player strategies from a tournament command
 vector<string> GameEngine::getTournamentPlayers(vector<string> args)
 {
 	bool player = false;
@@ -911,6 +915,7 @@ vector<string> GameEngine::getTournamentPlayers(vector<string> args)
 	return players;
 }
 
+//This method extracts the number of games to be played per map from a tournament command
 int GameEngine::getTournamentNumberOfGames(vector<string> args)
 {
 	bool game = false;
@@ -935,6 +940,7 @@ int GameEngine::getTournamentNumberOfGames(vector<string> args)
 	return numberOfGames;
 }
 
+//This method extracts the maximum number of turns to be played per game from a tournament command
 int GameEngine::getTournamentMaxNumberOfTurns(vector<string> args)
 {
 	bool turn = false;
@@ -959,26 +965,31 @@ int GameEngine::getTournamentMaxNumberOfTurns(vector<string> args)
 	return numberOfTurns;
 }
 
+// This method returns the maps to be used in the tournament
 vector<string> GameEngine::getTournamentMaps()
 {
 	return tournamentMaps;
 }
 
+// This method returns the player strategies to be used in the tournament
 vector<string> GameEngine::getTournamentPlayers()
 {
 	return tournamentPlayers;
 }
 
+//This method returns the number of games to be played per map in the tournament
 int GameEngine::getTournamentNumberOfGames()
 {
 	return tournamentGames;
 }
 
+//This methid returns the maximum number of turns to be played per game in a tournament
 int GameEngine::getTournamentMaxNumberOfTurns()
 {
 	return tournamentTurns;
 }
 
+//This method returns whether or not the GameEngine is currently running a tournament
 bool GameEngine::getTournamentMode() 
 {
 	return tournamentMode;
@@ -1286,10 +1297,12 @@ void GameEngine::mainGameLoop()
 	cout << "-------------------------------------------------------------" << endl;
 }
 
+// Returns information about games played during a tournament
 std::vector<std::vector<string>> GameEngine::getGames() {
 	return games;
 }
 
+// Stores information about a given game ina tournament
 void GameEngine::addGame(std::vector<string> game) {
 	games.push_back(game);
 }
