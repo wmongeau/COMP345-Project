@@ -151,7 +151,7 @@ HumanPlayerStrategy::~HumanPlayerStrategy()
 /// Copy constructor for the HumanPlayerStrategy class
 /// </summary>
 /// <param name="c">The HumanPlayerStrategy being copied</param>
-HumanPlayerStrategy::HumanPlayerStrategy(const HumanPlayerStrategy&c)
+HumanPlayerStrategy::HumanPlayerStrategy(const HumanPlayerStrategy &c)
 {
 	player = c.player;
 }

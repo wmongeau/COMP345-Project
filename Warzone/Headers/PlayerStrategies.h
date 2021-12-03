@@ -25,7 +25,7 @@ public:
 	HumanPlayerStrategy();
 	HumanPlayerStrategy(Player* player);
 	~HumanPlayerStrategy();
-	HumanPlayerStrategy(const PlayerStrategy& c);
+	HumanPlayerStrategy(const HumanPlayerStrategy& c);
 	HumanPlayerStrategy& operator=(const HumanPlayerStrategy& c);
 	friend ostream& operator<<(ostream& out, const HumanPlayerStrategy& c);
 	void issueOrder();
